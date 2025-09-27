@@ -1,3 +1,6 @@
+"use client"
+
+import { useState } from "react"
 import { Hero } from "@/components/hero"
 import { About } from "@/components/about"
 import { Experience } from "@/components/experience"
@@ -7,8 +10,15 @@ import { HireMe } from "@/components/hire-me"
 import { Contact } from "@/components/contact"
 import { Navigation } from "@/components/navigation"
 import { KeyboardBackground } from "@/components/keyboard-background"
+import { KeyboardLanding } from "@/components/keyboard-landing"
 
 export default function Home() {
+  const [showPortfolio, setShowPortfolio] = useState(false)
+
+  if (!showPortfolio) {
+    return <KeyboardLanding onCorrectEntry={() => setShowPortfolio(true)} />
+  }
+
   return (
     <main className="min-h-screen bg-black relative">
       {/* Keyboard Background */}
