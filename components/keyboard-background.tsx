@@ -72,7 +72,7 @@ export function KeyboardBackground() {
       const isInteractiveElement = 
         target.tagName === 'INPUT' ||
         target.tagName === 'TEXTAREA' ||
-        target.contentEditable === 'true'
+        (target instanceof HTMLElement && (target.isContentEditable || (target.closest && target.closest('[contenteditable]'))))
 
       // Only prevent default for specific keys and when not on interactive elements
       if (!isInteractiveElement && (key === "CAPSLOCK" || key === "CAPS")) {
