@@ -15,7 +15,16 @@ const navItems = [
 export function Navigation() {
   const [activeSection, setActiveSection] = useState("")
   const [underlineStyle, setUnderlineStyle] = useState({ top: 0, height: 0 })
+  const [isVisible, setIsVisible] = useState(false)
   const navRef = useRef<HTMLUListElement>(null)
+
+  // Trigger slide-in animation after component mounts
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsVisible(true)
+    }, 200) // Small delay for better effect
+    return () => clearTimeout(timer)
+  }, [])
 
   useEffect(() => {
     // Use Intersection Observer for better scroll snap compatibility
@@ -159,8 +168,16 @@ export function Navigation() {
         />
         
         <ul ref={navRef} className="flex flex-col gap-3 text-sm">
-          {navItems.map((item) => (
-            <li key={item.name}>
+          {navItems.map((item, index) => (
+            <li 
+              key={item.name}
+              className={`${
+                isVisible ? 'animate-slide-in-from-left' : 'opacity-0'
+              }`}
+              style={{ 
+                animationDelay: `${index * 100}ms` 
+              }}
+            >
               <button
                 onClick={() => scrollToSection(item.href)}
                 className={`transition-colors ${

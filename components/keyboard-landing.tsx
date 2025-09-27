@@ -60,7 +60,31 @@ export function KeyboardLanding({ onCorrectEntry }: KeyboardLandingProps) {
   const [pressedKeys, setPressedKeys] = useState<Set<string>>(new Set())
   const [capsLock, setCapsLock] = useState(false)
   const [showError, setShowError] = useState(false)
+  const [highlightIndex, setHighlightIndex] = useState(0)
   const targetText = "yesh"
+  const hintSequence = ["y", "e", "s", "h", "return"]
+
+  // Highlighting loop for YESH + RETURN sequence
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setHighlightIndex((prev) => (prev + 1) % hintSequence.length)
+    }, 800) // Change highlight every 800ms
+    return () => clearInterval(interval)
+  }, [])
+
+  // Helper function to check if a key should be highlighted
+  const isKeyHighlighted = (key: string) => {
+    const currentHint = hintSequence[highlightIndex]
+    if (currentHint === "return") {
+      return false // Don't use regular highlight for return key
+    }
+    return key.toLowerCase() === currentHint
+  }
+
+  // Helper function to check if return key should be green
+  const isReturnKeyGreen = () => {
+    return hintSequence[highlightIndex] === "return"
+  }
 
   const handleKeyPress = useCallback(
     (key: string) => {
@@ -177,7 +201,11 @@ export function KeyboardLanding({ onCorrectEntry }: KeyboardLandingProps) {
         {/* Number Row */}
         <div className="flex gap-2 justify-center">
           {KEYBOARD_LAYOUT.numbers.map((key) => (
-            <Key key={key} onClick={() => handleKeyPress(key)} isPressed={pressedKeys.has(key)}>
+            <Key 
+              key={key} 
+              onClick={() => handleKeyPress(key)} 
+              isPressed={pressedKeys.has(key) || isKeyHighlighted(key)}
+            >
               {key}
             </Key>
           ))}
@@ -186,7 +214,11 @@ export function KeyboardLanding({ onCorrectEntry }: KeyboardLandingProps) {
         {/* Top Row (QWERTY) */}
         <div className="flex gap-2 justify-center">
           {KEYBOARD_LAYOUT.topRow.map((key) => (
-            <Key key={key} onClick={() => handleKeyPress(key)} isPressed={pressedKeys.has(key)}>
+            <Key 
+              key={key} 
+              onClick={() => handleKeyPress(key)} 
+              isPressed={pressedKeys.has(key) || isKeyHighlighted(key)}
+            >
               {key}
             </Key>
           ))}
@@ -203,26 +235,47 @@ export function KeyboardLanding({ onCorrectEntry }: KeyboardLandingProps) {
             caps
           </Key>
           {KEYBOARD_LAYOUT.middleRow.map((key) => (
-            <Key key={key} onClick={() => handleKeyPress(key)} isPressed={pressedKeys.has(key)}>
+            <Key 
+              key={key} 
+              onClick={() => handleKeyPress(key)} 
+              isPressed={pressedKeys.has(key) || isKeyHighlighted(key)}
+            >
               {key}
             </Key>
           ))}
-          <Key onClick={() => handleKeyPress("ENTER")} isPressed={pressedKeys.has("ENTER")} size="lg">
+          <Key 
+            onClick={() => handleKeyPress("ENTER")} 
+            isPressed={pressedKeys.has("ENTER")} 
+            size="lg"
+            className={isReturnKeyGreen() ? "!bg-green-600 hover:!bg-green-500 !text-white !border-green-500" : ""}
+          >
             return
           </Key>
         </div>
 
         {/* Bottom Row (ZXCV) */}
         <div className="flex gap-2 justify-center">
-          <Key onClick={() => handleKeyPress("SHIFT")} isPressed={pressedKeys.has("SHIFT")} size="lg">
+          <Key 
+            onClick={() => handleKeyPress("SHIFT")} 
+            isPressed={pressedKeys.has("SHIFT")} 
+            size="lg"
+          >
             shift
           </Key>
           {KEYBOARD_LAYOUT.bottomRow.map((key) => (
-            <Key key={key} onClick={() => handleKeyPress(key)} isPressed={pressedKeys.has(key)}>
+            <Key 
+              key={key} 
+              onClick={() => handleKeyPress(key)} 
+              isPressed={pressedKeys.has(key) || isKeyHighlighted(key)}
+            >
               {key}
             </Key>
           ))}
-          <Key onClick={() => handleKeyPress("BACKSPACE")} isPressed={pressedKeys.has("BACKSPACE")} size="lg">
+          <Key 
+            onClick={() => handleKeyPress("BACKSPACE")} 
+            isPressed={pressedKeys.has("BACKSPACE")} 
+            size="lg"
+          >
             delete
           </Key>
         </div>
