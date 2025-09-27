@@ -1,7 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { ArrowDown, Github, Linkedin, Twitter, Youtube, FileText } from "lucide-react"
+import { ArrowDown, Github, Linkedin, Twitter, Phone, Mail, FileText } from "lucide-react"
 
 export function Hero() {
   const scrollToAbout = () => {
@@ -16,7 +16,7 @@ export function Hero() {
         </div>
 
         <div className="opacity-0 animate-fade-in-up animate-delay-200">
-          <p className="text-base md:text-lg text-muted-foreground mb-4 text-balance">Frontend Developer</p>
+          <p className="text-base md:text-lg text-muted-foreground mb-4 text-balance">Full Stack Developer</p>
         </div>
 
         <div className="opacity-0 animate-fade-in-up animate-delay-300">
@@ -51,14 +51,21 @@ export function Hero() {
               </span>
             </a>
             <a
-              href="https://youtube.com/@yeswanth49"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="tel:+919032690321"
               className="group flex items-center gap-2 text-muted-foreground hover:text-foreground transition-all duration-300 ease-in-out"
             >
-              <Youtube className="w-5 h-5" />
+              <Phone className="w-5 h-5" />
               <span className="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 ease-in-out whitespace-nowrap">
-                YouTube
+                +91 9032690321
+              </span>
+            </a>
+            <a
+              href="mailto:work.yeswanth@gmail.com"
+              className="group flex items-center gap-2 text-muted-foreground hover:text-foreground transition-all duration-300 ease-in-out"
+            >
+              <Mail className="w-5 h-5" />
+              <span className="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 ease-in-out whitespace-nowrap">
+                work.yeswanth@gmail.com
               </span>
             </a>
             <a
