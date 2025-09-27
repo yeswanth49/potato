@@ -27,9 +27,13 @@ function Key({ children, onClick, className, isPressed, size = "md" }: KeyProps)
     xl: "w-96 h-14 text-base",
   }
 
+  // For decorative keys without onClick, use div instead of button
+  const Element = onClick ? "button" : "div"
+  const elementProps = onClick ? { onClick } : { role: "presentation", "aria-hidden": true }
+
   return (
-    <button
-      onClick={onClick}
+    <Element
+      {...elementProps}
       className={cn(
         "rounded-lg border border-[#1A1B1C] bg-gradient-to-b from-[#090A0B] to-[#0E0E10] text-gray-300 font-medium",
         "relative before:absolute before:inset-0 before:rounded-lg before:p-[1px] before:bg-gradient-to-b before:from-[#1A1B1C] before:to-[#141415] before:-z-10",
@@ -41,7 +45,7 @@ function Key({ children, onClick, className, isPressed, size = "md" }: KeyProps)
       )}
     >
       {children}
-    </button>
+    </Element>
   )
 }
 
@@ -61,8 +65,19 @@ export function KeyboardBackground() {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      e.preventDefault()
       const key = e.key.toUpperCase()
+
+      // Check if event target is an interactive element
+      const target = e.target as HTMLElement
+      const isInteractiveElement = 
+        target.tagName === 'INPUT' ||
+        target.tagName === 'TEXTAREA' ||
+        target.contentEditable === 'true'
+
+      // Only prevent default for specific keys and when not on interactive elements
+      if (!isInteractiveElement && (key === "CAPSLOCK" || key === "CAPS")) {
+        e.preventDefault()
+      }
 
       setPressedKeys((prev) => new Set(prev).add(key))
 
@@ -158,7 +173,7 @@ export function KeyboardBackground() {
           <Key size="md">⌥</Key>
           <Key size="md">⌘</Key>
           <Key onClick={() => handleKeyPress("SPACE")} isPressed={pressedKeys.has(" ")} size="xl">
-            {/* Empty spacebar */}
+            {" "}
           </Key>
           <Key size="md">⌘</Key>
           <Key size="md">⌥</Key>

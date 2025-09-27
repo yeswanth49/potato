@@ -15,7 +15,7 @@ import { KeyboardLanding } from "@/components/keyboard-landing"
 export default function Home() {
   // 🎨 MAIN PAGE BACKGROUND TOGGLE: Change this to control keyboard background on portfolio page
   // Set to 'dark' for no keyboard background, 'keyboard' for animated keyboard background
-  const MAIN_BACKGROUND_MODE: 'dark' | 'keyboard' = 'dark' // <- Change this value to toggle
+  const MAIN_BACKGROUND_MODE = 'dark' as 'dark' | 'keyboard' // <- Change this value to toggle
 
   const [showPortfolio, setShowPortfolio] = useState(false)
 

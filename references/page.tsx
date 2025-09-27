@@ -59,6 +59,10 @@ export default function QwertyKeyboard() {
         setText((prev) => prev + " ")
       } else if (key === "CAPS") {
         setCapsLock((prev) => !prev)
+      } else if (key === "SHIFT") {
+        // Handle SHIFT as a modifier, toggle caps state
+        setCapsLock((prev) => !prev)
+        return
       } else if (key === "ENTER") {
         setText((prev) => prev + "\n")
       } else {
@@ -71,21 +75,37 @@ export default function QwertyKeyboard() {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      e.preventDefault()
       const key = e.key.toUpperCase()
 
-      setPressedKeys((prev) => new Set(prev).add(key))
+      // Skip if modifier keys are pressed (allow global shortcuts)
+      if (e.ctrlKey || e.metaKey || e.altKey) {
+        return
+      }
 
-      if (key === "BACKSPACE") {
-        handleKeyPress("BACKSPACE")
-      } else if (key === " ") {
-        handleKeyPress("SPACE")
-      } else if (key === "CAPSLOCK") {
-        handleKeyPress("CAPS")
-      } else if (key === "ENTER") {
-        handleKeyPress("ENTER")
-      } else if (/^[A-Z0-9]$/.test(key)) {
-        handleKeyPress(key)
+      // Check if this is a key the virtual keyboard handles
+      const isHandledKey = 
+        key === "BACKSPACE" ||
+        key === " " ||
+        key === "CAPSLOCK" ||
+        key === "ENTER" ||
+        /^[A-Z0-9]$/.test(key)
+
+      // Only prevent default and handle keys we support
+      if (isHandledKey) {
+        e.preventDefault()
+        setPressedKeys((prev) => new Set(prev).add(key))
+
+        if (key === "BACKSPACE") {
+          handleKeyPress("BACKSPACE")
+        } else if (key === " ") {
+          handleKeyPress("SPACE")
+        } else if (key === "CAPSLOCK") {
+          handleKeyPress("CAPS")
+        } else if (key === "ENTER") {
+          handleKeyPress("ENTER")
+        } else if (/^[A-Z0-9]$/.test(key)) {
+          handleKeyPress(key)
+        }
       }
     }
 
@@ -180,7 +200,7 @@ export default function QwertyKeyboard() {
           <Key size="md">⌥</Key>
           <Key size="md">⌘</Key>
           <Key onClick={() => handleKeyPress("SPACE")} isPressed={pressedKeys.has(" ")} size="xl">
-            {/* Empty spacebar */}
+            {" "}
           </Key>
           <Key size="md">⌘</Key>
           <Key size="md">⌥</Key>

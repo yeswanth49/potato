@@ -54,7 +54,7 @@ interface KeyboardLandingProps {
 export function KeyboardLanding({ onCorrectEntry }: KeyboardLandingProps) {
   // 🎨 BACKGROUND TOGGLE: Change this to switch between dark background and keyboard background
   // Set to 'dark' for solid black background, 'keyboard' for animated keyboard background
-  const BACKGROUND_MODE: 'dark' | 'keyboard' = 'dark' // <- Change this value to toggle
+  const BACKGROUND_MODE = 'dark' as 'dark' | 'keyboard' // <- Change this value to toggle
   
   const [text, setText] = useState("")
   const [pressedKeys, setPressedKeys] = useState<Set<string>>(new Set())
@@ -71,6 +71,10 @@ export function KeyboardLanding({ onCorrectEntry }: KeyboardLandingProps) {
         setText((prev) => prev + " ")
       } else if (key === "CAPS") {
         setCapsLock((prev) => !prev)
+      } else if (key === "SHIFT") {
+        // Handle SHIFT as a modifier, don't append text
+        setCapsLock((prev) => !prev)
+        return
       } else if (key === "ENTER") {
         if (text.toLowerCase() === targetText.toLowerCase()) {
           onCorrectEntry()
@@ -90,21 +94,32 @@ export function KeyboardLanding({ onCorrectEntry }: KeyboardLandingProps) {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      e.preventDefault()
       const key = e.key.toUpperCase()
 
-      setPressedKeys((prev) => new Set(prev).add(key))
+      // Check if this is a key the virtual keyboard handles
+      const isHandledKey = 
+        key === "BACKSPACE" ||
+        key === " " ||
+        key === "CAPSLOCK" ||
+        key === "ENTER" ||
+        /^[A-Z0-9]$/.test(key)
 
-      if (key === "BACKSPACE") {
-        handleKeyPress("BACKSPACE")
-      } else if (key === " ") {
-        handleKeyPress("SPACE")
-      } else if (key === "CAPSLOCK") {
-        handleKeyPress("CAPS")
-      } else if (key === "ENTER") {
-        handleKeyPress("ENTER")
-      } else if (/^[A-Z0-9]$/.test(key)) {
-        handleKeyPress(key)
+      // Only prevent default for keys we handle
+      if (isHandledKey) {
+        e.preventDefault()
+        setPressedKeys((prev) => new Set(prev).add(key))
+
+        if (key === "BACKSPACE") {
+          handleKeyPress("BACKSPACE")
+        } else if (key === " ") {
+          handleKeyPress("SPACE")
+        } else if (key === "CAPSLOCK") {
+          handleKeyPress("CAPS")
+        } else if (key === "ENTER") {
+          handleKeyPress("ENTER")
+        } else if (/^[A-Z0-9]$/.test(key)) {
+          handleKeyPress(key)
+        }
       }
     }
 
