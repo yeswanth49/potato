@@ -126,13 +126,20 @@
   }
 
   /* Added smooth scroll behavior */
+  html, body {
+    height: 100%;
+  }
+
   html {
     scroll-behavior: smooth;
+    scroll-snap-type: y mandatory;
   }
 
   /* Ensure every section fills the viewport with vertical padding and accounts for fixed nav */
   section {
     @apply min-h-screen py-24 scroll-mt-16;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
   }
 }
 
