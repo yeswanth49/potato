@@ -1,7 +1,6 @@
 "use client"
 
 import type React from "react"
-
 import { useState, useEffect, useCallback } from "react"
 import { cn } from "@/lib/utils"
 import { KeyboardBackground } from "./keyboard-background"
@@ -239,7 +238,7 @@ export function KeyboardLanding({ onCorrectEntry }: KeyboardLandingProps) {
           <Key size="md">⌘</Key>
           <Key size="md">⌥</Key>
         </div>
-      </div>
+      </motion.div>
 
       {/* Instructions */}
       <div className="text-gray-500 text-center max-w-md"></div>
