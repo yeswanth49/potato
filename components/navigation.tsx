@@ -8,6 +8,7 @@ const navItems = [
   { name: "Experience", href: "#experience" },
   { name: "Projects", href: "#projects" },
   { name: "Skills", href: "#skills" },
+  { name: "Hire Me", href: "#hire-me" },
   { name: "Contact", href: "#contact" },
 ]
 
@@ -121,7 +122,7 @@ export function Navigation() {
                 activeSection === item.href.slice(1)
                   ? "text-foreground"
                   : "text-muted-foreground hover:text-foreground"
-              }`}
+              } ${item.name === "Hire Me" ? "text-blue-400 hover:text-blue-300 font-medium" : ""}`}
             >
               {item.name}
             </button>
