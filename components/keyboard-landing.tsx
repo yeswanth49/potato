@@ -61,19 +61,54 @@ export function KeyboardLanding({ onCorrectEntry }: KeyboardLandingProps) {
   const [capsLock, setCapsLock] = useState(false)
   const [showError, setShowError] = useState(false)
   const [highlightIndex, setHighlightIndex] = useState(0)
+  const [iterationCount, setIterationCount] = useState(0)
   const targetText = "yesh"
   const hintSequence = ["y", "e", "s", "h", "return"]
+  const maxIterations = 2
 
-  // Highlighting loop for YESH + RETURN sequence
+  // Highlighting loop for YESH + RETURN sequence with better rhythm (2 iterations only)
   useEffect(() => {
-    const interval = setInterval(() => {
-      setHighlightIndex((prev) => (prev + 1) % hintSequence.length)
-    }, 800) // Change highlight every 800ms
-    return () => clearInterval(interval)
-  }, [])
+    if (iterationCount >= maxIterations) return
+    
+    let timeoutId: NodeJS.Timeout
+    
+    const scheduleNext = () => {
+      const currentHint = hintSequence[highlightIndex]
+      let delay: number
+      
+      if (currentHint === "return") {
+        // Longer pause after RETURN before starting over
+        delay = 1200
+      } else if (highlightIndex === hintSequence.length - 2) {
+        // Shorter pause before RETURN (after 'h')
+        delay = 500
+      } else {
+        // Normal rhythm for Y-E-S-H
+        delay = 600
+      }
+      
+      timeoutId = setTimeout(() => {
+        const nextIndex = (highlightIndex + 1) % hintSequence.length
+        setHighlightIndex(nextIndex)
+        
+        // If we completed a full cycle (back to start), increment iteration count
+        if (nextIndex === 0) {
+          setIterationCount(prev => prev + 1)
+        }
+      }, delay)
+    }
+    
+    scheduleNext()
+    
+    return () => {
+      if (timeoutId) clearTimeout(timeoutId)
+    }
+  }, [highlightIndex, iterationCount, hintSequence, maxIterations])
 
-  // Helper function to check if a key should be highlighted
+  // Helper function to check if a key should be highlighted (pressed state only)
   const isKeyHighlighted = (key: string) => {
+    if (iterationCount >= maxIterations) return false // Stop highlighting after 2 iterations
+    
     const currentHint = hintSequence[highlightIndex]
     if (currentHint === "return") {
       return false // Don't use regular highlight for return key
@@ -83,6 +118,7 @@ export function KeyboardLanding({ onCorrectEntry }: KeyboardLandingProps) {
 
   // Helper function to check if return key should be green
   const isReturnKeyGreen = () => {
+    if (iterationCount >= maxIterations) return false // Stop highlighting after 2 iterations
     return hintSequence[highlightIndex] === "return"
   }
 
@@ -205,6 +241,7 @@ export function KeyboardLanding({ onCorrectEntry }: KeyboardLandingProps) {
               key={key} 
               onClick={() => handleKeyPress(key)} 
               isPressed={pressedKeys.has(key) || isKeyHighlighted(key)}
+              className={isKeyHighlighted(key) ? "!bg-white-500 !text-white !border-white-400 !shadow-lg !shadow-white-500/50" : ""}
             >
               {key}
             </Key>
@@ -218,6 +255,7 @@ export function KeyboardLanding({ onCorrectEntry }: KeyboardLandingProps) {
               key={key} 
               onClick={() => handleKeyPress(key)} 
               isPressed={pressedKeys.has(key) || isKeyHighlighted(key)}
+              className=""
             >
               {key}
             </Key>
@@ -239,6 +277,7 @@ export function KeyboardLanding({ onCorrectEntry }: KeyboardLandingProps) {
               key={key} 
               onClick={() => handleKeyPress(key)} 
               isPressed={pressedKeys.has(key) || isKeyHighlighted(key)}
+              className=""
             >
               {key}
             </Key>
@@ -267,6 +306,7 @@ export function KeyboardLanding({ onCorrectEntry }: KeyboardLandingProps) {
               key={key} 
               onClick={() => handleKeyPress(key)} 
               isPressed={pressedKeys.has(key) || isKeyHighlighted(key)}
+              className=""
             >
               {key}
             </Key>
