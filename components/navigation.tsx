@@ -17,7 +17,7 @@ export function Navigation() {
   useEffect(() => {
     const handleScroll = () => {
       const sections = navItems.map((item) => item.href.slice(1))
-      const scrollPosition = window.scrollY + 100
+      const scrollPosition = window.scrollY + 64
 
       for (const section of sections) {
         const element = document.getElementById(section)
@@ -42,16 +42,16 @@ export function Navigation() {
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
-      <div className="max-w-6xl mx-auto px-6 py-4">
+      <div className="max-w-5xl mx-auto px-4 py-2">
         <div className="flex items-center justify-between">
-          <div className="text-xl font-semibold animate-fade-in">Yeswanth Madasu</div>
-          <div className="hidden md:flex items-center gap-8">
+          <div className="text-sm font-medium tracking-wide">Yeswanth Madasu</div>
+          <div className="hidden md:flex items-center gap-4">
             {navItems.map((item, index) => (
               <Button
                 key={item.name}
                 variant="ghost"
                 onClick={() => scrollToSection(item.href)}
-                className={`text-sm transition-all duration-300 animate-fade-in ${
+                className={`text-xs px-2 transition-colors ${
                   activeSection === item.href.slice(1)
                     ? "text-foreground"
                     : "text-muted-foreground hover:text-foreground"

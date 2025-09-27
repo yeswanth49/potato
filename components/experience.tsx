@@ -70,15 +70,15 @@ export function Experience() {
   }, [])
 
   return (
-    <section id="experience" ref={ref} className="py-24 px-6 bg-muted/30">
-      <div className="max-w-6xl mx-auto">
+    <section id="experience" ref={ref} className="py-16 px-4 bg-muted/30">
+      <div className="max-w-5xl mx-auto">
         <div
           className={`transition-all duration-800 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
         >
-          <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">Professional Experience</h2>
+          <h2 className="text-2xl md:text-3xl font-semibold mb-6 text-center">Professional Experience</h2>
         </div>
 
-        <div className="space-y-8">
+        <div className="space-y-6">
           {experiences.map((exp, index) => (
             <div
               key={index}
@@ -87,11 +87,11 @@ export function Experience() {
               }`}
               style={{ transitionDelay: `${(index + 1) * 200}ms` }}
             >
-              <Card className="hover:shadow-lg transition-all duration-300 border-border/50">
+              <Card className="transition-colors border-border/50">
                 <CardHeader>
-                  <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                  <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
                     <div>
-                      <CardTitle className="text-xl mb-2 flex items-center gap-2">
+                      <CardTitle className="text-lg mb-1.5 flex items-center gap-2">
                         {exp.title} — {exp.company}
                         {exp.link && (
                           <a
@@ -104,23 +104,23 @@ export function Experience() {
                           </a>
                         )}
                       </CardTitle>
-                      <CardDescription className="text-base">{exp.period}</CardDescription>
+                      <CardDescription className="text-sm">{exp.period}</CardDescription>
                     </div>
                   </div>
-                  <p className="text-muted-foreground leading-relaxed">{exp.description}</p>
+                  <p className="text-muted-foreground leading-relaxed text-sm">{exp.description}</p>
                 </CardHeader>
-                <CardContent>
-                  <ul className="space-y-2 mb-6">
+                <CardContent className="pt-2">
+                  <ul className="space-y-1.5 mb-4">
                     {exp.achievements.map((achievement, i) => (
                       <li key={i} className="text-sm text-muted-foreground leading-relaxed flex items-start gap-2">
-                        <span className="text-foreground mt-1.5">•</span>
+                        <span className="text-foreground mt-1">•</span>
                         {achievement}
                       </li>
                     ))}
                   </ul>
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-1.5 mt-1">
                     {exp.technologies.map((tech) => (
-                      <Badge key={tech} variant="secondary" className="text-xs">
+                      <Badge key={tech} variant="secondary" className="text-[10px] py-0.5">
                         {tech}
                       </Badge>
                     ))}

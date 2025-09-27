@@ -9,25 +9,24 @@ export function Hero() {
   }
 
   return (
-    <section className="min-h-screen flex items-center justify-center px-6 pt-20">
-      <div className="max-w-4xl mx-auto text-center">
+    <section className="min-h-[80vh] flex items-center justify-center px-4 pt-16">
+      <div className="max-w-3xl mx-auto text-center">
         <div className="opacity-0 animate-fade-in-up">
-          <h1 className="text-5xl md:text-7xl font-bold mb-6 text-balance">Yeswanth Madasu</h1>
+          <h1 className="text-4xl md:text-5xl font-semibold mb-3 text-balance">Yeswanth Madasu</h1>
         </div>
 
         <div className="opacity-0 animate-fade-in-up animate-delay-200">
-          <p className="text-xl md:text-2xl text-muted-foreground mb-8 text-balance">Frontend Developer</p>
+          <p className="text-base md:text-lg text-muted-foreground mb-4 text-balance">Frontend Developer</p>
         </div>
 
         <div className="opacity-0 animate-fade-in-up animate-delay-300">
-          <p className="text-lg text-muted-foreground mb-12 max-w-2xl mx-auto leading-relaxed text-pretty">
-            Frontend-focused developer with entrepreneurial drive, building accessible, performant web apps using
-            React.js, Next.js, Node.js, and REST APIs.
+          <p className="text-sm text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed text-pretty">
+            Frontend-focused developer building accessible, performant web apps with React and Next.js.
           </p>
         </div>
 
         <div className="opacity-0 animate-fade-in-up animate-delay-400">
-          <div className="flex flex-wrap items-center justify-center gap-6 mb-12">
+          <div className="flex flex-wrap items-center justify-center gap-4 mb-8">
             <a
               href="tel:9032690321"
               className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
@@ -67,11 +66,11 @@ export function Hero() {
           <Button
             onClick={scrollToAbout}
             variant="outline"
-            size="lg"
-            className="group transition-all duration-300 hover:bg-foreground hover:text-background bg-transparent"
+            size="sm"
+            className="group transition-colors hover:bg-foreground hover:text-background bg-transparent"
           >
             Explore My Work
-            <ArrowDown className="w-4 h-4 ml-2 group-hover:translate-y-1 transition-transform" />
+            <ArrowDown className="w-4 h-4 ml-2 group-hover:translate-y-0.5 transition-transform" />
           </Button>
         </div>
       </div>

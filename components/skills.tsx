@@ -74,15 +74,15 @@ export function Skills() {
   }, [])
 
   return (
-    <section id="skills" ref={ref} className="py-24 px-6 bg-muted/30">
-      <div className="max-w-6xl mx-auto">
+    <section id="skills" ref={ref} className="py-16 px-4 bg-muted/30">
+      <div className="max-w-5xl mx-auto">
         <div
           className={`transition-all duration-800 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
         >
-          <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">Technical Skills</h2>
+          <h2 className="text-2xl md:text-3xl font-semibold mb-6 text-center">Technical Skills</h2>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid md:grid-cols-2 gap-6">
           {skillCategories.map((category, index) => (
             <div
               key={index}
@@ -91,13 +91,13 @@ export function Skills() {
               }`}
               style={{ transitionDelay: `${(index + 1) * 150}ms` }}
             >
-              <h3 className="text-xl font-semibold mb-4 text-foreground">{category.category}</h3>
-              <div className="flex flex-wrap gap-2">
+              <h3 className="text-lg font-medium mb-3 text-foreground">{category.category}</h3>
+              <div className="flex flex-wrap gap-1.5">
                 {category.skills.map((skill, skillIndex) => (
                   <Badge
                     key={skillIndex}
                     variant="secondary"
-                    className="text-sm py-1 px-3 hover:bg-foreground hover:text-background transition-colors duration-300"
+                    className="text-xs py-0.5 px-2 hover:bg-foreground hover:text-background transition-colors duration-300"
                     style={{
                       animationDelay: `${(index + 1) * 150 + skillIndex * 50}ms`,
                       opacity: isVisible ? 1 : 0,

@@ -27,12 +27,12 @@ export function Contact() {
   }, [])
 
   return (
-    <section id="contact" ref={ref} className="py-24 px-6">
-      <div className="max-w-4xl mx-auto">
+    <section id="contact" ref={ref} className="py-16 px-4">
+      <div className="max-w-3xl mx-auto">
         <div
           className={`transition-all duration-800 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
         >
-          <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">Get In Touch</h2>
+          <h2 className="text-2xl md:text-3xl font-semibold mb-6 text-center">Get In Touch</h2>
         </div>
 
         <div
@@ -40,25 +40,25 @@ export function Contact() {
         >
           <Card className="border-border/50">
             <CardHeader className="text-center">
-              <CardTitle className="text-2xl mb-4">Let's Work Together</CardTitle>
-              <CardDescription className="text-lg leading-relaxed">
+              <CardTitle className="text-xl mb-2">Let's Work Together</CardTitle>
+              <CardDescription className="text-base leading-relaxed">
                 I'm always interested in discussing new opportunities, innovative projects, and collaborations. Feel
                 free to reach out if you'd like to connect!
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="grid md:grid-cols-2 gap-6">
+              <div className="grid md:grid-cols-2 gap-4">
                 <Button
                   variant="outline"
-                  size="lg"
-                  className="h-16 group hover:bg-foreground hover:text-background transition-all duration-300 bg-transparent"
+                  size="sm"
+                  className="h-12 group hover:bg-foreground hover:text-background transition-colors bg-transparent"
                   asChild
                 >
                   <a href="mailto:work.yeswanth@gmail.com" className="flex items-center gap-3">
-                    <Mail className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                    <Mail className="w-4 h-4 group-hover:scale-110 transition-transform" />
                     <div className="text-left">
-                      <div className="font-semibold">Email</div>
-                      <div className="text-sm text-muted-foreground group-hover:text-background/80">
+                      <div className="font-medium text-sm">Email</div>
+                      <div className="text-xs text-muted-foreground group-hover:text-background/80">
                         work.yeswanth@gmail.com
                       </div>
                     </div>
@@ -67,23 +67,23 @@ export function Contact() {
 
                 <Button
                   variant="outline"
-                  size="lg"
-                  className="h-16 group hover:bg-foreground hover:text-background transition-all duration-300 bg-transparent"
+                  size="sm"
+                  className="h-12 group hover:bg-foreground hover:text-background transition-colors bg-transparent"
                   asChild
                 >
                   <a href="tel:9032690321" className="flex items-center gap-3">
-                    <Phone className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                    <Phone className="w-4 h-4 group-hover:scale-110 transition-transform" />
                     <div className="text-left">
-                      <div className="font-semibold">Phone</div>
-                      <div className="text-sm text-muted-foreground group-hover:text-background/80">9032690321</div>
+                      <div className="font-medium text-sm">Phone</div>
+                      <div className="text-xs text-muted-foreground group-hover:text-background/80">9032690321</div>
                     </div>
                   </a>
                 </Button>
 
                 <Button
                   variant="outline"
-                  size="lg"
-                  className="h-16 group hover:bg-foreground hover:text-background transition-all duration-300 bg-transparent"
+                  size="sm"
+                  className="h-12 group hover:bg-foreground hover:text-background transition-colors bg-transparent"
                   asChild
                 >
                   <a
@@ -92,18 +92,18 @@ export function Contact() {
                     rel="noopener noreferrer"
                     className="flex items-center gap-3"
                   >
-                    <Github className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                    <Github className="w-4 h-4 group-hover:scale-110 transition-transform" />
                     <div className="text-left">
-                      <div className="font-semibold">GitHub</div>
-                      <div className="text-sm text-muted-foreground group-hover:text-background/80">@yeswanth49</div>
+                      <div className="font-medium text-sm">GitHub</div>
+                      <div className="text-xs text-muted-foreground group-hover:text-background/80">@yeswanth49</div>
                     </div>
                   </a>
                 </Button>
 
                 <Button
                   variant="outline"
-                  size="lg"
-                  className="h-16 group hover:bg-foreground hover:text-background transition-all duration-300 bg-transparent"
+                  size="sm"
+                  className="h-12 group hover:bg-foreground hover:text-background transition-colors bg-transparent"
                   asChild
                 >
                   <a
@@ -112,10 +112,10 @@ export function Contact() {
                     rel="noopener noreferrer"
                     className="flex items-center gap-3"
                   >
-                    <Linkedin className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                    <Linkedin className="w-4 h-4 group-hover:scale-110 transition-transform" />
                     <div className="text-left">
-                      <div className="font-semibold">LinkedIn</div>
-                      <div className="text-sm text-muted-foreground group-hover:text-background/80">@yeswanthm</div>
+                      <div className="font-medium text-sm">LinkedIn</div>
+                      <div className="text-xs text-muted-foreground group-hover:text-background/80">@yeswanthm</div>
                     </div>
                   </a>
                 </Button>
@@ -127,8 +127,8 @@ export function Contact() {
         <div
           className={`transition-all duration-800 delay-400 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
         >
-          <div className="text-center mt-12 pt-8 border-t border-border">
-            <p className="text-muted-foreground">© 2025 Yeswanth Madasu. Built with Next.js and Tailwind CSS.</p>
+          <div className="text-center mt-8 pt-6 border-top border-border">
+            <p className="text-muted-foreground text-sm">© 2025 Yeswanth Madasu. Built with Next.js and Tailwind CSS.</p>
           </div>
         </div>
       </div>

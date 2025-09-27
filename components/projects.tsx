@@ -76,15 +76,15 @@ export function Projects() {
   }, [])
 
   return (
-    <section id="projects" ref={ref} className="py-24 px-6">
-      <div className="max-w-6xl mx-auto">
+    <section id="projects" ref={ref} className="py-16 px-4">
+      <div className="max-w-5xl mx-auto">
         <div
           className={`transition-all duration-800 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
         >
-          <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">Featured Projects</h2>
+          <h2 className="text-2xl md:text-3xl font-semibold mb-6 text-center">Featured Projects</h2>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {projects.map((project, index) => (
             <div
               key={index}
@@ -93,26 +93,26 @@ export function Projects() {
               }`}
               style={{ transitionDelay: `${(index + 1) * 200}ms` }}
             >
-              <Card className="h-full hover:shadow-lg transition-all duration-300 border-border/50 group">
+              <Card className="h-full transition-colors border-border/50 group">
                 <CardHeader>
-                  <CardTitle className="text-xl mb-2 group-hover:text-primary transition-colors">
+                  <CardTitle className="text-lg mb-1.5 group-hover:text-primary transition-colors">
                     {project.title}
                   </CardTitle>
-                  <CardDescription className="leading-relaxed">{project.description}</CardDescription>
+                  <CardDescription className="leading-relaxed text-sm">{project.description}</CardDescription>
                 </CardHeader>
-                <CardContent className="flex-1 flex flex-col">
-                  <ul className="space-y-1 mb-6 flex-1">
+                <CardContent className="flex-1 flex flex-col pt-2">
+                  <ul className="space-y-1 mb-4 flex-1">
                     {project.features.map((feature, i) => (
                       <li key={i} className="text-sm text-muted-foreground flex items-start gap-2">
-                        <span className="text-foreground mt-1">•</span>
+                        <span className="text-foreground mt-0.5">•</span>
                         {feature}
                       </li>
                     ))}
                   </ul>
 
-                  <div className="flex flex-wrap gap-2 mb-6">
+                  <div className="flex flex-wrap gap-1.5 mb-3">
                     {project.technologies.map((tech) => (
-                      <Badge key={tech} variant="secondary" className="text-xs">
+                      <Badge key={tech} variant="secondary" className="text-[10px] py-0.5">
                         {tech}
                       </Badge>
                     ))}
