@@ -141,6 +141,17 @@
     scroll-snap-align: start;
     scroll-snap-stop: always;
   }
+
+  /* Improve scroll snap behavior for better navigation highlighting */
+  @media (min-width: 768px) {
+    html {
+      scroll-padding-top: 2rem;
+    }
+    
+    section {
+      scroll-margin-top: 2rem;
+    }
+  }
 }
 
 /* Added custom animations for seamless transitions */

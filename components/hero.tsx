@@ -9,7 +9,7 @@ export function Hero() {
   }
 
   return (
-    <section className="flex items-center justify-center px-4">
+    <section id="hero" className="flex items-center justify-center px-4">
       <div className="max-w-3xl mx-auto text-center">
         <div className="opacity-0 animate-fade-in-up">
           <h1 className="text-4xl md:text-5xl font-semibold mb-3 text-balance">Yeswanth Madasu</h1>
