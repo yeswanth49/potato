@@ -13,6 +13,10 @@ import { KeyboardBackground } from "@/components/keyboard-background"
 import { KeyboardLanding } from "@/components/keyboard-landing"
 
 export default function Home() {
+  // 🎨 MAIN PAGE BACKGROUND TOGGLE: Change this to control keyboard background on portfolio page
+  // Set to 'dark' for no keyboard background, 'keyboard' for animated keyboard background
+  const MAIN_BACKGROUND_MODE: 'dark' | 'keyboard' = 'dark' // <- Change this value to toggle
+
   const [showPortfolio, setShowPortfolio] = useState(false)
 
   if (!showPortfolio) {
@@ -21,8 +25,8 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-black relative">
-      {/* Keyboard Background */}
-      <KeyboardBackground />
+      {/* Conditional Keyboard Background */}
+      {MAIN_BACKGROUND_MODE === 'keyboard' && <KeyboardBackground />}
       
       {/* Main Content with higher z-index */}
       <div className="relative z-10">

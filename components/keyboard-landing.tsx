@@ -4,6 +4,7 @@ import type React from "react"
 
 import { useState, useEffect, useCallback } from "react"
 import { cn } from "@/lib/utils"
+import { KeyboardBackground } from "./keyboard-background"
 
 const KEYBOARD_LAYOUT = {
   numbers: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"],
@@ -51,6 +52,10 @@ interface KeyboardLandingProps {
 }
 
 export function KeyboardLanding({ onCorrectEntry }: KeyboardLandingProps) {
+  // 🎨 BACKGROUND TOGGLE: Change this to switch between dark background and keyboard background
+  // Set to 'dark' for solid black background, 'keyboard' for animated keyboard background
+  const BACKGROUND_MODE: 'dark' | 'keyboard' = 'dark' // <- Change this value to toggle
+  
   const [text, setText] = useState("")
   const [pressedKeys, setPressedKeys] = useState<Set<string>>(new Set())
   const [capsLock, setCapsLock] = useState(false)
@@ -121,8 +126,19 @@ export function KeyboardLanding({ onCorrectEntry }: KeyboardLandingProps) {
     }
   }, [handleKeyPress])
 
+  // Determine background class based on mode
+  const backgroundClass = BACKGROUND_MODE === 'dark' 
+    ? 'bg-black' // Solid black background
+    : 'bg-gray-900' // Slightly lighter background to show keyboard behind
+
+  // Debug: Log the current mode (remove this after testing)
+  console.log('BACKGROUND_MODE:', BACKGROUND_MODE, 'Should show keyboard:', BACKGROUND_MODE === 'keyboard')
+
   return (
-    <div className="min-h-screen bg-black p-8 flex flex-col items-center justify-center gap-8">
+    <div className={`min-h-screen p-8 flex flex-col items-center justify-center gap-8 relative ${backgroundClass}`}>
+      {/* Conditional Background - Keyboard background only shows when BACKGROUND_MODE is 'keyboard' */}
+      {BACKGROUND_MODE === 'keyboard' && <KeyboardBackground />}
+      
       {/* Text Display */}
       <div className="w-full max-w-4xl"></div>
 
@@ -203,7 +219,7 @@ export function KeyboardLanding({ onCorrectEntry }: KeyboardLandingProps) {
           <Key size="md">⌥</Key>
           <Key size="md">⌘</Key>
           <Key onClick={() => handleKeyPress("SPACE")} isPressed={pressedKeys.has(" ")} size="xl">
-            {/* Empty spacebar */}
+            {" "}
           </Key>
           <Key size="md">⌘</Key>
           <Key size="md">⌥</Key>
