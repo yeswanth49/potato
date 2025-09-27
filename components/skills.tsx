@@ -20,35 +20,29 @@ const skillCategories = [
     ],
   },
   {
-    category: "Backend",
-    skills: ["Node.js", "Flask", "FastAPI"],
-  },
-  {
-    category: "Databases",
-    skills: ["Supabase", "PostgreSQL", "MongoDB", "SQL basics"],
-  },
-  {
-    category: "APIs & Testing",
+    category: "Backend & APIs",
     skills: [
+      "Node.js",
+      "Flask",
+      "FastAPI",
       "REST API integration (Axios, Fetch)",
-      "Postman",
-      "Selenium",
-      "Jest",
-      "React Testing Library",
-      "Unit Testing",
     ],
   },
   {
-    category: "Deployment & Tools",
-    skills: ["Vercel", "Netlify", "Render", "Docker", "CI/CD (GitHub Actions)"],
+    category: "Data & Cloud",
+    skills: ["Supabase", "PostgreSQL", "MongoDB", "SQL basics", "Google Cloud Platform"],
   },
   {
-    category: "Version Control",
-    skills: ["Git", "GitHub"],
+    category: "DevOps & CI/CD",
+    skills: ["Docker", "CI/CD (GitHub Actions)", "Vercel", "Netlify", "Render", "Git", "GitHub"],
   },
   {
-    category: "Other",
-    skills: ["Python", "Java", "C", "Google Cloud Platform"],
+    category: "Testing & Quality",
+    skills: ["Jest", "React Testing Library", "Selenium", "Postman", "Unit Testing"],
+  },
+  {
+    category: "Programming Languages",
+    skills: ["Python", "Java", "C"],
   },
 ]
 
@@ -86,23 +80,20 @@ export function Skills() {
           {skillCategories.map((category, index) => (
             <div
               key={index}
-              className={`transition-all duration-800 ${
+              className={`group rounded-lg border bg-card/30 p-4 transition-all duration-800 hover:bg-card ${
                 isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
               }`}
               style={{ transitionDelay: `${(index + 1) * 150}ms` }}
             >
-              <h3 className="text-lg font-medium mb-3 text-foreground">{category.category}</h3>
-              <div className="flex flex-wrap gap-1.5">
+              <h3 className="text-base md:text-lg font-medium text-foreground">{category.category}</h3>
+              <p className="text-xs text-muted-foreground mt-1 opacity-80 group-hover:opacity-0 transition-opacity duration-300">Hover to view details</p>
+              <div className="flex flex-wrap gap-1.5 mt-0 opacity-0 max-h-0 overflow-hidden transition-all duration-300 group-hover:opacity-100 group-hover:max-h-[200px] group-hover:mt-2">
                 {category.skills.map((skill, skillIndex) => (
                   <Badge
                     key={skillIndex}
                     variant="secondary"
-                    className="text-xs py-0.5 px-2 hover:bg-foreground hover:text-background transition-colors duration-300"
-                    style={{
-                      animationDelay: `${(index + 1) * 150 + skillIndex * 50}ms`,
-                      opacity: isVisible ? 1 : 0,
-                      animation: isVisible ? "fadeIn 0.6s ease-out forwards" : "none",
-                    }}
+                    className="text-xs py-0.5 px-2 hover:bg-foreground hover:text-background transition-colors duration-200"
+                    style={{ transitionDelay: `${skillIndex * 20}ms` }}
                   >
                     {skill}
                   </Badge>
