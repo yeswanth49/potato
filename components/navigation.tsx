@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Button } from "@/components/ui/button"
 
 const navItems = [
   { name: "About", href: "#about" },
@@ -41,29 +40,23 @@ export function Navigation() {
   }
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
-      <div className="max-w-5xl mx-auto px-4 py-2">
-        <div className="flex items-center justify-between">
-          <div className="text-sm font-medium tracking-wide">Yeswanth Madasu</div>
-          <div className="hidden md:flex items-center gap-4">
-            {navItems.map((item, index) => (
-              <Button
-                key={item.name}
-                variant="ghost"
-                onClick={() => scrollToSection(item.href)}
-                className={`text-xs px-2 transition-colors ${
-                  activeSection === item.href.slice(1)
-                    ? "text-foreground"
-                    : "text-muted-foreground hover:text-foreground"
-                }`}
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
-                {item.name}
-              </Button>
-            ))}
-          </div>
-        </div>
-      </div>
+    <nav className="fixed left-8 md:left-12 top-1/2 -translate-y-1/2 z-40">
+      <ul className="flex flex-col gap-3 text-sm">
+        {navItems.map((item) => (
+          <li key={item.name}>
+            <button
+              onClick={() => scrollToSection(item.href)}
+              className={`transition-colors ${
+                activeSection === item.href.slice(1)
+                  ? "text-foreground"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              {item.name}
+            </button>
+          </li>
+        ))}
+      </ul>
     </nav>
   )
 }
