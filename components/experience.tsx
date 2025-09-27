@@ -70,7 +70,7 @@ export function Experience() {
   }, [])
 
   return (
-    <section id="experience" ref={ref} className="py-16 px-4 bg-muted/30">
+    <section id="experience" ref={ref} className="px-4 bg-muted/30">
       <div className="max-w-5xl mx-auto">
         <div
           className={`transition-all duration-800 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}

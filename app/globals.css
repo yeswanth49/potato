@@ -129,6 +129,11 @@
   html {
     scroll-behavior: smooth;
   }
+
+  /* Ensure every section fills the viewport with vertical padding and accounts for fixed nav */
+  section {
+    @apply min-h-screen py-24 scroll-mt-16;
+  }
 }
 
 /* Added custom animations for seamless transitions */

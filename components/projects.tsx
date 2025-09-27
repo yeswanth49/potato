@@ -76,7 +76,7 @@ export function Projects() {
   }, [])
 
   return (
-    <section id="projects" ref={ref} className="py-16 px-4">
+    <section id="projects" ref={ref} className="px-4">
       <div className="max-w-5xl mx-auto">
         <div
           className={`transition-all duration-800 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
