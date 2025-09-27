@@ -20,7 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
-      <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable} antialiased`}>
+      <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable} antialiased bg-black text-gray-300`}>
         <Suspense fallback={null}>{children}</Suspense>
         <Analytics />
       </body>
