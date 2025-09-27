@@ -1,7 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { ArrowDown, Github, Linkedin, Mail, Phone } from "lucide-react"
+import { ArrowDown, Github, Linkedin, Twitter, Youtube, FileText } from "lucide-react"
 
 export function Hero() {
   const scrollToAbout = () => {
@@ -22,42 +22,66 @@ export function Hero() {
         <div className="opacity-0 animate-fade-in-up animate-delay-300">
           <p className="text-sm text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed text-pretty">
             Frontend-focused developer building accessible, performant web apps with React and Next.js.
+            Focusing on building accessible, performant web apps with React and Next.js.
           </p>
         </div>
 
         <div className="opacity-0 animate-fade-in-up animate-delay-400">
-          <div className="flex flex-wrap items-center justify-center gap-4 mb-8">
+          <div className="flex flex-wrap items-center justify-center gap-6 mb-8">
             <a
-              href="tel:9032690321"
-              className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
+              href="https://twitter.com/yeswanth49"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex items-center gap-2 text-muted-foreground hover:text-foreground transition-all duration-300 ease-in-out"
             >
-              <Phone className="w-4 h-4" />
-              9032690321
-            </a>
-            <a
-              href="mailto:work.yeswanth@gmail.com"
-              className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
-            >
-              <Mail className="w-4 h-4" />
-              work.yeswanth@gmail.com
+              <Twitter className="w-5 h-5" />
+              <span className="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 ease-in-out whitespace-nowrap">
+                Twitter
+              </span>
             </a>
             <a
               href="https://github.com/yeswanth49"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
+              className="group flex items-center gap-2 text-muted-foreground hover:text-foreground transition-all duration-300 ease-in-out"
             >
-              <Github className="w-4 h-4" />
-              GitHub
+              <Github className="w-5 h-5" />
+              <span className="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 ease-in-out whitespace-nowrap">
+                GitHub
+              </span>
+            </a>
+            <a
+              href="https://youtube.com/@yeswanth49"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex items-center gap-2 text-muted-foreground hover:text-foreground transition-all duration-300 ease-in-out"
+            >
+              <Youtube className="w-5 h-5" />
+              <span className="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 ease-in-out whitespace-nowrap">
+                YouTube
+              </span>
+            </a>
+            <a
+              href="/resume.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex items-center gap-2 text-muted-foreground hover:text-foreground transition-all duration-300 ease-in-out"
+            >
+              <FileText className="w-5 h-5" />
+              <span className="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 ease-in-out whitespace-nowrap">
+                Resume
+              </span>
             </a>
             <a
               href="https://linkedin.com/in/yeswanthm"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
+              className="group flex items-center gap-2 text-muted-foreground hover:text-foreground transition-all duration-300 ease-in-out"
             >
-              <Linkedin className="w-4 h-4" />
-              LinkedIn
+              <Linkedin className="w-5 h-5" />
+              <span className="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 ease-in-out whitespace-nowrap">
+                LinkedIn
+              </span>
             </a>
           </div>
         </div>
