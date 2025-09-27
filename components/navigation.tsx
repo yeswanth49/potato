@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 
 const navItems = [
   { name: "Home", href: "#hero" },
@@ -14,6 +14,8 @@ const navItems = [
 
 export function Navigation() {
   const [activeSection, setActiveSection] = useState("")
+  const [underlineStyle, setUnderlineStyle] = useState({ top: 0, height: 0 })
+  const navRef = useRef<HTMLUListElement>(null)
 
   useEffect(() => {
     // Use Intersection Observer for better scroll snap compatibility
@@ -106,6 +108,37 @@ export function Navigation() {
     }
   }, [activeSection])
 
+  // Update underline position when active section changes
+  useEffect(() => {
+    const updateUnderlinePosition = () => {
+      if (!navRef.current || !activeSection) return
+
+      const activeIndex = navItems.findIndex(item => item.href.slice(1) === activeSection)
+      if (activeIndex === -1) return
+
+      const activeButton = navRef.current.children[activeIndex]?.querySelector('button')
+      if (activeButton) {
+        const rect = activeButton.getBoundingClientRect()
+        const navRect = navRef.current.getBoundingClientRect()
+        
+        setUnderlineStyle({
+          top: rect.top - navRect.top,
+          height: rect.height
+        })
+      }
+    }
+
+    updateUnderlinePosition()
+
+    // Update position on window resize
+    const handleResize = () => updateUnderlinePosition()
+    window.addEventListener('resize', handleResize)
+
+    return () => {
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [activeSection])
+
   const scrollToSection = (href: string) => {
     const element = document.querySelector(href)
     element?.scrollIntoView({ behavior: "smooth" })
@@ -113,22 +146,35 @@ export function Navigation() {
 
   return (
     <nav className="fixed left-8 md:left-12 top-1/2 -translate-y-1/2 z-40">
-      <ul className="flex flex-col gap-3 text-sm">
-        {navItems.map((item) => (
-          <li key={item.name}>
-            <button
-              onClick={() => scrollToSection(item.href)}
-              className={`transition-colors ${
-                activeSection === item.href.slice(1)
-                  ? "text-foreground"
-                  : "text-muted-foreground hover:text-foreground"
-              } ${item.name === "Hire Me" ? "text-blue-400 hover:text-blue-300 font-medium" : ""}`}
-            >
-              {item.name}
-            </button>
-          </li>
-        ))}
-      </ul>
+      <div className="relative">
+        {/* Animated underline */}
+        <div
+          className="absolute left-0 w-0.5 bg-foreground transition-all duration-300 ease-out opacity-0"
+          style={{
+            top: underlineStyle.top,
+            height: underlineStyle.height,
+            opacity: activeSection ? 1 : 0,
+            transform: `translateX(-12px)`
+          }}
+        />
+        
+        <ul ref={navRef} className="flex flex-col gap-3 text-sm">
+          {navItems.map((item) => (
+            <li key={item.name}>
+              <button
+                onClick={() => scrollToSection(item.href)}
+                className={`transition-colors ${
+                  activeSection === item.href.slice(1)
+                    ? "text-foreground"
+                    : "text-muted-foreground hover:text-foreground"
+                } ${item.name === "Hire Me" ? "text-blue-400 hover:text-blue-300 font-medium" : ""}`}
+              >
+                {item.name}
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
     </nav>
   )
 }
