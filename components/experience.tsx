@@ -56,7 +56,7 @@ export function Experience() {
         <div className="space-y-6">
           {experiences.map((exp, index) => (
             <div
-              key={`${exp.company}-${exp.title}-${index}`}
+              key={`${exp.company}-${exp.title}`}
               className="motion-safe:animate-fade-in-up"
               style={{ animationDelay: `${(index + 1) * 120}ms` }}
             >
@@ -86,7 +86,7 @@ export function Experience() {
                   <ul className="space-y-1.5 mb-4">
                     {exp.achievements.map((achievement, i) => (
                       <li key={achievement} className="text-sm text-muted-foreground leading-relaxed flex items-start gap-2">
-                        <span className="text-foreground mt-1">•</span>
+                        <span className="text-foreground mt-1" aria-hidden="true">•</span>
                         {achievement}
                       </li>
                     ))}

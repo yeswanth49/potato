@@ -24,15 +24,13 @@ const MAX_HINT_ITERATIONS = 2
 
 type HintKey = (typeof HINT_SEQUENCE)[number]
 
-type KeyProps = {
+type KeyProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   children: React.ReactNode
-  onClick?: () => void
-  className?: string
   isPressed?: boolean
   size?: "sm" | "md" | "lg" | "xl"
 }
 
-function Key({ children, onClick, className, isPressed, size = "md" }: KeyProps) {
+function Key({ children, className, isPressed, size = "md", ...props }: KeyProps) {
   const sizeClasses = {
     sm: "w-12 h-12 text-sm",
     md: "w-14 h-14 text-base",
@@ -43,7 +41,7 @@ function Key({ children, onClick, className, isPressed, size = "md" }: KeyProps)
   return (
     <button
       type="button"
-      onClick={onClick}
+      {...props}
       className={cn(
         "rounded-lg border border-[#1A1B1C] bg-gradient-to-b from-[#090A0B] to-[#0E0E10] text-gray-300 font-medium",
         "relative before:absolute before:inset-0 before:rounded-lg before:p-[1px] before:bg-gradient-to-b before:from-[#1A1B1C] before:to-[#141415] before:-z-10",
@@ -72,6 +70,15 @@ export function KeyboardLanding({ onCorrectEntry, backgroundMode = "dark" }: Key
   const [highlightIndex, setHighlightIndex] = useState(0)
   const [iterationCount, setIterationCount] = useState(0)
   const errorResetTimeout = useRef<number | null>(null)
+
+  useEffect(() => {
+    return () => {
+      if (errorResetTimeout.current) {
+        window.clearTimeout(errorResetTimeout.current)
+        errorResetTimeout.current = null
+      }
+    }
+  }, [])
 
   useEffect(() => {
     if (iterationCount >= MAX_HINT_ITERATIONS) return
@@ -243,7 +250,7 @@ export function KeyboardLanding({ onCorrectEntry, backgroundMode = "dark" }: Key
     <div className={cn("min-h-screen p-8 flex flex-col items-center justify-center gap-8 relative", backgroundClass)}>
       {backgroundMode === "keyboard" ? <KeyboardBackgroundClient /> : null}
 
-      <div className="w-full max-w-4xl" />
+      {/* removed empty spacer */}
 
       {showError ? (
         <div className="absolute top-1/3 z-20">
@@ -251,7 +258,7 @@ export function KeyboardLanding({ onCorrectEntry, backgroundMode = "dark" }: Key
         </div>
       ) : null}
 
-      <div className="relative flex flex-col gap-2 p-8 bg-black rounded-2xl scale-150">
+      <div className="relative flex flex-col gap-2 p-8 bg-black rounded-2xl sm:scale-100 md:scale-125 lg:scale-150">
         <div className="absolute left-0 top-0 bottom-0 w-64 bg-gradient-to-r from-black to-transparent z-10 rounded-l-2xl pointer-events-none" />
         <div className="absolute right-0 top-0 bottom-0 w-64 bg-gradient-to-l from-black to-transparent z-10 rounded-r-2xl pointer-events-none" />
         <div className="absolute top-0 left-0 right-0 h-48 bg-gradient-to-b from-black to-transparent z-10 rounded-t-2xl pointer-events-none" />
@@ -286,6 +293,7 @@ export function KeyboardLanding({ onCorrectEntry, backgroundMode = "dark" }: Key
             onClick={() => handleKeyPress("CAPS")}
             isPressed={capsLock}
             size="lg"
+            aria-pressed={capsLock}
             className={capsLock ? "bg-blue-600 hover:bg-blue-500" : undefined}
           >
             caps
@@ -350,7 +358,7 @@ export function KeyboardLanding({ onCorrectEntry, backgroundMode = "dark" }: Key
         </div>
       </div>
 
-      <div className="text-gray-500 text-center max-w-md" />
+      {/* removed empty footer spacer */}
     </div>
   )
 }
