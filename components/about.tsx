@@ -1,6 +1,6 @@
 export function About() {
   return (
-    <section id="about" className="px-4">
+    <section id="about" aria-label="About section" className="px-4">
       <div className="max-w-3xl mx-auto">
         <div className="motion-safe:animate-fade-in-up">
           <h2 className="text-2xl md:text-3xl font-semibold mb-6 text-center">About</h2>
