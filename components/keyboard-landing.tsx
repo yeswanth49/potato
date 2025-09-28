@@ -163,6 +163,10 @@ export function KeyboardLanding({ onCorrectEntry, backgroundMode = "dark" }: Key
         return
       }
 
+      if (key === "SHIFT") {
+        return
+      }
+
       const shouldUppercase = capsLock !== pressedKeys.has("SHIFT")
       const finalKey = shouldUppercase ? key.toUpperCase() : key.toLowerCase()
       setText((prev) => prev + finalKey)

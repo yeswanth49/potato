@@ -16,10 +16,8 @@ jest.mock('next/dynamic', () => {
   return () => KeyboardBackgroundMock
 })
 
-// Mock classnames utility
-jest.mock('@/lib/utils', () => ({
-  cn: (...classes: (string | undefined | false)[]) => classes.filter(Boolean).join(' ')
-}))
+// Mock classnames utility - use real implementation
+jest.mock('@/lib/utils', () => jest.requireActual('@/lib/utils'))
 
 import { KeyboardLanding } from '@/components/keyboard-landing'
 

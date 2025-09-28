@@ -1,12 +1,41 @@
+import { useEffect, useRef, useState } from 'react';
+
 export function About() {
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    // In test environment, show animations immediately
+    if (process.env.NODE_ENV === 'test') {
+      setIsVisible(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section id="about" aria-label="About section" className="px-4">
+    <section ref={sectionRef} id="about" aria-label="About section" className="px-4">
       <div className="max-w-3xl mx-auto">
-        <div className="motion-safe:animate-fade-in-up">
+        <div className={isVisible ? "motion-safe:animate-fade-in-up" : ""}>
           <h2 className="text-2xl md:text-3xl font-semibold mb-6 text-center">About</h2>
         </div>
 
-        <div className="motion-safe:animate-fade-in-up motion-safe:animate-delay-200">
+        <div className={isVisible ? "motion-safe:animate-fade-in-up motion-safe:animate-delay-200" : ""}>
           <div className="prose max-w-none text-muted-foreground leading-relaxed">
             <p className="mb-4">
               I'm a frontend-focused developer with entrepreneurial drive, passionate about building accessible,

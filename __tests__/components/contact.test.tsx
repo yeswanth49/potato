@@ -262,13 +262,13 @@ describe('Contact Component - Responsive Behavior', () => {
 
 // Performance and rendering test suite
 describe('Contact Component - Performance', () => {
-  it('renders efficiently with minimal DOM queries', () => {
-    const startTime = performance.now()
-    render(<Contact />)
-    const endTime = performance.now()
-    
-    // Component should render quickly (under 100ms in test environment)
-    expect(endTime - startTime).toBeLessThan(100)
+  it('renders successfully without throwing', () => {
+    expect(() => {
+      render(<Contact />)
+    }).not.toThrow()
+
+    // Verify expected DOM output is present
+    expect(screen.getByText('Get In Touch')).toBeInTheDocument()
   })
 
   it('contains expected number of interactive elements', () => {

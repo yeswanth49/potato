@@ -319,34 +319,45 @@ describe('Projects Component', () => {
 
   describe('Component State Management', () => {
     test('manages visible indices state correctly', async () => {
-      let intersectionCallback: (entries: any[]) => void = () => {}
+      const intersectionCallbacks: ((entries: any[]) => void)[] = []
 
       mockIntersectionObserver.mockImplementation((callback) => {
-        intersectionCallback = callback
+        intersectionCallbacks.push(callback)
         return mockObserverInstance
       })
-      
+
       const { rerender } = render(<Projects />)
-      
+
       // Initially no cards should be visible
       const cards = screen.getAllByTestId('card')
       cards.forEach(card => {
         const container = card.parentElement
         expect(container).not.toHaveClass('motion-safe:animate-fade-in-up')
       })
-      
-      // Simulate first card becoming visible
+
+      // Wait for effects to run and observers to be set up
+      await new Promise(resolve => setTimeout(resolve, 0))
+
+      // Simulate first card becoming visible using actual rendered element
+      const firstCard = cards[0]
+      const firstCardContainer = firstCard.parentElement
       const mockEntry = {
         isIntersecting: true,
-        target: document.createElement('div'),
+        target: firstCardContainer,
       }
-      
+
+      // Trigger the first observer's callback (for the first project)
       act(() => {
-        intersectionCallback([mockEntry])
+        intersectionCallbacks[0]([mockEntry])
       })
 
-      // Re-render to see state changes
+      // Force a rerender to ensure state changes are reflected
       rerender(<Projects />)
+
+      // Wait for state update to be reflected in DOM
+      await waitFor(() => {
+        expect(firstCardContainer).toHaveClass('motion-safe:animate-fade-in-up')
+      }, { timeout: 1000 })
     })
 
     test('prevents duplicate observers for same index', () => {

@@ -19,6 +19,12 @@ jest.mock('next/dynamic', () => {
   })
 })
 
+// Cleanup hook to reset timers and restore mocks after each test
+afterEach(() => {
+  jest.useRealTimers()
+  jest.restoreAllMocks()
+})
+
 // Mock KeyboardLanding to expose a trigger for onCorrectEntry and show backgroundMode
 jest.mock('@/components/keyboard-landing', () => ({
   KeyboardLanding: ({ onCorrectEntry, backgroundMode }: any) => (

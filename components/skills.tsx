@@ -60,8 +60,8 @@ export function Skills() {
               tabIndex={0}
             >
               <h3 className="text-base md:text-lg font-medium text-foreground">{category.category}</h3>
-              <p className="text-xs text-muted-foreground mt-1 opacity-80 transition-opacity duration-300 lg:group-hover:opacity-0 lg:group-focus-within:opacity-0 lg:focus-visible:opacity-0">
-                Hover to view details
+              <p className="text-xs text-muted-foreground mt-1 opacity-80 transition-opacity duration-300 hidden lg:block lg:group-hover:opacity-0 lg:group-focus-within:opacity-0 lg:focus-visible:opacity-0">
+                Hover or focus to view details
               </p>
               <div
                 tabIndex={0}

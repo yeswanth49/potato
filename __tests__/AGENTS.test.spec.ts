@@ -1,8 +1,5 @@
 import fs from 'fs';
 
-const escapeRegExp = (value: string): string =>
-  value.replace(/[.*+?^${}()|[\]\\]/g, '\\\\$&');
-
 const getSection = (markdown: string, header: string): string => {
   const headerLine = `## ${header}`;
   const startIndex = markdown.indexOf(headerLine);

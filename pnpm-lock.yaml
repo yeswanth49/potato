@@ -190,10 +190,10 @@ importers:
         specifier: ^18
         version: 18.3.7(@types/react@18.3.24)
       jest:
-        specifier: ^30.2.0
+        specifier: ^30.1.0
         version: 30.2.0(@types/node@22.18.6)
       jest-environment-jsdom:
-        specifier: ^30.2.0
+        specifier: ^30.1.0
         version: 30.2.0
       postcss:
         specifier: ^8.5

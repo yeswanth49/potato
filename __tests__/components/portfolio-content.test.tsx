@@ -8,7 +8,7 @@
 
 import React from 'react'
 import '@testing-library/jest-dom'
-import { render, screen } from '@testing-library/react'
+import { render, screen, act } from '@testing-library/react'
 
 // Virtual mocks for child components (path aliases)
 jest.mock('@/components/navigation', () => ({
@@ -190,8 +190,24 @@ describe('PortfolioContent - child component interactions', () => {
     const { PortfolioContent } = importPortfolio()
     render(<PortfolioContent />)
 
-    expect(navMod.Navigation).toHaveBeenCalledWith({}, {})
-    expect(heroMod.Hero).toHaveBeenCalledWith({}, {})
+    // Check that components are called (either with no args or empty object)
+    expect(navMod.Navigation).toHaveBeenCalled()
+    expect(heroMod.Hero).toHaveBeenCalled()
+
+    // The components should be called with either no arguments or an empty object
+    const navCalls = navMod.Navigation.mock.calls
+    const heroCalls = heroMod.Hero.mock.calls
+
+    expect(navCalls.length).toBeGreaterThan(0)
+    expect(heroCalls.length).toBeGreaterThan(0)
+
+    // Check that if arguments are passed, they should be an empty object
+    if (navCalls[0].length > 0) {
+      expect(navCalls[0][0]).toEqual({})
+    }
+    if (heroCalls[0].length > 0) {
+      expect(heroCalls[0][0]).toEqual({})
+    }
   })
 
   it('bubbles render errors from child components', () => {
@@ -201,6 +217,12 @@ describe('PortfolioContent - child component interactions', () => {
     })
 
     const { PortfolioContent } = importPortfolio()
-    expect(() => render(<PortfolioContent />)).toThrow('Component failed')
+
+    // Use act to properly handle the error during render
+    expect(() => {
+      act(() => {
+        render(<PortfolioContent />)
+      })
+    }).toThrow('Component failed')
   })
 })

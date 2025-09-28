@@ -102,16 +102,13 @@ describe('About component', () => {
   })
 
   describe('component output', () => {
-    it('produces a section element with stable props when invoked directly', () => {
-      const element = About()
-      expect(element).toMatchObject({
-        type: 'section',
-        props: expect.objectContaining({
-          id: 'about',
-          className: 'px-4'
-        })
-      })
-      expect(element.props.children).toBeDefined()
+    it('produces a section element with stable props when rendered', () => {
+      const { container } = renderAbout()
+      const section = container.querySelector('section')
+      expect(section).toHaveAttribute('id', 'about')
+      expect(section).toHaveAttribute('aria-label', 'About section')
+      expect(section).toHaveClass('px-4')
+      expect(section?.children).toBeDefined()
     })
   })
 })

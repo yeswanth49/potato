@@ -56,12 +56,13 @@ const projects = [
 export function Projects() {
   const cardRefs = useRef<(HTMLDivElement | null)[]>([])
   const observersRef = useRef<Map<number, IntersectionObserver>>(new Map())
-  const [visibleIndices, setVisibleIndices] = useState<Set<number>>(new Set())
+  const [visibleIndices, setVisibleIndices] = useState<Set<string>>(new Set())
 
   useEffect(() => {
-    cardRefs.current.forEach((el, idx) => {
+    projects.forEach((project, idx) => {
+      const el = cardRefs.current[idx]
       if (!el) return
-      if (visibleIndices.has(idx)) return
+      if (visibleIndices.has(project.title)) return
       if (observersRef.current.has(idx)) return
 
       const observer = new IntersectionObserver(
@@ -69,9 +70,9 @@ export function Projects() {
           entries.forEach((entry) => {
             if (entry.isIntersecting) {
               setVisibleIndices((prev) => {
-                if (prev.has(idx)) return prev
+                if (prev.has(project.title)) return prev
                 const next = new Set(prev)
-                next.add(idx)
+                next.add(project.title)
                 return next
               })
 
@@ -109,7 +110,7 @@ export function Projects() {
             <div
               key={project.title}
               ref={(el) => { cardRefs.current[index] = el }}
-              className={visibleIndices.has(index) ? "motion-safe:animate-fade-in-up" : undefined}
+              className={visibleIndices.has(project.title) ? "motion-safe:animate-fade-in-up" : undefined}
               style={{ animationDelay: `${(index + 1) * 120}ms` }}
             >
               <Card className="h-full transition-colors border-border/50 group">
