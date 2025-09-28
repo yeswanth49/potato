@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { useState, useEffect, useCallback } from "react"
+import { useState, useEffect, useCallback, useRef } from "react"
 import dynamic from "next/dynamic"
 
 import { cn } from "@/lib/utils"
@@ -71,11 +71,12 @@ export function KeyboardLanding({ onCorrectEntry, backgroundMode = "dark" }: Key
   const [showError, setShowError] = useState(false)
   const [highlightIndex, setHighlightIndex] = useState(0)
   const [iterationCount, setIterationCount] = useState(0)
+  const errorResetTimeout = useRef<number | null>(null)
 
   useEffect(() => {
     if (iterationCount >= MAX_HINT_ITERATIONS) return
 
-    let timeoutId: ReturnType<typeof window.setTimeout>
+    let timeoutId: number | undefined
 
     const scheduleNext = () => {
       const currentHint = HINT_SEQUENCE[highlightIndex]
@@ -100,7 +101,7 @@ export function KeyboardLanding({ onCorrectEntry, backgroundMode = "dark" }: Key
     scheduleNext()
 
     return () => {
-      window.clearTimeout(timeoutId)
+      if (timeoutId) window.clearTimeout(timeoutId)
     }
   }, [highlightIndex, iterationCount])
 
@@ -142,10 +143,17 @@ export function KeyboardLanding({ onCorrectEntry, backgroundMode = "dark" }: Key
       if (key === "ENTER") {
         if (text.toLowerCase() === TARGET_TEXT) {
           onCorrectEntry()
-        } else {
+      } else {
           setShowError(true)
           setText("")
-          window.setTimeout(() => setShowError(false), 2000)
+          // clear any existing timeout before creating a new one
+          if (errorResetTimeout.current) {
+            window.clearTimeout(errorResetTimeout.current)
+          }
+          errorResetTimeout.current = window.setTimeout(() => {
+            setShowError(false)
+            errorResetTimeout.current = null
+          }, 2000)
         }
         return
       }
@@ -173,6 +181,7 @@ export function KeyboardLanding({ onCorrectEntry, backgroundMode = "dark" }: Key
         upperKey === "BACKSPACE" ||
         upperKey === " " ||
         upperKey === "CAPSLOCK" ||
+        upperKey === "SHIFT" ||
         upperKey === "ENTER" ||
         /^[A-Z0-9]$/.test(upperKey)
 
@@ -192,6 +201,11 @@ export function KeyboardLanding({ onCorrectEntry, backgroundMode = "dark" }: Key
 
         if (upperKey === "CAPSLOCK") {
           handleKeyPress("CAPS")
+          return
+        }
+
+        if (upperKey === "SHIFT") {
+          handleKeyPress("SHIFT")
           return
         }
 

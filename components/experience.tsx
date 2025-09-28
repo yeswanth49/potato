@@ -56,7 +56,7 @@ export function Experience() {
         <div className="space-y-6">
           {experiences.map((exp, index) => (
             <div
-              key={exp.title}
+              key={`${exp.company}-${exp.title}-${index}`}
               className="motion-safe:animate-fade-in-up"
               style={{ animationDelay: `${(index + 1) * 120}ms` }}
             >

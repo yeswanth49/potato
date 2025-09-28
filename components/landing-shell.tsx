@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, type ReactNode } from "react"
+import { useState, useEffect, useRef, type ReactNode } from "react"
 import dynamic from "next/dynamic"
 
 import { KeyboardLanding } from "@/components/keyboard-landing"
@@ -26,6 +26,7 @@ export function LandingShell({
   const [isTransitioning, setIsTransitioning] = useState(false)
   const [keyboardFadingOut, setKeyboardFadingOut] = useState(false)
   const [keyboardVisible, setKeyboardVisible] = useState(false)
+  const transitionTimerRef = useRef<number | null>(null)
 
   useEffect(() => {
     if (showPortfolio) return
@@ -43,9 +44,12 @@ export function LandingShell({
     setIsTransitioning(true)
     setKeyboardFadingOut(true)
 
-    window.setTimeout(() => {
+    // store timer id so we can clear it on unmount to avoid setState-after-unmount
+    transitionTimerRef.current = window.setTimeout(() => {
       setShowPortfolio(true)
-    }, 500)
+      // clear the ref after callback runs
+      transitionTimerRef.current = null
+    }, 500) as unknown as number
   }
 
   useEffect(() => {
@@ -60,6 +64,16 @@ export function LandingShell({
       window.clearTimeout(timer)
     }
   }, [showPortfolio])
+
+  // cleanup any outstanding transition timer on unmount
+  useEffect(() => {
+    return () => {
+      if (transitionTimerRef.current) {
+        window.clearTimeout(transitionTimerRef.current)
+        transitionTimerRef.current = null
+      }
+    }
+  }, [])
 
   if (!showPortfolio) {
     return (

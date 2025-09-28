@@ -1,3 +1,5 @@
+"use client"
+import { useEffect, useRef, useState } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -52,6 +54,49 @@ const projects = [
 ]
 
 export function Projects() {
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([])
+  const observersRef = useRef<Map<number, IntersectionObserver>>(new Map())
+  const [visibleIndices, setVisibleIndices] = useState<Set<number>>(new Set())
+
+  useEffect(() => {
+    cardRefs.current.forEach((el, idx) => {
+      if (!el) return
+      if (visibleIndices.has(idx)) return
+      if (observersRef.current.has(idx)) return
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              setVisibleIndices((prev) => {
+                if (prev.has(idx)) return prev
+                const next = new Set(prev)
+                next.add(idx)
+                return next
+              })
+
+              const obs = observersRef.current.get(idx)
+              if (obs) {
+                obs.unobserve(entry.target)
+                obs.disconnect()
+                observersRef.current.delete(idx)
+              }
+            }
+          })
+        },
+        { threshold: 0.2 }
+      )
+
+      observer.observe(el)
+      observersRef.current.set(idx, observer)
+    })
+
+    return () => {
+      observersRef.current.forEach((obs) => obs.disconnect())
+      observersRef.current.clear()
+    }
+  }, [visibleIndices])
+
   return (
     <section id="projects" className="px-4">
       <div className="max-w-5xl mx-auto">
@@ -63,7 +108,8 @@ export function Projects() {
           {projects.map((project, index) => (
             <div
               key={project.title}
-              className="motion-safe:animate-fade-in-up"
+              ref={(el) => { cardRefs.current[index] = el }}
+              className={visibleIndices.has(index) ? "motion-safe:animate-fade-in-up" : undefined}
               style={{ animationDelay: `${(index + 1) * 120}ms` }}
             >
               <Card className="h-full transition-colors border-border/50 group">

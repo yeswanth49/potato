@@ -59,10 +59,14 @@ export function Skills() {
               style={{ animationDelay: `${(index + 1) * 120}ms` }}
             >
               <h3 className="text-base md:text-lg font-medium text-foreground">{category.category}</h3>
-              <p className="text-xs text-muted-foreground mt-1 opacity-80 group-hover:opacity-0 transition-opacity duration-300">
+              <p className="text-xs text-muted-foreground mt-1 opacity-80 transition-opacity duration-300 lg:group-hover:opacity-0">
                 Hover to view details
               </p>
-              <div className="flex flex-wrap gap-1.5 mt-0 opacity-0 max-h-0 overflow-hidden transition-all duration-300 group-hover:opacity-100 group-hover:max-h-[200px] group-hover:mt-2">
+              <div
+                tabIndex={0}
+                className="flex flex-wrap gap-1.5 mt-2 overflow-hidden transition-all duration-300 lg:group-hover:mt-2 lg:group-hover:opacity-0 lg:group-hover:max-h-0 lg:group-hover:mt-0 lg:group-hover:overflow-hidden lg:group-hover:transition-all lg:group-hover:duration-300"
+                // Make visible by default; collapse only on large hover-capable screens
+              >
                 {category.skills.map((skill, skillIndex) => (
                   <Badge
                     key={skill}
