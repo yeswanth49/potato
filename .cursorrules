@@ -1,0 +1,352 @@
+# Cursor Rules for Portfolio Architecture Documentation
+
+## Overview
+These rules automatically maintain the architecture documentation (`docs/architecture.md`) to ensure it stays current with codebase changes. The system monitors architectural changes and updates relevant documentation sections.
+
+## Rule Activation Triggers
+
+### File System Changes
+- **New files/directories**: Component additions, new routes, utility files
+- **File deletions**: Component removals, cleanup operations
+- **File renames/moves**: Structural reorganization
+- **Directory structure changes**: New folders, reorganization
+
+### Dependency Changes
+- **package.json modifications**: New dependencies, version updates, script changes
+- **Configuration file updates**: next.config.mjs, tsconfig.json, tailwind.config.js
+- **Build tool changes**: postcss.config.mjs, components.json
+
+### Component Architecture Changes
+- **New React components**: Addition of .tsx/.jsx files in components/
+- **Component modifications**: Significant prop changes, state management updates
+- **Hook additions/changes**: New custom hooks in hooks/
+- **UI component updates**: Changes to components/ui/
+
+### Application Structure Changes
+- **Route modifications**: New pages in app/ directory
+- **Layout changes**: Updates to app/layout.tsx or nested layouts
+- **Global style updates**: Changes to app/globals.css or styles/
+
+## Automated Documentation Updates
+
+### 1. Component Relationship Updates
+
+When new components are added or existing ones are modified:
+
+```typescript
+// Trigger: New component file created
+// Action: Update "Component Architecture" section
+
+if (fileChange.type === 'create' && fileChange.path.includes('components/')) {
+  updateSection('Component Architecture', {
+    addComponent: extractComponentInfo(fileChange.path),
+    updateDiagram: true,
+    refreshImports: true
+  });
+}
+```
+
+**Updates Made:**
+- Add component to architecture diagram
+- Update component hierarchy
+- Refresh import relationships
+- Document new props and interfaces
+
+### 2. Technology Stack Maintenance
+
+When dependencies change:
+
+```typescript
+// Trigger: package.json modified
+// Action: Update "Technology Stack" section
+
+if (fileChange.path === 'package.json') {
+  const changes = analyzeDependencyChanges(fileChange);
+  updateSection('Technology Stack', {
+    newDependencies: changes.added,
+    removedDependencies: changes.removed,
+    versionUpdates: changes.updated
+  });
+}
+```
+
+**Updates Made:**
+- Add new dependencies with versions
+- Remove obsolete dependencies
+- Update version numbers
+- Add usage descriptions for new libraries
+
+### 3. Project Structure Synchronization
+
+When file structure changes:
+
+```typescript
+// Trigger: Directory structure modification
+// Action: Update "Project Structure" section
+
+if (fileChange.type === 'directory' || fileChange.affectsStructure) {
+  updateSection('Project Structure', {
+    refreshTree: true,
+    addDescriptions: extractNewDirectories(fileChange),
+    updatePaths: true
+  });
+}
+```
+
+**Updates Made:**
+- Regenerate directory tree
+- Add descriptions for new folders
+- Update file path references
+- Maintain structure annotations
+
+### 4. Data Flow Architecture Updates
+
+When state management or component communication changes:
+
+```typescript
+// Trigger: Props, state, or context changes
+// Action: Update "Data Flow Architecture" section
+
+if (detectStateManagementChanges(fileChange)) {
+  updateSection('Data Flow Architecture', {
+    updateFlowDiagrams: true,
+    refreshStatePatterns: true,
+    documentNewPatterns: extractStatePatterns(fileChange)
+  });
+}
+```
+
+**Updates Made:**
+- Update Mermaid diagrams
+- Document new state patterns
+- Refresh component communication flows
+- Add new event handling patterns
+
+### 5. Performance Optimization Tracking
+
+When performance-related changes are made:
+
+```typescript
+// Trigger: Bundle size, animation, or optimization changes
+// Action: Update "Performance Optimizations" section
+
+if (detectPerformanceChanges(fileChange)) {
+  updateSection('Performance Optimizations', {
+    addOptimizations: extractOptimizations(fileChange),
+    updateMetrics: true,
+    documentTechniques: true
+  });
+}
+```
+
+**Updates Made:**
+- Document new optimization techniques
+- Update performance metrics
+- Add new bundling strategies
+- Refresh animation performance notes
+
+## Rule Implementation Details
+
+### Change Detection Algorithms
+
+#### 1. Architectural Significance Scoring
+```typescript
+function calculateArchitecturalSignificance(change: FileChange): number {
+  let score = 0;
+  
+  // High impact changes
+  if (change.path.includes('app/') && change.type === 'create') score += 10;
+  if (change.path === 'package.json') score += 8;
+  if (change.path.includes('components/') && change.type === 'create') score += 7;
+  
+  // Medium impact changes
+  if (change.path.includes('hooks/')) score += 5;
+  if (change.path.includes('lib/')) score += 4;
+  if (change.path.includes('styles/')) score += 3;
+  
+  // Configuration changes
+  if (change.path.includes('config')) score += 6;
+  if (change.path.includes('tsconfig')) score += 5;
+  
+  return score;
+}
+```
+
+#### 2. Content Analysis Patterns
+```typescript
+const architecturalPatterns = {
+  newComponent: /export\s+(function|const)\s+\w+/,
+  stateManagement: /(useState|useReducer|useContext)/,
+  routeDefinition: /export\s+default\s+function\s+\w+Page/,
+  apiEndpoint: /export\s+async\s+function\s+(GET|POST|PUT|DELETE)/,
+  configChange: /(module\.exports|export\s+default)/
+};
+```
+
+### Update Strategies
+
+#### 1. Non-Intrusive Updates
+- Only update when architectural significance > threshold (score >= 5)
+- Preserve existing documentation structure and style
+- Append new information rather than replacing
+- Maintain human-written content
+
+#### 2. Context-Aware Modifications
+```typescript
+function updateDocumentationSection(section: string, changes: Changes) {
+  const currentContent = readSection(section);
+  const newContent = generateUpdates(changes);
+  
+  // Intelligent merging
+  const mergedContent = mergeContent(currentContent, newContent, {
+    preserveHumanContent: true,
+    maintainStructure: true,
+    addTimestamp: true
+  });
+  
+  writeSection(section, mergedContent);
+}
+```
+
+#### 3. Conflict Resolution
+- Human edits take precedence over automated updates
+- Automated updates are marked with timestamps
+- Conflicting changes are flagged for manual review
+- Version history maintained for rollback capability
+
+### Documentation Sections Mapping
+
+#### Auto-Updated Sections
+1. **Technology Stack** → `package.json`, config files
+2. **Project Structure** → File system changes
+3. **Component Architecture** → Component files
+4. **Data Flow Architecture** → State management changes
+5. **Performance Optimizations** → Build and optimization changes
+
+#### Manually Maintained Sections
+1. **Project Overview** → Manual updates only
+2. **Security Considerations** → Manual review required
+3. **Future Enhancements** → Strategic planning content
+4. **Troubleshooting Guide** → Experience-based content
+
+### Quality Assurance
+
+#### 1. Validation Rules
+```typescript
+const validationRules = {
+  diagramSyntax: validateMermaidSyntax,
+  linkIntegrity: checkInternalLinks,
+  codeExamples: validateCodeSnippets,
+  structureConsistency: checkSectionStructure
+};
+```
+
+#### 2. Rollback Mechanisms
+- Automatic backup before updates
+- Change history tracking
+- Manual rollback commands
+- Validation failure recovery
+
+### Notification System
+
+#### 1. Update Notifications
+```typescript
+// Notify when significant architectural changes are detected
+if (architecturalSignificance >= 8) {
+  notify({
+    type: 'architectural_change',
+    message: `Significant change detected: ${change.description}`,
+    action: 'Documentation updated automatically',
+    reviewRequired: architecturalSignificance >= 9
+  });
+}
+```
+
+#### 2. Review Requests
+- High-impact changes (score >= 9) trigger review requests
+- Breaking changes require manual confirmation
+- New architectural patterns need human validation
+
+## Rule Configuration
+
+### Sensitivity Settings
+```typescript
+const ruleConfig = {
+  architecturalThreshold: 5,        // Minimum score for auto-update
+  reviewThreshold: 9,               // Score requiring human review
+  updateFrequency: 'immediate',     // Update timing
+  backupRetention: 30,              // Days to keep backups
+  validationLevel: 'strict'         // Validation strictness
+};
+```
+
+### Exclusion Patterns
+```typescript
+const exclusions = [
+  'node_modules/**',
+  '.next/**',
+  '*.log',
+  'temp/**',
+  '.git/**',
+  'dist/**'
+];
+```
+
+## Testing and Validation
+
+### Rule Testing Commands
+```bash
+# Test rule activation
+cursor-rules test --file=components/new-component.tsx
+
+# Validate documentation integrity
+cursor-rules validate --section="Component Architecture"
+
+# Dry run documentation update
+cursor-rules update --dry-run --file=package.json
+
+# Manual rule execution
+cursor-rules execute --rule="dependency-update" --force
+```
+
+### Validation Checks
+1. **Syntax Validation**: Mermaid diagrams, code blocks
+2. **Link Integrity**: Internal references, external links
+3. **Structure Consistency**: Section hierarchy, formatting
+4. **Content Accuracy**: Code examples, version numbers
+
+## Maintenance and Monitoring
+
+### Rule Health Monitoring
+- Track rule execution frequency
+- Monitor update success rates
+- Identify frequently failing patterns
+- Performance impact assessment
+
+### Regular Maintenance Tasks
+1. **Weekly**: Review automated updates for accuracy
+2. **Monthly**: Validate all documentation links and references
+3. **Quarterly**: Update rule patterns based on project evolution
+4. **Annually**: Comprehensive documentation audit and restructure
+
+---
+
+## Emergency Procedures
+
+### Rule Malfunction
+1. Disable automatic updates: `cursor-rules disable --all`
+2. Restore from backup: `cursor-rules restore --date=YYYY-MM-DD`
+3. Manual documentation review and correction
+4. Re-enable rules after validation: `cursor-rules enable --validated`
+
+### Documentation Corruption
+1. Immediate backup of current state
+2. Restore from last known good version
+3. Identify and fix rule causing corruption
+4. Implement additional validation checks
+
+---
+
+**Last Updated**: Automatically maintained by these Cursor rules
+**Rule Version**: 1.0.0
+**Next Review**: Quarterly review scheduled
