@@ -57,14 +57,15 @@ export function Skills() {
               key={category.category}
               className="group rounded-lg border bg-card/30 p-4 transition-all duration-300 hover:bg-card motion-safe:animate-fade-in-up"
               style={{ animationDelay: `${(index + 1) * 120}ms` }}
+              tabIndex={0}
             >
               <h3 className="text-base md:text-lg font-medium text-foreground">{category.category}</h3>
-              <p className="text-xs text-muted-foreground mt-1 opacity-80 transition-opacity duration-300 lg:group-hover:opacity-0 lg:group-focus:opacity-0 lg:focus-visible:opacity-0">
+              <p className="text-xs text-muted-foreground mt-1 opacity-80 transition-opacity duration-300 lg:group-hover:opacity-0 lg:group-focus-within:opacity-0 lg:focus-visible:opacity-0">
                 Hover to view details
               </p>
               <div
                 tabIndex={0}
-                className="flex flex-wrap gap-1.5 mt-2 overflow-hidden transition-all duration-300 lg:opacity-0 lg:max-h-0 lg:group-hover:opacity-100 lg:group-hover:max-h-96 lg:group-focus:opacity-100 lg:group-focus:max-h-96"
+                className="flex flex-wrap gap-1.5 mt-2 overflow-hidden transition-all duration-300 lg:opacity-0 lg:max-h-0 lg:group-hover:opacity-100 lg:group-hover:max-h-96 lg:group-focus-within:opacity-100 lg:group-focus-within:max-h-96 lg:focus:opacity-100 lg:focus:max-h-96 lg:focus-visible:opacity-100 lg:focus-visible:max-h-96"
                 // Make visible by default; collapse only on large hover-capable screens
               >
                 {category.skills.map((skill, skillIndex) => (
