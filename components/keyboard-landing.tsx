@@ -135,10 +135,8 @@ export function KeyboardLanding({ onCorrectEntry, backgroundMode = "dark" }: Key
         return
       }
 
-      if (key === "SHIFT") {
-        setCapsLock((prev) => !prev)
-        return
-      }
+      // SHIFT is handled as a momentary key in pressedKeys state
+      // No toggle action needed here
 
       if (key === "ENTER") {
         if (text.toLowerCase() === TARGET_TEXT) {
@@ -158,11 +156,12 @@ export function KeyboardLanding({ onCorrectEntry, backgroundMode = "dark" }: Key
         return
       }
 
-      const finalKey = capsLock ? key.toUpperCase() : key.toLowerCase()
+      const shouldUppercase = capsLock !== pressedKeys.has("SHIFT")
+      const finalKey = shouldUppercase ? key.toUpperCase() : key.toLowerCase()
       setText((prev) => prev + finalKey)
       setShowError(false)
     },
-    [capsLock, onCorrectEntry, text],
+    [capsLock, onCorrectEntry, text, pressedKeys],
   )
 
   useEffect(() => {
@@ -311,7 +310,17 @@ export function KeyboardLanding({ onCorrectEntry, backgroundMode = "dark" }: Key
         </div>
 
         <div className="flex gap-2 justify-center">
-          <Key onClick={() => handleKeyPress("SHIFT")} isPressed={pressedKeys.has("SHIFT")} size="lg">
+          <Key
+            onClick={() => handleKeyPress("SHIFT")}
+            onMouseDown={() => setPressedKeys((prev) => new Set(prev).add("SHIFT"))}
+            onMouseUp={() => setPressedKeys((prev) => {
+              const next = new Set(prev)
+              next.delete("SHIFT")
+              return next
+            })}
+            isPressed={pressedKeys.has("SHIFT")}
+            size="lg"
+          >
             shift
           </Key>
           {KEYBOARD_LAYOUT.bottomRow.map((key) => (

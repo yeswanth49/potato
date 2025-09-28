@@ -44,6 +44,11 @@ export function LandingShell({
     setIsTransitioning(true)
     setKeyboardFadingOut(true)
 
+    // clear any existing timer before creating a new one
+    if (transitionTimerRef.current) {
+      window.clearTimeout(transitionTimerRef.current)
+    }
+
     // store timer id so we can clear it on unmount to avoid setState-after-unmount
     transitionTimerRef.current = window.setTimeout(() => {
       setShowPortfolio(true)
