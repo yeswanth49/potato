@@ -1,40 +1,12 @@
-"use client"
-
-import { useEffect, useRef, useState } from "react"
-
 export function About() {
-  const [isVisible, setIsVisible] = useState(false)
-  const ref = useRef<HTMLElement>(null)
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true)
-        }
-      },
-      { threshold: 0.1 },
-    )
-
-    if (ref.current) {
-      observer.observe(ref.current)
-    }
-
-    return () => observer.disconnect()
-  }, [])
-
   return (
-    <section id="about" ref={ref} className="px-4">
+    <section id="about" className="px-4">
       <div className="max-w-3xl mx-auto">
-        <div
-          className={`transition-all duration-800 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
-        >
+        <div className="motion-safe:animate-fade-in-up">
           <h2 className="text-2xl md:text-3xl font-semibold mb-6 text-center">About</h2>
         </div>
 
-        <div
-          className={`transition-all duration-800 delay-200 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
-        >
+        <div className="motion-safe:animate-fade-in-up motion-safe:animate-delay-200">
           <div className="prose max-w-none text-muted-foreground leading-relaxed">
             <p className="mb-4">
               I'm a frontend-focused developer with entrepreneurial drive, passionate about building accessible,

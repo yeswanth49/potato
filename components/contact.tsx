@@ -1,43 +1,16 @@
-"use client"
-
-import { useEffect, useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Github, Linkedin, Mail, Phone } from "lucide-react"
 
 export function Contact() {
-  const [isVisible, setIsVisible] = useState(false)
-  const ref = useRef<HTMLElement>(null)
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true)
-        }
-      },
-      { threshold: 0.1 },
-    )
-
-    if (ref.current) {
-      observer.observe(ref.current)
-    }
-
-    return () => observer.disconnect()
-  }, [])
-
   return (
-    <section id="contact" ref={ref} className="px-4">
+    <section id="contact" className="px-4">
       <div className="max-w-3xl mx-auto">
-        <div
-          className={`transition-all duration-800 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
-        >
+        <div className="motion-safe:animate-fade-in-up">
           <h2 className="text-2xl md:text-3xl font-semibold mb-6 text-center">Get In Touch</h2>
         </div>
 
-        <div
-          className={`transition-all duration-800 delay-200 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
-        >
+        <div className="motion-safe:animate-fade-in-up motion-safe:animate-delay-200">
           <Card className="border-border/50">
             <CardHeader className="text-center">
               <CardTitle className="text-xl mb-2">Let's Work Together</CardTitle>
@@ -124,9 +97,7 @@ export function Contact() {
           </Card>
         </div>
 
-        <div
-          className={`transition-all duration-800 delay-400 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
-        >
+        <div className="motion-safe:animate-fade-in-up motion-safe:animate-delay-400">
           <div className="text-center mt-8 pt-6 border-top border-border">
             <p className="text-muted-foreground text-sm">© 2025 Yeswanth Madasu. Built with Next.js and Tailwind CSS.</p>
           </div>

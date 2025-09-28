@@ -1,6 +1,3 @@
-"use client"
-
-import { useEffect, useRef, useState } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -55,43 +52,19 @@ const projects = [
 ]
 
 export function Projects() {
-  const [isVisible, setIsVisible] = useState(false)
-  const ref = useRef<HTMLElement>(null)
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true)
-        }
-      },
-      { threshold: 0.1 },
-    )
-
-    if (ref.current) {
-      observer.observe(ref.current)
-    }
-
-    return () => observer.disconnect()
-  }, [])
-
   return (
-    <section id="projects" ref={ref} className="px-4">
+    <section id="projects" className="px-4">
       <div className="max-w-5xl mx-auto">
-        <div
-          className={`transition-all duration-800 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
-        >
+        <div className="motion-safe:animate-fade-in-up">
           <h2 className="text-2xl md:text-3xl font-semibold mb-6 text-center">Featured Projects</h2>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {projects.map((project, index) => (
             <div
-              key={index}
-              className={`transition-all duration-800 ${
-                isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-              }`}
-              style={{ transitionDelay: `${(index + 1) * 200}ms` }}
+              key={project.title}
+              className="motion-safe:animate-fade-in-up"
+              style={{ animationDelay: `${(index + 1) * 120}ms` }}
             >
               <Card className="h-full transition-colors border-border/50 group">
                 <CardHeader>
@@ -102,8 +75,8 @@ export function Projects() {
                 </CardHeader>
                 <CardContent className="flex-1 flex flex-col pt-2">
                   <ul className="space-y-1 mb-4 flex-1">
-                    {project.features.map((feature, i) => (
-                      <li key={i} className="text-sm text-muted-foreground flex items-start gap-2">
+                    {project.features.map((feature) => (
+                      <li key={feature} className="text-sm text-muted-foreground flex items-start gap-2">
                         <span className="text-foreground mt-0.5">•</span>
                         {feature}
                       </li>

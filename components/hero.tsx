@@ -1,13 +1,8 @@
-"use client"
-
-import { Button } from "@/components/ui/button"
 import { ArrowDown, Github, Linkedin, Twitter, Phone, Mail, FileText } from "lucide-react"
 
-export function Hero() {
-  const scrollToAbout = () => {
-    document.getElementById("about")?.scrollIntoView({ behavior: "smooth" })
-  }
+import { Button } from "@/components/ui/button"
 
+export function Hero() {
   return (
     <section id="hero" className="flex items-center justify-center px-4">
       <div className="max-w-3xl mx-auto text-center">
@@ -95,13 +90,15 @@ export function Hero() {
 
         <div className="opacity-0 animate-fade-in-up animate-delay-500">
           <Button
-            onClick={scrollToAbout}
+            asChild
             variant="outline"
             size="sm"
             className="group transition-colors hover:bg-foreground hover:text-background bg-transparent"
           >
-            Explore My Work
-            <ArrowDown className="w-4 h-4 ml-2 group-hover:translate-y-0.5 transition-transform" />
+            <a href="#about">
+              Explore My Work
+              <ArrowDown className="w-4 h-4 ml-2 group-hover:translate-y-0.5 transition-transform" />
+            </a>
           </Button>
         </div>
       </div>
