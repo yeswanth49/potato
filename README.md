@@ -17,9 +17,6 @@ Make sure you have [pnpm](https://pnpm.io/installation) installed.
     git clone <repository-url>
     ```
 2.  Navigate to the project directory:
-    ```bash
-    cd my-v0-project
-    ```
 3.  Install the dependencies:
     ```bash
     pnpm install
