@@ -20,7 +20,7 @@ const projects = [
     ],
     technologies: ["Next.js", "React", "TypeScript", "Tailwind CSS", "AI SDK", "Vercel"],
     liveUrl: "https://goopenbook.in",
-    githubUrl: "#",
+    githubUrl: "https://github.com/yeswanth49/openbook",
   },
   {
     id: "safelink",
@@ -35,8 +35,8 @@ const projects = [
       "Production-ready deployment",
     ],
     technologies: ["Flask", "SQLite", "Jinja2", "WebRTC", "Python", "Gunicorn"],
-    liveUrl: "#",
-    githubUrl: "#",
+    liveUrl: "https://safelink.pecup.in",
+    githubUrl: "https://github.com/yeswanth49/safelink",
   },
   {
     id: "pecup",
