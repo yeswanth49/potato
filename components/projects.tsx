@@ -54,6 +54,38 @@ const projects = [
     liveUrl: "https://pecup.in",
     githubUrl: "https://github.com/yeswanth49/pecup-dead",
   },
+  {
+    id: "openbook-landing",
+    title: "OpenBook Landing Page",
+    description:
+      "Beautiful and modern landing page for the OpenBook AI-powered research platform with stunning visual design.",
+    features: [
+      "Modern responsive design",
+      "Smooth animations and transitions",
+      "Interactive UI components",
+      "SEO optimized structure",
+      "Fast loading performance",
+    ],
+    technologies: ["HTML", "CSS", "JavaScript", "Tailwind CSS", "Framer Motion"],
+    liveUrl: "https://openbook-landing.vercel.app",
+    githubUrl: "https://github.com/yeswanth49/openbook-landing",
+  },
+  {
+    id: "pecup-old",
+    title: "PEC.UP (Original)",
+    description:
+      "The original version of PEC.UP built with clean vanilla HTML, CSS, and JavaScript before the Node.js migration.",
+    features: [
+      "Pure HTML/CSS/JavaScript implementation",
+      "Clean and simple design",
+      "Basic interactivity",
+      "No framework dependencies",
+      "Educational project structure",
+    ],
+    technologies: ["HTML", "CSS", "JavaScript"],
+    liveUrl: "#",
+    githubUrl: "#",
+  },
 ]
 
 export function Projects() {
@@ -106,12 +138,12 @@ export function Projects() {
           <h2 className="text-2xl md:text-3xl font-semibold mb-6 text-center">Featured Projects</h2>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="flex gap-6 overflow-x-auto pb-4 scrollbar-hide">
           {projects.map((project, index) => (
             <div
               key={project.id}
               ref={(el) => { cardRefs.current[project.id] = el }}
-              className={visibleIndices.has(project.id) ? "motion-safe:animate-fade-in-up" : undefined}
+              className={`flex-none w-80 ${visibleIndices.has(project.id) ? "motion-safe:animate-fade-in-up" : ""}`}
               style={{ animationDelay: `${(index + 1) * 120}ms` }}
             >
               <Card className="h-full transition-colors border-border/50 group">
