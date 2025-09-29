@@ -24,7 +24,7 @@ const MAX_HINT_ITERATIONS = 2
 
 type HintKey = (typeof HINT_SEQUENCE)[number]
 
-type KeyProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
+type KeyProps = Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'type'> & {
   children: React.ReactNode
   isPressed?: boolean
   size?: "sm" | "md" | "lg" | "xl"
@@ -40,8 +40,8 @@ function Key({ children, className, isPressed, size = "md", ...props }: KeyProps
 
   return (
     <button
-      type="button"
       {...props}
+      type="button"
       className={cn(
         "rounded-lg border border-[#1A1B1C] bg-gradient-to-b from-[#090A0B] to-[#0E0E10] text-gray-300 font-medium",
         "relative before:absolute before:inset-0 before:rounded-lg before:p-[1px] before:bg-gradient-to-b before:from-[#1A1B1C] before:to-[#141415] before:-z-10",
@@ -70,6 +70,7 @@ export function KeyboardLanding({ onCorrectEntry, backgroundMode = "dark" }: Key
   const [highlightIndex, setHighlightIndex] = useState(0)
   const [iterationCount, setIterationCount] = useState(0)
   const errorResetTimeout = useRef<number | null>(null)
+  const isSubmittingRef = useRef(false)
 
   useEffect(() => {
     return () => {
@@ -124,6 +125,22 @@ export function KeyboardLanding({ onCorrectEntry, backgroundMode = "dark" }: Key
     return HINT_SEQUENCE[highlightIndex] === "return"
   }
 
+  const textRef = useRef(text)
+  const capsLockRef = useRef(capsLock)
+  const pressedKeysRef = useRef(pressedKeys)
+
+  useEffect(() => {
+    textRef.current = text
+  }, [text])
+
+  useEffect(() => {
+    capsLockRef.current = capsLock
+  }, [capsLock])
+
+  useEffect(() => {
+    pressedKeysRef.current = pressedKeys
+  }, [pressedKeys])
+
   const handleKeyPress = useCallback(
     (key: string) => {
       if (key === "BACKSPACE") {
@@ -146,9 +163,19 @@ export function KeyboardLanding({ onCorrectEntry, backgroundMode = "dark" }: Key
       // No toggle action needed here
 
       if (key === "ENTER") {
-        if (text.toLowerCase() === TARGET_TEXT) {
+        if (isSubmittingRef.current) {
+          return
+        }
+
+        if (textRef.current.toLowerCase() === TARGET_TEXT) {
+          isSubmittingRef.current = true
           onCorrectEntry()
-      } else {
+          // Reset after a short delay to prevent rapid repeated submissions
+          setTimeout(() => {
+            isSubmittingRef.current = false
+          }, 200)
+        } else {
+          isSubmittingRef.current = true
           setShowError(true)
           setText("")
           // clear any existing timeout before creating a new one
@@ -158,6 +185,7 @@ export function KeyboardLanding({ onCorrectEntry, backgroundMode = "dark" }: Key
           errorResetTimeout.current = window.setTimeout(() => {
             setShowError(false)
             errorResetTimeout.current = null
+            isSubmittingRef.current = false
           }, 2000)
         }
         return
@@ -167,12 +195,12 @@ export function KeyboardLanding({ onCorrectEntry, backgroundMode = "dark" }: Key
         return
       }
 
-      const shouldUppercase = capsLock !== pressedKeys.has("SHIFT")
+      const shouldUppercase = capsLockRef.current !== pressedKeysRef.current.has("SHIFT")
       const finalKey = shouldUppercase ? key.toUpperCase() : key.toLowerCase()
       setText((prev) => prev + finalKey)
       setShowError(false)
     },
-    [capsLock, onCorrectEntry, text, pressedKeys],
+    [onCorrectEntry],
   )
 
   useEffect(() => {
@@ -210,7 +238,7 @@ export function KeyboardLanding({ onCorrectEntry, backgroundMode = "dark" }: Key
         }
 
         if (upperKey === "CAPSLOCK") {
-          handleKeyPress("CAPS")
+          setCapsLock(event.getModifierState("CapsLock"))
           return
         }
 
@@ -220,6 +248,9 @@ export function KeyboardLanding({ onCorrectEntry, backgroundMode = "dark" }: Key
         }
 
         if (upperKey === "ENTER") {
+          if (isSubmittingRef.current) {
+            return
+          }
           handleKeyPress("ENTER")
           return
         }
@@ -324,19 +355,28 @@ export function KeyboardLanding({ onCorrectEntry, backgroundMode = "dark" }: Key
         <div className="flex gap-2 justify-center">
           <Key
             onClick={() => handleKeyPress("SHIFT")}
-            onMouseDown={() => setPressedKeys((prev) => new Set(prev).add("SHIFT"))}
-            onMouseLeave={() =>
+            onPointerDown={() => setPressedKeys((prev) => new Set(prev).add("SHIFT"))}
+            onPointerCancel={() =>
               setPressedKeys((prev) => {
                 const next = new Set(prev)
                 next.delete("SHIFT")
                 return next
               })
             }
-            onMouseUp={() => setPressedKeys((prev) => {
-              const next = new Set(prev)
-              next.delete("SHIFT")
-              return next
-            })}
+            onPointerUp={() =>
+              setPressedKeys((prev) => {
+                const next = new Set(prev)
+                next.delete("SHIFT")
+                return next
+              })
+            }
+            onBlur={() =>
+              setPressedKeys((prev) => {
+                const next = new Set(prev)
+                next.delete("SHIFT")
+                return next
+              })
+            }
             isPressed={pressedKeys.has("SHIFT")}
             size="lg"
           >
@@ -361,7 +401,7 @@ export function KeyboardLanding({ onCorrectEntry, backgroundMode = "dark" }: Key
           <Key size="md">^</Key>
           <Key size="md">⌥</Key>
           <Key size="md">⌘</Key>
-          <Key onClick={() => handleKeyPress("SPACE")} isPressed={pressedKeys.has(" ")} size="xl">
+          <Key onClick={() => handleKeyPress("SPACE")} isPressed={pressedKeys.has(" ")} aria-label="space" size="xl">
             {" "}
           </Key>
           <Key size="md">⌘</Key>

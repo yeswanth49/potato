@@ -4,9 +4,34 @@ import { About } from '@/components/about'
 
 // Tests leverage React Testing Library with Jest.
 
+// Mock IntersectionObserver to make animation assertions deterministic
+const mockIntersectionObserver = jest.fn()
+mockIntersectionObserver.mockReturnValue({
+  observe: jest.fn(),
+  unobserve: jest.fn(),
+  disconnect: jest.fn(),
+})
+
+Object.defineProperty(window, 'IntersectionObserver', {
+  writable: true,
+  configurable: true,
+  value: mockIntersectionObserver,
+})
+
 const renderAbout = () => render(<About />)
 
 describe('About component', () => {
+  let mockObserverInstance: any
+
+  beforeEach(() => {
+    jest.clearAllMocks()
+    mockObserverInstance = {
+      observe: jest.fn(),
+      unobserve: jest.fn(),
+      disconnect: jest.fn(),
+    }
+    mockIntersectionObserver.mockReturnValue(mockObserverInstance)
+  })
   describe('structure and accessibility', () => {
     it('renders section region with expected id and accessible name', () => {
       renderAbout()
@@ -36,7 +61,22 @@ describe('About component', () => {
     })
 
     it('includes fade-in-up animations for heading and content sections', () => {
+      // Set up mock to immediately trigger intersection
+      let intersectionCallback: (entries: any[]) => void = () => {}
+      mockIntersectionObserver.mockImplementation((callback) => {
+        intersectionCallback = callback
+        return mockObserverInstance
+      })
+
       const { container } = renderAbout()
+
+      // Immediately trigger intersection to make animation classes appear
+      const mockEntry = {
+        isIntersecting: true,
+        target: container.querySelector('#about'),
+      }
+      intersectionCallback([mockEntry])
+
       const animatedSections = container.querySelectorAll('.animate-fade-in-up')
       expect(animatedSections).toHaveLength(2)
 

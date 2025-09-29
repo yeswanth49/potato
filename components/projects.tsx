@@ -57,15 +57,14 @@ const projects = [
 ]
 
 export function Projects() {
-  const cardRefs = useRef<(HTMLDivElement | null)[]>([])
+  const cardRefs = useRef<Record<string, HTMLDivElement | null>>({})
   const observersRef = useRef<Map<string, IntersectionObserver>>(new Map())
   const [visibleIndices, setVisibleIndices] = useState<Set<string>>(new Set())
 
   useEffect(() => {
     projects.forEach((project, idx) => {
-      const el = cardRefs.current[idx]
+      const el = cardRefs.current[project.id]
       if (!el) return
-      if (visibleIndices.has(project.id)) return
       if (observersRef.current.has(project.id)) return
 
       const observer = new IntersectionObserver(
@@ -81,7 +80,6 @@ export function Projects() {
 
               const obs = observersRef.current.get(project.id)
               if (obs) {
-                obs.unobserve(entry.target)
                 obs.disconnect()
                 observersRef.current.delete(project.id)
               }
@@ -112,7 +110,7 @@ export function Projects() {
           {projects.map((project, index) => (
             <div
               key={project.id}
-              ref={(el) => { cardRefs.current[index] = el }}
+              ref={(el) => { cardRefs.current[project.id] = el }}
               className={visibleIndices.has(project.id) ? "motion-safe:animate-fade-in-up" : undefined}
               style={{ animationDelay: `${(index + 1) * 120}ms` }}
             >
