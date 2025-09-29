@@ -2,7 +2,6 @@
 import type { Config } from '@jest/types';
 
 const config: Config.InitialOptions = {
-  preset: 'ts-jest',
   testEnvironment: 'jsdom',
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
   moduleNameMapper: {
@@ -14,7 +13,14 @@ const config: Config.InitialOptions = {
   },
   testPathIgnorePatterns: ['<rootDir>/.next/', '<rootDir>/node_modules/'],
   transform: {
-    '^.+\\.(js|jsx|ts|tsx)$': ['babel-jest', { presets: ['next/babel'] }],
+    '\\.(ts|tsx)$': ['ts-jest', {
+      tsconfig: {
+        jsx: 'react-jsx',
+        esModuleInterop: true,
+        allowSyntheticDefaultImports: true,
+      },
+    }],
+    '\\.(js|jsx)$': ['babel-jest', { presets: ['next/babel'] }],
   },
   moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx', 'json'],
   collectCoverageFrom: [
@@ -23,11 +29,6 @@ const config: Config.InitialOptions = {
     'lib/**/*.{js,ts}',
     '!**/*.d.ts',
   ],
-  globals: {
-    'ts-jest': {
-      tsconfig: 'tsconfig.json',
-    },
-  },
 };
 
 export default config;

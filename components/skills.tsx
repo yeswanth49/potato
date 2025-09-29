@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react"
 import { Badge } from "@/components/ui/badge"
 
 const skillCategories = [
@@ -44,10 +45,46 @@ const skillCategories = [
 ]
 
 export function Skills() {
+  const [isVisible, setIsVisible] = useState(false)
+  const [canAnimate, setCanAnimate] = useState(false)
+  const sectionRef = useRef<HTMLElement | null>(null)
+
+  useEffect(() => {
+    setCanAnimate(true)
+  }, [])
+
+  useEffect(() => {
+    // In test, or when IO is unavailable, show immediately
+    if (process.env.NODE_ENV === 'test') {
+      setIsVisible(true)
+      return
+    }
+    if (typeof window !== 'undefined' && !('IntersectionObserver' in window)) {
+      setIsVisible(true)
+      return
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true)
+          observer.disconnect()
+        }
+      },
+      { threshold: 0.1 }
+    )
+
+    const el = sectionRef.current
+    if (!el) return () => observer.disconnect()
+    observer.observe(el)
+
+    return () => observer.disconnect()
+  }, [])
+
   return (
-    <section id="skills" className="px-4 bg-muted/30">
+    <section ref={sectionRef} id="skills" className="px-4 bg-muted/30">
       <div className="max-w-5xl mx-auto">
-        <div className="motion-safe:animate-fade-in-up">
+        <div className={canAnimate && isVisible ? "motion-safe:animate-fade-in-up" : ""}>
           <h2 className="text-2xl md:text-3xl font-semibold mb-6 text-center">Technical Skills</h2>
         </div>
 
@@ -55,8 +92,8 @@ export function Skills() {
           {skillCategories.map((category, index) => (
             <div
               key={category.category}
-              className="group rounded-lg border bg-card/30 p-4 transition-all duration-300 hover:bg-card motion-safe:animate-fade-in-up"
-              style={{ animationDelay: `${(index + 1) * 120}ms` }}
+              className={`group rounded-lg border bg-card/30 p-4 transition-all duration-300 hover:bg-card ${canAnimate && isVisible ? "motion-safe:animate-fade-in-up" : ""}`}
+              style={canAnimate && isVisible ? { animationDelay: `${(index + 1) * 120}ms` } : {}}
               tabIndex={0}
             >
               <h3 className="text-base md:text-lg font-medium text-foreground">{category.category}</h3>

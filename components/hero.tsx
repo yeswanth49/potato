@@ -1,3 +1,5 @@
+'use client';
+
 import { ArrowDown, Github, Linkedin, Twitter, Phone, Mail, FileText } from "lucide-react"
 
 import { Button } from "@/components/ui/button"

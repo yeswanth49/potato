@@ -36,6 +36,7 @@ describe('Repository Guidelines (AGENTS.test.ts)', () => {
       );
       expect(levels[0]).toBe(1);
       for (let i = 1; i < levels.length; i += 1) {
+        expect(levels[i]).toBeGreaterThanOrEqual(levels[i - 1]);
         expect(levels[i] - levels[i - 1]).toBeLessThanOrEqual(1);
       }
     });

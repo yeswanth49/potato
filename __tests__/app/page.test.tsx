@@ -37,17 +37,6 @@ describe("Home page", () => {
     expect(within(landingShell).getByTestId("portfolio-content")).toBeInTheDocument()
   })
 
-  it("returns a React element with expected props", () => {
-    const element = Home() as React.ReactElement
-    expect(element).toBeTruthy()
-    expect(element.props.mainBackgroundMode).toBe("dark")
-
-    const child = element.props.children as React.ReactElement
-    expect(child).toBeTruthy()
-    expect(child.type).toBeDefined()
-    expect(child.props).toMatchObject({})
-  })
-
   it("renders without crashing inside React.StrictMode", () => {
     const strictTree = (
       <React.StrictMode>

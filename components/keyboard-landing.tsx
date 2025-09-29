@@ -163,19 +163,9 @@ export function KeyboardLanding({ onCorrectEntry, backgroundMode = "dark" }: Key
       // No toggle action needed here
 
       if (key === "ENTER") {
-        if (isSubmittingRef.current) {
-          return
-        }
-
-        if (textRef.current.toLowerCase() === TARGET_TEXT) {
-          isSubmittingRef.current = true
+        if (textRef.current.toLowerCase() === "yesh") {
           onCorrectEntry()
-          // Reset after a short delay to prevent rapid repeated submissions
-          setTimeout(() => {
-            isSubmittingRef.current = false
-          }, 200)
         } else {
-          isSubmittingRef.current = true
           setShowError(true)
           setText("")
           // clear any existing timeout before creating a new one
@@ -185,7 +175,6 @@ export function KeyboardLanding({ onCorrectEntry, backgroundMode = "dark" }: Key
           errorResetTimeout.current = window.setTimeout(() => {
             setShowError(false)
             errorResetTimeout.current = null
-            isSubmittingRef.current = false
           }, 2000)
         }
         return

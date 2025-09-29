@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom'
-import { render, screen } from '@testing-library/react'
+import { render, screen, act } from '@testing-library/react'
 import { About } from '@/components/about'
 
 // Tests leverage React Testing Library with Jest.
@@ -75,7 +75,7 @@ describe('About component', () => {
         isIntersecting: true,
         target: container.querySelector('#about'),
       }
-      intersectionCallback([mockEntry])
+      act(() => intersectionCallback([mockEntry]))
 
       const animatedSections = container.querySelectorAll('.animate-fade-in-up')
       expect(animatedSections).toHaveLength(2)

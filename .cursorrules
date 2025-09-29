@@ -145,6 +145,92 @@ if (detectPerformanceChanges(fileChange)) {
 - Add new bundling strategies
 - Refresh animation performance notes
 
+## Automated Git Operations & PR Creation
+
+### Overview
+These rules automatically handle Git operations and PR creation for significant code changes to enable CodeRabbit reviews.
+
+### 6. Automatic Commit & Push for Medium Changes
+
+When medium-impact changes are detected (architectural significance score 7-10):
+
+```typescript
+// Trigger: Medium architectural changes (score 7-10)
+// Action: Auto-commit, push to current branch for CodeRabbit review
+
+if (architecturalSignificance >= 7 && architecturalSignificance <= 10) {
+  const commitMessage = generateCommitMessage(fileChanges);
+  const branchName = getCurrentBranch();
+
+  // Add all changes
+  runCommand('git add .');
+
+  // Commit with descriptive message
+  runCommand(`git commit -m "${commitMessage}"`);
+
+  // Push to origin branch
+  runCommand(`git push origin ${branchName}`);
+
+  notify({
+    type: 'auto_commit_push',
+    message: `Changes committed and pushed to ${branchName}`,
+    action: 'CodeRabbit review triggered',
+    commitHash: getLastCommitHash()
+  });
+}
+```
+
+**Actions Performed:**
+- Stage all modified files
+- Generate descriptive commit message based on changes
+- Commit changes to local repository
+- Push to origin branch for CodeRabbit review
+- Notify user of successful push
+
+### 7. PR Creation for Major Changes
+
+When major architectural changes are detected (architectural significance score 11+):
+
+```typescript
+// Trigger: Major architectural changes (score 11+)
+// Action: Create PR to merge with main branch
+
+if (architecturalSignificance >= 11) {
+  const prDetails = {
+    title: generatePRTitle(fileChanges),
+    body: generatePRDescription(fileChanges, architecturalSignificance),
+    baseBranch: 'main',
+    headBranch: getCurrentBranch(),
+    labels: ['auto-generated', 'architectural-change']
+  };
+
+  // Ensure changes are committed and pushed first
+  if (hasUncommittedChanges()) {
+    runCommand('git add .');
+    runCommand(`git commit -m "feat: ${prDetails.title}"`);
+    runCommand(`git push origin ${prDetails.headBranch}`);
+  }
+
+  // Create pull request
+  const prUrl = createPullRequest(prDetails);
+
+  notify({
+    type: 'auto_pr_created',
+    message: `Major changes detected - PR created: ${prDetails.title}`,
+    action: 'CodeRabbit will review the PR',
+    prUrl: prUrl,
+    reviewRequired: true
+  });
+}
+```
+
+**Actions Performed:**
+- Commit any remaining changes
+- Push to feature branch
+- Create pull request targeting main branch
+- Add appropriate labels for tracking
+- Notify user with PR link
+
 ## Rule Implementation Details
 
 ### Change Detection Algorithms
@@ -153,22 +239,33 @@ if (detectPerformanceChanges(fileChange)) {
 ```typescript
 function calculateArchitecturalSignificance(change: FileChange): number {
   let score = 0;
-  
-  // High impact changes
-  if (change.path.includes('app/') && change.type === 'create') score += 10;
-  if (change.path === 'package.json') score += 8;
-  if (change.path.includes('components/') && change.type === 'create') score += 7;
-  
-  // Medium impact changes
+
+  // Critical impact changes (score 11+) - Trigger PR creation
+  if (change.path.includes('app/') && change.type === 'create') score += 12; // New pages
+  if (change.path === 'package.json') score += 15; // Major dependency changes
+  if (change.affectsMultipleComponents) score += 13; // Cross-component changes
+  if (change.type === 'delete' && change.path.includes('components/')) score += 12; // Component removal
+
+  // High impact changes (score 7-10) - Trigger auto-commit & push
+  if (change.path.includes('components/') && change.type === 'create') score += 8; // New components
+  if (change.path.includes('hooks/') && change.type === 'create') score += 7; // New hooks
+  if (change.path.includes('lib/') && change.type === 'create') score += 7; // New utilities
+  if (change.path.includes('config') && change.type === 'modify') score += 8; // Config changes
+
+  // Medium impact changes (score 4-6) - May trigger documentation updates
   if (change.path.includes('hooks/')) score += 5;
   if (change.path.includes('lib/')) score += 4;
   if (change.path.includes('styles/')) score += 3;
-  
+
   // Configuration changes
-  if (change.path.includes('config')) score += 6;
-  if (change.path.includes('tsconfig')) score += 5;
-  
-  return score;
+  if (change.path.includes('tsconfig')) score += 6;
+  if (change.path.includes('next.config')) score += 7;
+
+  // Multiple file changes increase significance
+  if (change.batchSize > 5) score += 3;
+  if (change.batchSize > 10) score += 5;
+
+  return Math.min(score, 20); // Cap at 20 for extreme changes
 }
 ```
 
@@ -181,6 +278,113 @@ const architecturalPatterns = {
   apiEndpoint: /export\s+async\s+function\s+(GET|POST|PUT|DELETE)/,
   configChange: /(module\.exports|export\s+default)/
 };
+```
+
+#### 3. Git Automation Helper Functions
+```typescript
+// Generate descriptive commit messages based on changes
+function generateCommitMessage(changes: FileChange[]): string {
+  const changeTypes = changes.map(c => c.type);
+  const affectedPaths = changes.map(c => c.path);
+
+  // Determine primary change type
+  const hasNewComponents = affectedPaths.some(p => p.includes('components/') && changeTypes.includes('create'));
+  const hasConfigChanges = affectedPaths.some(p => p.includes('config') || p === 'package.json');
+  const hasNewPages = affectedPaths.some(p => p.includes('app/') && changeTypes.includes('create'));
+  const hasHookChanges = affectedPaths.some(p => p.includes('hooks/'));
+
+  if (hasNewPages) return `feat: add new page components and routing`;
+  if (hasNewComponents) return `feat: add new components and update component architecture`;
+  if (hasConfigChanges) return `chore: update configuration and dependencies`;
+  if (hasHookChanges) return `feat: add custom hooks and state management`;
+
+  return `feat: implement new features and improvements`;
+}
+
+// Generate PR titles based on changes
+function generatePRTitle(changes: FileChange[]): string {
+  const changeTypes = changes.map(c => c.type);
+  const affectedPaths = changes.map(c => c.path);
+
+  if (affectedPaths.includes('package.json')) return 'Major dependency and configuration updates';
+  if (affectedPaths.some(p => p.includes('app/') && changeTypes.includes('create'))) return 'New page implementation and routing changes';
+  if (affectedPaths.some(p => p.includes('components/') && changeTypes.includes('create'))) return 'Component architecture expansion';
+
+  return 'Significant architectural improvements';
+}
+
+// Generate detailed PR descriptions
+function generatePRDescription(changes: FileChange[], significance: number): string {
+  const affectedFiles = changes.map(c => `- ${c.type}: ${c.path}`).join('\n');
+  const impactLevel = significance >= 15 ? 'Critical' : significance >= 12 ? 'Major' : 'Significant';
+
+  return `## Changes Overview
+${affectedFiles}
+
+## Impact Assessment
+- **Architectural Significance**: ${significance}/20
+- **Impact Level**: ${impactLevel}
+- **Files Modified**: ${changes.length}
+
+## What This Includes
+${changes.some(c => c.path.includes('components/')) ? '- Component architecture updates\n' : ''}
+${changes.some(c => c.path.includes('app/')) ? '- Page routing and layout changes\n' : ''}
+${changes.some(c => c.path === 'package.json') ? '- Dependency management updates\n' : ''}
+${changes.some(c => c.path.includes('hooks/')) ? '- Custom hooks and state management\n' : ''}
+
+This PR was automatically generated due to ${impactLevel.toLowerCase()} architectural changes. Please review carefully before merging.
+
+**Auto-generated by Cursor Rules v2.0**`;
+}
+
+// Check if there are uncommitted changes
+function hasUncommittedChanges(): boolean {
+  try {
+    const status = runCommand('git status --porcelain');
+    return status.trim().length > 0;
+  } catch {
+    return false;
+  }
+}
+
+// Get current branch name
+function getCurrentBranch(): string {
+  try {
+    return runCommand('git branch --show-current').trim();
+  } catch {
+    return 'main';
+  }
+}
+
+// Get last commit hash
+function getLastCommitHash(): string {
+  try {
+    return runCommand('git rev-parse HEAD').trim();
+  } catch {
+    return '';
+  }
+}
+
+// Create a pull request (GitHub CLI required)
+function createPullRequest(details: PRDetails): string {
+  try {
+    const { title, body, baseBranch, headBranch, labels } = details;
+
+    // Create PR using GitHub CLI
+    const prCommand = `gh pr create --title "${title}" --body "${body}" --base ${baseBranch} --head ${headBranch}`;
+    const prUrl = runCommand(prCommand).trim();
+
+    // Add labels if specified
+    if (labels && labels.length > 0) {
+      runCommand(`gh pr edit ${prUrl} --add-label "${labels.join(',')}"`);
+    }
+
+    return prUrl;
+  } catch (error) {
+    console.error('Failed to create PR:', error);
+    return '';
+  }
+}
 ```
 
 ### Update Strategies
@@ -274,9 +478,14 @@ if (architecturalSignificance >= 8) {
 const ruleConfig = {
   architecturalThreshold: 5,        // Minimum score for auto-update
   reviewThreshold: 9,               // Score requiring human review
+  gitCommitThreshold: 7,            // Minimum score for auto-commit & push
+  prCreationThreshold: 11,          // Minimum score for auto-PR creation
   updateFrequency: 'immediate',     // Update timing
   backupRetention: 30,              // Days to keep backups
-  validationLevel: 'strict'         // Validation strictness
+  validationLevel: 'strict',        // Validation strictness
+  gitAutoPush: true,                // Enable automatic push after commit
+  prAutoCreate: true,               // Enable automatic PR creation
+  requireGitHubCLI: true            // Require GitHub CLI for PR creation
 };
 ```
 
@@ -307,6 +516,18 @@ cursor-rules update --dry-run --file=package.json
 
 # Manual rule execution
 cursor-rules execute --rule="dependency-update" --force
+
+# Test Git automation (dry run)
+cursor-rules git-test --score=8 --dry-run
+
+# Test PR creation (dry run)
+cursor-rules pr-test --score=12 --dry-run
+
+# Check current branch and Git status
+cursor-rules git-status
+
+# Validate GitHub CLI setup
+cursor-rules validate-github-cli
 ```
 
 ### Validation Checks
@@ -348,5 +569,5 @@ cursor-rules execute --rule="dependency-update" --force
 ---
 
 **Last Updated**: Automatically maintained by these Cursor rules
-**Rule Version**: 1.0.0
+**Rule Version**: 2.0.0
 **Next Review**: Quarterly review scheduled

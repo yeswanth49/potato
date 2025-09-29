@@ -99,7 +99,7 @@ export function Contact() {
 
         <div className="motion-safe:animate-fade-in-up motion-safe:animate-delay-400">
           <div className="text-center mt-8 pt-6 border-t border-border">
-            <p className="text-muted-foreground text-sm">© 2025 Yeswanth Madasu. Built with Next.js and Tailwind CSS.</p>
+            <p className="text-muted-foreground text-sm">© {new Date().getFullYear()} Yeswanth Madasu. Built with Next.js and Tailwind CSS.</p>
           </div>
         </div>
       </div>

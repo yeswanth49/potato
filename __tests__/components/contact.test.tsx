@@ -154,7 +154,8 @@ describe('Contact Component', () => {
 
   describe('Footer Content', () => {
     it('renders copyright footer with correct content', () => {
-      const footer = screen.getByText(/© 2025 Yeswanth Madasu/)
+      const year = new Date().getFullYear()
+      const footer = screen.getByText(`© ${year} Yeswanth Madasu. Built with Next.js and Tailwind CSS.`)
       expect(footer).toBeInTheDocument()
       expect(footer).toHaveClass('text-muted-foreground', 'text-sm')
     })

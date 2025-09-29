@@ -38,8 +38,8 @@ global.IntersectionObserver = class IntersectionObserver {
 const mockPush = jest.fn();
 const mockReplace = jest.fn();
 const mockPrefetch = jest.fn();
-const mockSearchParams = new URLSearchParams();
-const mockPathname = '/';
+let mockSearchParams = new URLSearchParams();
+let mockPathname = '/';
 
 // Mock Next.js router
 jest.mock('next/navigation', () => ({
@@ -51,6 +51,12 @@ jest.mock('next/navigation', () => ({
   useSearchParams: jest.fn(() => mockSearchParams),
   usePathname: jest.fn(() => mockPathname),
 }));
+
+afterEach(() => {
+  jest.clearAllMocks();
+  mockSearchParams = new URLSearchParams();
+  mockPathname = '/';
+});
 
 // Mock environment variables
 process.env.NEXT_PUBLIC_APP_URL = 'http://localhost:3000';

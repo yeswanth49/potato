@@ -10,15 +10,15 @@ mockIntersectionObserver.mockReturnValue({
   disconnect: jest.fn(),
 })
 
+// Save original IntersectionObserver to restore after tests
+const _originalIO = window.IntersectionObserver
+
 // Mock window.IntersectionObserver
 Object.defineProperty(window, 'IntersectionObserver', {
   writable: true,
   configurable: true,
   value: mockIntersectionObserver,
 })
-
-// Save original IntersectionObserver to restore after tests
-const _originalIO = window.IntersectionObserver
 
 // Mock the Lucide React icons
 jest.mock('lucide-react', () => ({
@@ -479,7 +479,7 @@ describe('Projects Component', () => {
     })
 
     test('handles intersection observer callback with empty entries', async () => {
-      let intersectionCallback: (entries: any[]) => void
+      let intersectionCallback: (entries: any[]) => void = () => {}
       
       mockIntersectionObserver.mockImplementation((callback) => {
         intersectionCallback = callback
@@ -497,7 +497,7 @@ describe('Projects Component', () => {
     })
 
     test('handles intersection observer callback with non-intersecting entries', () => {
-      let intersectionCallback: (entries: any[]) => void
+      let intersectionCallback: (entries: any[]) => void = () => {}
       
       mockIntersectionObserver.mockImplementation((callback) => {
         intersectionCallback = callback
