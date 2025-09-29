@@ -7,32 +7,27 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom'
-import { Hero } from '@/components/hero'
+// Helper to create icon mocks that forward all SVG props
+const mockIcon = (testId: string) => {
+  const IconComponent = (props: React.SVGProps<SVGSVGElement>) => (
+    <svg data-testid={testId} {...props} />
+  )
+  IconComponent.displayName = `MockIcon(${testId})`
+  return IconComponent
+}
 
 // Mock external modules virtually to avoid alias resolution issues in tests.
 jest.mock('lucide-react', () => ({
-  ArrowDown: ({ className }: { className?: string }) => (
-    <svg data-testid="arrow-down-icon" className={className} />
-  ),
-  Github: ({ className }: { className?: string }) => (
-    <svg data-testid="github-icon" className={className} />
-  ),
-  Linkedin: ({ className }: { className?: string }) => (
-    <svg data-testid="linkedin-icon" className={className} />
-  ),
-  Twitter: ({ className }: { className?: string }) => (
-    <svg data-testid="twitter-icon" className={className} />
-  ),
-  Phone: ({ className }: { className?: string }) => (
-    <svg data-testid="phone-icon" className={className} />
-  ),
-  Mail: ({ className }: { className?: string }) => (
-    <svg data-testid="mail-icon" className={className} />
-  ),
-  FileText: ({ className }: { className?: string }) => (
-    <svg data-testid="file-text-icon" className={className} />
-  ),
+  ArrowDown: mockIcon('arrow-down-icon'),
+  Github: mockIcon('github-icon'),
+  Linkedin: mockIcon('linkedin-icon'),
+  Twitter: mockIcon('twitter-icon'),
+  Phone: mockIcon('phone-icon'),
+  Mail: mockIcon('mail-icon'),
+  FileText: mockIcon('file-text-icon'),
 }), { virtual: true })
+
+import { Hero } from '@/components/hero'
 
 jest.mock('@/components/ui/button', () => {
   const React = require('react')

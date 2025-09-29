@@ -65,11 +65,8 @@ jest.mock('next/dynamic', () => {
 
 // Helper to import a fresh module after (re)configuring mocks
 const importPortfolio = () => {
-  let mod: any
-  jest.isolateModules(() => {
-    // Import after mocks are configured so top-level dynamic() runs with current impl
-    mod = require('@/components/portfolio-content')
-  })
+  // Import after mocks are configured so top-level dynamic() runs with current impl
+  const mod = require('@/components/portfolio-content')
   return mod as { PortfolioContent: React.FC }
 }
 
