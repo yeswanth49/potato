@@ -325,6 +325,13 @@ export function KeyboardLanding({ onCorrectEntry, backgroundMode = "dark" }: Key
           <Key
             onClick={() => handleKeyPress("SHIFT")}
             onMouseDown={() => setPressedKeys((prev) => new Set(prev).add("SHIFT"))}
+            onMouseLeave={() =>
+              setPressedKeys((prev) => {
+                const next = new Set(prev)
+                next.delete("SHIFT")
+                return next
+              })
+            }
             onMouseUp={() => setPressedKeys((prev) => {
               const next = new Set(prev)
               next.delete("SHIFT")
