@@ -51,8 +51,8 @@ const projects = [
       "Performance optimizations",
     ],
     technologies: ["HTML", "CSS", "JavaScript", "Node.js", "REST APIs"],
-    liveUrl: "#",
-    githubUrl: "#",
+    liveUrl: "https://pecup.in",
+    githubUrl: "https://github.com/yeswanth49/pecup-dead",
   },
 ]
 

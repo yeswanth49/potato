@@ -1,6 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { ExternalLink } from "lucide-react"
+import { ExternalLink, Github } from "lucide-react"
 
 const experiences = [
   {
@@ -17,19 +17,7 @@ const experiences = [
     ],
     technologies: ["Next.js", "React", "TypeScript", "Tailwind CSS", "AI SDK", "Vercel"],
     link: "https://goopenbook.in",
-  },
-  {
-    title: "Founder & Developer",
-    company: "safeLINK",
-    period: "2024 – Present",
-    description: "Mobile-first emergency QR profile app; generates QR-linked profiles for rapid access",
-    achievements: [
-      "SQLite + Jinja2 CRUD; server-side QR generation (qrcode/Pillow) with secure IDs; inline/downloadable PNGs",
-      "In-browser QR scanner using WebRTC getUserMedia + jsQR; guided UX with modal prompts",
-      "Exposed 8 routes (landing, template select, generate, profile, download, scanner, edit, verify)",
-      "Password-gated edits with JSON verification; production-ready with Gunicorn",
-    ],
-    technologies: ["Flask", "SQLite", "Jinja2", "QR (qrcode/Pillow)", "WebRTC", "Gunicorn"],
+    githubUrl: "https://github.com/yeswanth49/openbook",
   },
   {
     title: "Founder & Developer",
@@ -42,6 +30,8 @@ const experiences = [
       "Successfully scaled to handle high concurrent user loads during peak exam periods",
     ],
     technologies: ["HTML", "CSS", "JavaScript", "Node.js"],
+    link: "https://pecup.in",
+    githubUrl: "https://github.com/yeswanth49/pecup-dead",
   },
 ]
 
@@ -74,6 +64,16 @@ export function Experience() {
                             className="text-muted-foreground hover:text-foreground transition-colors"
                           >
                             <ExternalLink className="w-4 h-4" />
+                          </a>
+                        ) : null}
+                        {exp.githubUrl ? (
+                          <a
+                            href={exp.githubUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-muted-foreground hover:text-foreground transition-colors"
+                          >
+                            <Github className="w-4 h-4" />
                           </a>
                         ) : null}
                       </CardTitle>
