@@ -3,13 +3,32 @@ import '@testing-library/jest-dom';
 
 // Mock IntersectionObserver
 global.IntersectionObserver = class IntersectionObserver {
-  constructor() {}
-  observe() {
-    return null;
+  private callback: IntersectionObserverCallback;
+  private options: IntersectionObserverInit;
+
+  constructor(callback: IntersectionObserverCallback, options?: IntersectionObserverInit) {
+    this.callback = callback;
+    this.options = options || {};
   }
+
+  observe(element: Element) {
+    // Immediately trigger intersection for testing
+    const entry: IntersectionObserverEntry = {
+      target: element,
+      isIntersecting: true,
+      intersectionRatio: 1,
+      boundingClientRect: element.getBoundingClientRect(),
+      intersectionRect: element.getBoundingClientRect(),
+      rootBounds: null,
+      time: Date.now(),
+    };
+    this.callback([entry], this as any);
+  }
+
   disconnect() {
     return null;
   }
+
   unobserve() {
     return null;
   }

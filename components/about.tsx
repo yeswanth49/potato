@@ -7,8 +7,8 @@ export function About() {
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    // In test environment, show animations immediately
-    if (process.env.NODE_ENV === 'test') {
+    // Feature detection for IntersectionObserver
+    if (typeof window === 'undefined' || !window.IntersectionObserver) {
       setIsVisible(true);
       return;
     }
@@ -17,27 +17,34 @@ export function About() {
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsVisible(true);
-          observer.disconnect();
+          observer.unobserve(entry.target);
         }
       },
-      { threshold: 0.1 }
+      {
+        threshold: 0.1,
+        rootMargin: '50px 0px'
+      }
     );
 
     if (sectionRef.current) {
       observer.observe(sectionRef.current);
     }
 
-    return () => observer.disconnect();
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+    };
   }, []);
 
   return (
-    <section ref={sectionRef} id="about" aria-label="About section" className="px-4">
+    <section ref={sectionRef} id="about" aria-labelledby="about-heading" className="px-4">
       <div className="max-w-3xl mx-auto">
-        <div className={isVisible ? "motion-safe:animate-fade-in-up" : ""}>
-          <h2 className="text-2xl md:text-3xl font-semibold mb-6 text-center">About</h2>
+        <div className={isVisible ? "animate-fade-in-up" : "opacity-0"}>
+          <h2 id="about-heading" className="text-2xl md:text-3xl font-semibold mb-6 text-center">About</h2>
         </div>
 
-        <div className={isVisible ? "motion-safe:animate-fade-in-up motion-safe:animate-delay-200" : ""}>
+        <div className={isVisible ? "animate-fade-in-up animate-delay-200" : "opacity-0"}>
           <div className="prose max-w-none text-muted-foreground leading-relaxed">
             <p className="mb-4">
               I'm a frontend-focused developer with entrepreneurial drive, passionate about building accessible,

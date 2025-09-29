@@ -13,6 +13,7 @@ describe('About component', () => {
       const section = screen.getByRole('region', { name: /about/i })
       expect(section).toBeInTheDocument()
       expect(section).toHaveAttribute('id', 'about')
+      expect(section).toHaveAttribute('aria-labelledby', 'about-heading')
       expect(section).toHaveClass('px-4')
     })
 
@@ -34,14 +35,14 @@ describe('About component', () => {
       expect(heading).toHaveClass('text-2xl', 'md:text-3xl', 'font-semibold', 'mb-6', 'text-center')
     })
 
-    it('includes motion-safe animations for heading and content sections', () => {
+    it('includes fade-in-up animations for heading and content sections', () => {
       const { container } = renderAbout()
-      const animatedSections = container.querySelectorAll('.motion-safe\\:animate-fade-in-up')
+      const animatedSections = container.querySelectorAll('.animate-fade-in-up')
       expect(animatedSections).toHaveLength(2)
 
-      expect(animatedSections[0]).toHaveClass('motion-safe:animate-fade-in-up')
-      expect(animatedSections[1]).toHaveClass('motion-safe:animate-fade-in-up')
-      expect(animatedSections[1]).toHaveClass('motion-safe:animate-delay-200')
+      expect(animatedSections[0]).toHaveClass('animate-fade-in-up')
+      expect(animatedSections[1]).toHaveClass('animate-fade-in-up')
+      expect(animatedSections[1]).toHaveClass('animate-delay-200')
     })
   })
 
@@ -106,7 +107,7 @@ describe('About component', () => {
       const { container } = renderAbout()
       const section = container.querySelector('section')
       expect(section).toHaveAttribute('id', 'about')
-      expect(section).toHaveAttribute('aria-label', 'About section')
+      expect(section).toHaveAttribute('aria-labelledby', 'about-heading')
       expect(section).toHaveClass('px-4')
       expect(section?.children).toBeDefined()
     })

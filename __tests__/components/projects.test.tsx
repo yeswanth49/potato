@@ -319,10 +319,20 @@ describe('Projects Component', () => {
 
   describe('Component State Management', () => {
     test('manages visible indices state correctly', async () => {
-      const intersectionCallbacks: ((entries: any[]) => void)[] = []
+      // Map to store target element -> callback relationship
+      const targetCallbackMap = new Map<Element, (entries: any[]) => void>()
+      let observerInstanceCount = 0
 
       mockIntersectionObserver.mockImplementation((callback) => {
-        intersectionCallbacks.push(callback)
+        // Create a new mock observer instance for each call
+        const mockObserverInstance = {
+          observe: jest.fn((target: Element) => {
+            targetCallbackMap.set(target, callback)
+          }),
+          unobserve: jest.fn(),
+          disconnect: jest.fn(),
+        }
+        observerInstanceCount++
         return mockObserverInstance
       })
 
@@ -336,23 +346,30 @@ describe('Projects Component', () => {
       })
 
       // Wait for effects to run and observers to be set up
-      await new Promise(resolve => setTimeout(resolve, 0))
+      await waitFor(() => {
+        expect(observerInstanceCount).toBe(3)
+        expect(targetCallbackMap.size).toBe(3)
+      })
 
       // Simulate first card becoming visible using actual rendered element
       const firstCard = cards[0]
       const firstCardContainer = firstCard.parentElement
+
+      if (!firstCardContainer) {
+        throw new Error('firstCard.parentElement is null - card container not found')
+      }
       const mockEntry = {
         isIntersecting: true,
         target: firstCardContainer,
       }
 
-      // Trigger the first observer's callback (for the first project)
-      act(() => {
-        intersectionCallbacks[0]([mockEntry])
-      })
+      // Trigger the observer callback for the first card
+      const callback = targetCallbackMap.get(firstCardContainer)
+      expect(callback).toBeDefined()
 
-      // Force a rerender to ensure state changes are reflected
-      rerender(<Projects />)
+      act(() => {
+        callback!([mockEntry])
+      })
 
       // Wait for state update to be reflected in DOM
       await waitFor(() => {
@@ -414,7 +431,7 @@ describe('Projects Component', () => {
       // Check grid responsive classes
       const gridContainer = screen.getByRole('heading', { name: 'Featured Projects' })
         .closest('section')
-        .querySelector('.grid')
+        ?.querySelector('.grid')
       expect(gridContainer).toHaveClass('md:grid-cols-2', 'lg:grid-cols-3')
     })
 
@@ -562,7 +579,7 @@ describe('Projects Component', () => {
 
       // Each project should have multiple features listed
       const allFeatureText = screen.getByRole('heading', { name: 'Featured Projects' })
-        .closest('section').textContent
+        .closest('section')?.textContent
       
       // OpenBook features
       expect(allFeatureText).toContain('AI SDK integration')

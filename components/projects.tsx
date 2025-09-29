@@ -7,6 +7,7 @@ import { ExternalLink, Github } from "lucide-react"
 
 const projects = [
   {
+    id: "openbook",
     title: "OpenBook",
     description:
       "AI-powered research and learning platform with streaming chat, rich Markdown/LaTeX support, and multiple study workflows.",
@@ -22,6 +23,7 @@ const projects = [
     githubUrl: "#",
   },
   {
+    id: "safelink",
     title: "safeLINK",
     description:
       "Mobile-first emergency QR profile application for rapid access to critical information during emergencies.",
@@ -37,6 +39,7 @@ const projects = [
     githubUrl: "#",
   },
   {
+    id: "pecup",
     title: "PEC.UP",
     description:
       "Resource-sharing platform serving 1.5k+ registered users with high-performance architecture for peak loads.",
@@ -55,32 +58,32 @@ const projects = [
 
 export function Projects() {
   const cardRefs = useRef<(HTMLDivElement | null)[]>([])
-  const observersRef = useRef<Map<number, IntersectionObserver>>(new Map())
+  const observersRef = useRef<Map<string, IntersectionObserver>>(new Map())
   const [visibleIndices, setVisibleIndices] = useState<Set<string>>(new Set())
 
   useEffect(() => {
     projects.forEach((project, idx) => {
       const el = cardRefs.current[idx]
       if (!el) return
-      if (visibleIndices.has(project.title)) return
-      if (observersRef.current.has(idx)) return
+      if (visibleIndices.has(project.id)) return
+      if (observersRef.current.has(project.id)) return
 
       const observer = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
             if (entry.isIntersecting) {
               setVisibleIndices((prev) => {
-                if (prev.has(project.title)) return prev
+                if (prev.has(project.id)) return prev
                 const next = new Set(prev)
-                next.add(project.title)
+                next.add(project.id)
                 return next
               })
 
-              const obs = observersRef.current.get(idx)
+              const obs = observersRef.current.get(project.id)
               if (obs) {
                 obs.unobserve(entry.target)
                 obs.disconnect()
-                observersRef.current.delete(idx)
+                observersRef.current.delete(project.id)
               }
             }
           })
@@ -89,14 +92,14 @@ export function Projects() {
       )
 
       observer.observe(el)
-      observersRef.current.set(idx, observer)
+      observersRef.current.set(project.id, observer)
     })
 
     return () => {
       observersRef.current.forEach((obs) => obs.disconnect())
       observersRef.current.clear()
     }
-  }, [visibleIndices])
+  }, [])
 
   return (
     <section id="projects" className="px-4">
@@ -108,9 +111,9 @@ export function Projects() {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {projects.map((project, index) => (
             <div
-              key={project.title}
+              key={project.id}
               ref={(el) => { cardRefs.current[index] = el }}
-              className={visibleIndices.has(project.title) ? "motion-safe:animate-fade-in-up" : undefined}
+              className={visibleIndices.has(project.id) ? "motion-safe:animate-fade-in-up" : undefined}
               style={{ animationDelay: `${(index + 1) * 120}ms` }}
             >
               <Card className="h-full transition-colors border-border/50 group">
