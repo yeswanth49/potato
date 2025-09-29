@@ -279,11 +279,26 @@
 .animate-delay-400 { animation-delay: 0.2s; }
 .animate-delay-500 { animation-delay: 0.25s; }
 
-/* Hide scrollbar for horizontal scrolling */
+/* Custom scrollbar styling for better accessibility */
 .scrollbar-hide {
-  -ms-overflow-style: none;  /* Internet Explorer 10+ */
-  scrollbar-width: none;  /* Firefox */
+  /* Keep scrollbars visible but styled for better accessibility */
+  scrollbar-width: thin;  /* Firefox */
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;  /* Firefox */
 }
+
 .scrollbar-hide::-webkit-scrollbar {
-  display: none;  /* Safari and Chrome */
+  height: 6px;  /* Thin scrollbar for horizontal scrolling */
+}
+
+.scrollbar-hide::-webkit-scrollbar-track {
+  background: transparent;  /* Transparent track */
+}
+
+.scrollbar-hide::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);  /* Semi-transparent thumb */
+  border-radius: 3px;  /* Rounded corners */
+}
+
+.scrollbar-hide::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.4);  /* Darker on hover for better visibility */
 }

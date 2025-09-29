@@ -162,14 +162,55 @@ if (architecturalSignificance >= 7 && architecturalSignificance <= 10) {
   const commitMessage = generateCommitMessage(fileChanges);
   const branchName = getCurrentBranch();
 
-  // Add all changes
-  runCommand('git add .');
+  // Validate Git state before proceeding
+  const gitState = validateGitState(fileChanges);
+  if (!gitState.isValid) {
+    notify({
+      type: 'auto_commit_failed',
+      message: `Auto-commit aborted: ${gitState.error}`,
+      action: 'Manual commit required',
+      reviewRequired: true
+    });
+    return;
+  }
 
-  // Commit with descriptive message
-  runCommand(`git commit -m "${commitMessage}"`);
+  // Stage only the intended files
+  const filePaths = fileChanges.map(change => change.path);
+  if (!stageFiles(filePaths)) {
+    notify({
+      type: 'auto_commit_failed',
+      message: 'Failed to stage files for commit',
+      action: 'Manual staging required',
+      reviewRequired: true
+    });
+    return;
+  }
 
-  // Push to origin branch
-  runCommand(`git push origin ${branchName}`);
+  // Commit with descriptive message (escape commit message)
+  try {
+    runCommand(`git commit -m ${escapeShellArg(commitMessage)}`);
+  } catch (error) {
+    notify({
+      type: 'auto_commit_failed',
+      message: 'Failed to commit changes',
+      action: 'Manual commit required',
+      reviewRequired: true
+    });
+    return;
+  }
+
+  // Push to origin branch (escape branch name)
+  try {
+    runCommand(`git push origin ${escapeShellArg(branchName)}`);
+  } catch (error) {
+    notify({
+      type: 'auto_commit_failed',
+      message: 'Failed to push changes to remote',
+      action: 'Manual push required',
+      reviewRequired: true
+    });
+    return;
+  }
 
   notify({
     type: 'auto_commit_push',
@@ -181,11 +222,12 @@ if (architecturalSignificance >= 7 && architecturalSignificance <= 10) {
 ```
 
 **Actions Performed:**
-- Stage all modified files
+- Validate Git state (check for detached HEAD, unmerged changes, unexpected dirty files)
+- Stage only the intended files (not `git add .`)
 - Generate descriptive commit message based on changes
-- Commit changes to local repository
-- Push to origin branch for CodeRabbit review
-- Notify user of successful push
+- Commit changes to local repository (with proper shell escaping)
+- Push to origin branch for CodeRabbit review (with proper shell escaping)
+- Notify user of successful push or abort with clear error message
 
 ### 7. PR Creation for Major Changes
 
@@ -204,15 +246,71 @@ if (architecturalSignificance >= 11) {
     labels: ['auto-generated', 'architectural-change']
   };
 
+  // Validate Git state before proceeding
+  const gitState = validateGitState(fileChanges);
+  if (!gitState.isValid) {
+    notify({
+      type: 'auto_pr_failed',
+      message: `Auto-PR aborted: ${gitState.error}`,
+      action: 'Manual PR creation required',
+      reviewRequired: true
+    });
+    return;
+  }
+
   // Ensure changes are committed and pushed first
   if (hasUncommittedChanges()) {
-    runCommand('git add .');
-    runCommand(`git commit -m "feat: ${prDetails.title}"`);
-    runCommand(`git push origin ${prDetails.headBranch}`);
+    // Stage only the intended files
+    const filePaths = fileChanges.map(change => change.path);
+    if (!stageFiles(filePaths)) {
+      notify({
+        type: 'auto_pr_failed',
+        message: 'Failed to stage files for PR commit',
+        action: 'Manual staging required',
+        reviewRequired: true
+      });
+      return;
+    }
+
+    // Commit with escaped message
+    try {
+      runCommand(`git commit -m ${escapeShellArg(`feat: ${prDetails.title}`)}`);
+    } catch (error) {
+      notify({
+        type: 'auto_pr_failed',
+        message: 'Failed to commit changes for PR',
+        action: 'Manual commit required',
+        reviewRequired: true
+      });
+      return;
+    }
+
+    // Push to origin branch (escape branch name)
+    try {
+      runCommand(`git push origin ${escapeShellArg(prDetails.headBranch)}`);
+    } catch (error) {
+      notify({
+        type: 'auto_pr_failed',
+        message: 'Failed to push changes for PR',
+        action: 'Manual push required',
+        reviewRequired: true
+      });
+      return;
+    }
   }
 
   // Create pull request
   const prUrl = createPullRequest(prDetails);
+
+  if (!prUrl) {
+    notify({
+      type: 'auto_pr_failed',
+      message: 'Failed to create pull request',
+      action: 'Manual PR creation required',
+      reviewRequired: true
+    });
+    return;
+  }
 
   notify({
     type: 'auto_pr_created',
@@ -225,11 +323,13 @@ if (architecturalSignificance >= 11) {
 ```
 
 **Actions Performed:**
-- Commit any remaining changes
-- Push to feature branch
-- Create pull request targeting main branch
-- Add appropriate labels for tracking
-- Notify user with PR link
+- Validate Git state (check for detached HEAD, unmerged changes, unexpected dirty files)
+- Stage only the intended files if uncommitted changes exist
+- Commit any remaining changes (with proper shell escaping)
+- Push to feature branch (with proper shell escaping)
+- Create pull request using temporary file for body (prevents command injection)
+- Add appropriate labels for tracking (with proper shell escaping)
+- Clean up temporary files and notify user with PR link or abort with clear error message
 
 ## Rule Implementation Details
 
@@ -278,6 +378,115 @@ const architecturalPatterns = {
   apiEndpoint: /export\s+async\s+function\s+(GET|POST|PUT|DELETE)/,
   configChange: /(module\.exports|export\s+default)/
 };
+```
+
+#### 3. Security & Safety Helper Functions
+```typescript
+// Shell argument escaping to prevent command injection
+function escapeShellArg(arg: string): string {
+  // Use single quotes and escape any single quotes within the argument
+  return `'${arg.replace(/'/g, "'\"'\"'")}'`;
+}
+
+// Create a temporary file with content and return its path
+function createTempFile(content: string, prefix: string = 'cursor-rules'): string {
+  try {
+    const tempDir = runCommand('mktemp -d').trim();
+    const tempFile = `${tempDir}/${prefix}-${Date.now()}.md`;
+    runCommand(`cat > ${escapeShellArg(tempFile)} << 'EOF'
+${content}
+EOF`);
+    return tempFile;
+  } catch (error) {
+    console.error('Failed to create temporary file:', error);
+    throw new Error('Unable to create temporary file for PR body');
+  }
+}
+
+// Clean up temporary file
+function cleanupTempFile(filePath: string): void {
+  try {
+    if (filePath && filePath.startsWith('/tmp/')) {
+      runCommand(`rm -rf ${escapeShellArg(filePath)}`);
+    }
+  } catch (error) {
+    // Ignore cleanup errors
+  }
+}
+
+// Git state validation functions
+function isDetachedHead(): boolean {
+  try {
+    const branch = runCommand('git symbolic-ref -q HEAD 2>/dev/null || echo detached');
+    return branch.trim() === 'detached';
+  } catch {
+    return true; // Assume detached if we can't determine
+  }
+}
+
+function hasUnmergedChanges(): boolean {
+  try {
+    const status = runCommand('git status --porcelain | grep "^U[AD] \\|^A[AD] \\|^D[AD] " | wc -l');
+    return parseInt(status.trim()) > 0;
+  } catch {
+    return false;
+  }
+}
+
+function getDirtyFiles(): string[] {
+  try {
+    const status = runCommand('git status --porcelain');
+    return status.trim().split('\n')
+      .filter(line => line.trim().length > 0)
+      .map(line => line.substring(3).trim()); // Remove status codes, keep file paths
+  } catch {
+    return [];
+  }
+}
+
+function validateGitState(fileChanges: FileChange[]): { isValid: boolean; error?: string } {
+  // Check for detached HEAD
+  if (isDetachedHead()) {
+    return { isValid: false, error: 'Cannot auto-commit: currently on detached HEAD. Please checkout a branch first.' };
+  }
+
+  // Check for unmerged changes
+  if (hasUnmergedChanges()) {
+    return { isValid: false, error: 'Cannot auto-commit: repository has unmerged changes. Please resolve conflicts first.' };
+  }
+
+  // Check for unexpected dirty files
+  const dirtyFiles = getDirtyFiles();
+  const expectedPaths = fileChanges.map(change => change.path);
+
+  const unexpectedFiles = dirtyFiles.filter(dirtyFile =>
+    !expectedPaths.some(expectedPath =>
+      dirtyFile === expectedPath || dirtyFile.startsWith(expectedPath + '/')
+    )
+  );
+
+  if (unexpectedFiles.length > 0) {
+    return {
+      isValid: false,
+      error: `Cannot auto-commit: unexpected dirty files detected: ${unexpectedFiles.join(', ')}. Only stage intended changes.`
+    };
+  }
+
+  return { isValid: true };
+}
+
+function stageFiles(filePaths: string[]): boolean {
+  try {
+    // Stage each file individually with proper escaping
+    for (const filePath of filePaths) {
+      runCommand(`git add -- ${escapeShellArg(filePath)}`);
+    }
+    return true;
+  } catch (error) {
+    console.error('Failed to stage files:', error);
+    return false;
+  }
+}
 ```
 
 #### 3. Git Automation Helper Functions
@@ -367,22 +576,32 @@ function getLastCommitHash(): string {
 
 // Create a pull request (GitHub CLI required)
 function createPullRequest(details: PRDetails): string {
+  let tempFile: string | null = null;
   try {
     const { title, body, baseBranch, headBranch, labels } = details;
 
-    // Create PR using GitHub CLI
-    const prCommand = `gh pr create --title "${title}" --body "${body}" --base ${baseBranch} --head ${headBranch}`;
+    // Create temporary file for PR body to avoid command injection
+    tempFile = createTempFile(body, 'pr-body');
+
+    // Create PR using GitHub CLI with file-based body (escape all arguments)
+    const prCommand = `gh pr create --title ${escapeShellArg(title)} --body-file ${escapeShellArg(tempFile)} --base ${escapeShellArg(baseBranch)} --head ${escapeShellArg(headBranch)}`;
     const prUrl = runCommand(prCommand).trim();
 
-    // Add labels if specified
+    // Add labels if specified (escape label arguments)
     if (labels && labels.length > 0) {
-      runCommand(`gh pr edit ${prUrl} --add-label "${labels.join(',')}"`);
+      const escapedLabels = labels.map(label => escapeShellArg(label)).join(' ');
+      runCommand(`gh pr edit ${escapeShellArg(prUrl)} --add-label ${escapedLabels}`);
     }
 
     return prUrl;
   } catch (error) {
     console.error('Failed to create PR:', error);
     return '';
+  } finally {
+    // Clean up temporary file
+    if (tempFile) {
+      cleanupTempFile(tempFile);
+    }
   }
 }
 ```

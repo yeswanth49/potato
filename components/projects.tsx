@@ -67,8 +67,8 @@ const projects = [
       "Fast loading performance",
     ],
     technologies: ["HTML", "CSS", "JavaScript", "Tailwind CSS", "Framer Motion"],
-    liveUrl: "https://openbook-landing.vercel.app",
-    githubUrl: "https://github.com/yeswanth49/openbook-landing",
+    liveUrl: "https://page.goopenbook.in",
+    githubUrl: "https://github.com/yeswanth49/openbook-lp",
   },
   {
     id: "pecup-old",
@@ -83,8 +83,8 @@ const projects = [
       "Educational project structure",
     ],
     technologies: ["HTML", "CSS", "JavaScript"],
-    liveUrl: "#",
-    githubUrl: "#",
+    liveUrl: "https://old.pecup.in",
+    githubUrl: "https://github.com/yeswanth49/pecup",
   },
 ]
 
@@ -159,10 +159,16 @@ export function Projects() {
     const container = scrollContainerRef.current
     if (!container) return
 
+    const handleResize = () => checkScrollPosition()
+
     checkScrollPosition()
     container.addEventListener('scroll', checkScrollPosition)
+    window.addEventListener('resize', handleResize)
 
-    return () => container.removeEventListener('scroll', checkScrollPosition)
+    return () => {
+      container.removeEventListener('scroll', checkScrollPosition)
+      window.removeEventListener('resize', handleResize)
+    }
   }, [])
 
   return (
@@ -232,13 +238,13 @@ export function Projects() {
                   </div>
 
                   <div className="flex gap-3">
-                    <Button size="sm" variant="outline" className="flex-1 group/btn bg-transparent" asChild>
+                    <Button size="sm" variant="outline" className="flex-1 group/btn bg-transparent hover:bg-transparent hover:text-foreground" asChild>
                       <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
                         <ExternalLink className="w-4 h-4 mr-2 group-hover/btn:translate-x-0.5 transition-transform" />
                         Live Demo
                       </a>
                     </Button>
-                    <Button size="sm" variant="ghost" className="group/btn" asChild>
+                    <Button size="sm" variant="ghost" className="group/btn hover:bg-transparent hover:text-foreground" asChild>
                       <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">
                         <Github className="w-4 h-4 group-hover/btn:scale-110 transition-transform" />
                       </a>

@@ -22,8 +22,6 @@ jest.mock('lucide-react', () => ({
   Github: mockIcon('github-icon'),
   Linkedin: mockIcon('linkedin-icon'),
   Twitter: mockIcon('twitter-icon'),
-  Phone: mockIcon('phone-icon'),
-  Mail: mockIcon('mail-icon'),
   FileText: mockIcon('file-text-icon'),
 }), { virtual: true })
 
@@ -135,7 +133,7 @@ describe('Hero Component', () => {
   describe('Social links', () => {
     it('has external profile links with secure attributes', () => {
       const twitter = screen.getByRole('link', { name: /twitter/i })
-      expect(twitter).toHaveAttribute('href', 'https://twitter.com/yeswanth49')
+      expect(twitter).toHaveAttribute('href', 'https://x.com/Yeshh49')
       expect(twitter).toHaveAttribute('target', '_blank')
       expect(twitter).toHaveAttribute('rel', 'noopener noreferrer')
 
@@ -145,26 +143,15 @@ describe('Hero Component', () => {
       expect(github).toHaveAttribute('rel', 'noopener noreferrer')
 
       const linkedin = screen.getByRole('link', { name: /linkedin/i })
-      expect(linkedin).toHaveAttribute('href', 'https://linkedin.com/in/yeswanthm')
+      expect(linkedin).toHaveAttribute('href', 'https://www.linkedin.com/in/yeswanth-madasu-41525b297/')
       expect(linkedin).toHaveAttribute('target', '_blank')
       expect(linkedin).toHaveAttribute('rel', 'noopener noreferrer')
     })
 
-    it('has contact links without target/rel and correct protocols', () => {
-      const phone = screen.getByRole('link', { name: /\+91 9032690321/i })
-      expect(phone).toHaveAttribute('href', 'tel:+919032690321')
-      expect(phone).not.toHaveAttribute('target')
-      expect(phone).not.toHaveAttribute('rel')
-
-      const email = screen.getByRole('link', { name: /work\.yeswanth@gmail\.com/i })
-      expect(email).toHaveAttribute('href', 'mailto:work.yeswanth@gmail.com')
-      expect(email).not.toHaveAttribute('target')
-      expect(email).not.toHaveAttribute('rel')
-    })
 
     it('resume link opens in new tab securely', () => {
       const resume = screen.getByRole('link', { name: /resume/i })
-      expect(resume).toHaveAttribute('href', '/resume.pdf')
+      expect(resume).toHaveAttribute('href', '/Yeswanth_Madasu.pdf')
       expect(resume).toHaveAttribute('target', '_blank')
       expect(resume).toHaveAttribute('rel', 'noopener noreferrer')
     })
@@ -200,8 +187,6 @@ describe('Hero Component', () => {
       expect(screen.getByTestId('twitter-icon')).toBeInTheDocument()
       expect(screen.getByTestId('github-icon')).toBeInTheDocument()
       expect(screen.getByTestId('linkedin-icon')).toBeInTheDocument()
-      expect(screen.getByTestId('phone-icon')).toBeInTheDocument()
-      expect(screen.getByTestId('mail-icon')).toBeInTheDocument()
       expect(screen.getByTestId('file-text-icon')).toBeInTheDocument()
     })
 
@@ -223,7 +208,7 @@ describe('Hero Component', () => {
       const button = screen.getByTestId('hero-button')
       expect(button).toHaveAttribute('data-variant', 'outline')
       expect(button).toHaveAttribute('data-size', 'sm')
-      expect(button).toHaveClass('group', 'transition-colors', 'hover:bg-foreground', 'hover:text-background', 'bg-transparent')
+      expect(button).toHaveClass('group', 'transition-colors', 'hover:bg-transparent', 'hover:text-foreground', 'bg-transparent')
     })
 
     it('contains anchor with correct href', () => {
@@ -267,11 +252,6 @@ describe('Hero Component', () => {
       expect(text).toMatch(/React and Next\.js/)
     })
 
-    it('keeps consistent naming in heading and email link', () => {
-      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Yeswanth Madasu')
-      const email = screen.getByRole('link', { name: /work\.yeswanth@gmail\.com/i })
-      expect(email).toHaveAttribute('href', 'mailto:work.yeswanth@gmail.com')
-    })
   })
 })
 

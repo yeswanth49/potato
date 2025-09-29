@@ -1,25 +1,3 @@
-import React from 'react'
-import { render, screen, fireEvent, waitFor, act } from '@testing-library/react'
-import { Projects } from '@/components/projects'
-
-// Mock Intersection Observer API
-const mockIntersectionObserver = jest.fn()
-mockIntersectionObserver.mockReturnValue({
-  observe: jest.fn(),
-  unobserve: jest.fn(),
-  disconnect: jest.fn(),
-})
-
-// Save original IntersectionObserver to restore after tests
-const _originalIO = window.IntersectionObserver
-
-// Mock window.IntersectionObserver
-Object.defineProperty(window, 'IntersectionObserver', {
-  writable: true,
-  configurable: true,
-  value: mockIntersectionObserver,
-})
-
 // Mock the Lucide React icons
 jest.mock('lucide-react', () => ({
   ExternalLink: ({ className, ...props }: { className?: string; [key: string]: any }) => (
@@ -28,7 +6,23 @@ jest.mock('lucide-react', () => ({
   Github: ({ className, ...props }: { className?: string; [key: string]: any }) => (
     <div data-testid="github-icon" className={className} {...props} />
   ),
+  ChevronLeft: ({ className, ...props }: { className?: string; [key: string]: any }) => (
+    <div data-testid="chevron-left-icon" className={className} {...props} />
+  ),
+  ChevronRight: ({ className, ...props }: { className?: string; [key: string]: any }) => (
+    <div data-testid="chevron-right-icon" className={className} {...props} />
+  ),
 }))
+
+import React from 'react'
+import { render, screen, fireEvent, waitFor, act } from '@testing-library/react'
+import { Projects } from '@/components/projects'
+
+// IntersectionObserver is already mocked globally in jest.setup.ts
+const mockIntersectionObserver = (global as any).mockIntersectionObserver as jest.MockedFunction<any>
+const mockObserve = (global as any).mockObserve as jest.MockedFunction<any>
+const mockDisconnect = (global as any).mockDisconnect as jest.MockedFunction<any>
+const mockUnobserve = (global as any).mockUnobserve as jest.MockedFunction<any>
 
 // Mock UI components
 jest.mock('@/components/ui/card', () => ({
@@ -85,30 +79,14 @@ jest.mock('@/components/ui/button', () => ({
 }))
 
 describe('Projects Component', () => {
-  let mockObserverInstance: any
-
   beforeEach(() => {
     jest.clearAllMocks()
-    mockObserverInstance = {
-      observe: jest.fn(),
-      unobserve: jest.fn(),
-      disconnect: jest.fn(),
-    }
-    mockIntersectionObserver.mockReturnValue(mockObserverInstance)
   })
 
   afterEach(() => {
     jest.restoreAllMocks()
   })
 
-  afterAll(() => {
-    // Restore original IntersectionObserver to prevent leakage into other test suites
-    Object.defineProperty(window, 'IntersectionObserver', {
-      writable: true,
-      configurable: true,
-      value: _originalIO,
-    })
-  })
 
   describe('Rendering', () => {
     test('renders the projects section with correct structure', () => {
@@ -253,7 +231,7 @@ describe('Projects Component', () => {
         { threshold: 0.2 }
       )
       
-      expect(mockObserverInstance.observe).toHaveBeenCalledTimes(3)
+      expect(mockObserve).toHaveBeenCalledTimes(3)
     })
 
     test('triggers animation when card becomes visible', async () => {
@@ -281,7 +259,7 @@ describe('Projects Component', () => {
       })
 
       await waitFor(() => {
-        expect(mockObserverInstance.disconnect).toHaveBeenCalled()
+        expect(mockDisconnect).toHaveBeenCalled()
       })
     })
 
@@ -290,7 +268,7 @@ describe('Projects Component', () => {
       
       unmount()
       
-      expect(mockObserverInstance.disconnect).toHaveBeenCalled()
+      expect(mockDisconnect).toHaveBeenCalled()
     })
   })
 
@@ -397,8 +375,8 @@ describe('Projects Component', () => {
       render(<Projects />)
       
       // Each card should only have one observer
-      expect(mockObserverInstance.observe).toHaveBeenCalledTimes(3)
-      expect(mockIntersectionObserver).toHaveBeenCalledTimes(3)
+      expect(mockObserve).toHaveBeenCalledTimes(5)
+      expect(mockIntersectionObserver).toHaveBeenCalledTimes(5)
     })
   })
 
@@ -411,7 +389,7 @@ describe('Projects Component', () => {
       
       // Project titles should be within card headers but not necessarily headings
       const projectTitles = screen.getAllByTestId('card-title')
-      expect(projectTitles).toHaveLength(3)
+      expect(projectTitles).toHaveLength(5)
     })
 
     test('links have proper accessibility attributes', () => {
@@ -429,11 +407,11 @@ describe('Projects Component', () => {
       
       // Live Demo buttons should have descriptive text
       const liveDemoButtons = screen.getAllByText('Live Demo')
-      expect(liveDemoButtons).toHaveLength(3)
+      expect(liveDemoButtons).toHaveLength(5)
       
       // GitHub icons should be within links with accessible context
       const githubIcons = screen.getAllByTestId('github-icon')
-      expect(githubIcons).toHaveLength(3)
+      expect(githubIcons).toHaveLength(5)
     })
   })
 
@@ -518,7 +496,7 @@ describe('Projects Component', () => {
       }).not.toThrow()
       
       // Should not call unobserve for non-intersecting entries
-      expect(mockObserverInstance.unobserve).not.toHaveBeenCalled()
+      expect(mockUnobserve).not.toHaveBeenCalled()
     })
   })
 
@@ -553,7 +531,7 @@ describe('Projects Component', () => {
       
       unmount()
       
-      expect(mockObserverInstance.disconnect).toHaveBeenCalled()
+      expect(mockDisconnect).toHaveBeenCalled()
     })
   })
 
@@ -562,14 +540,14 @@ describe('Projects Component', () => {
       render(<Projects />)
       
       // Check that all expected project titles are present
-      const expectedTitles = ['OpenBook', 'safeLINK', 'PEC.UP']
+      const expectedTitles = ['OpenBook', 'safeLINK', 'PEC.UP', 'OpenBook Landing Page', 'PEC.UP (Original)']
       expectedTitles.forEach(title => {
         expect(screen.getByText(title)).toBeInTheDocument()
       })
-      
+
       // Check that descriptions are present and non-empty
       const descriptions = screen.getAllByTestId('card-description')
-      expect(descriptions).toHaveLength(3)
+      expect(descriptions).toHaveLength(5)
       descriptions.forEach(desc => {
         expect(desc.textContent).toBeTruthy()
         expect(desc.textContent.length).toBeGreaterThan(10)

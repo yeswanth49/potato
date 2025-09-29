@@ -14,11 +14,7 @@ const config: Config.InitialOptions = {
   testPathIgnorePatterns: ['<rootDir>/.next/', '<rootDir>/node_modules/'],
   transform: {
     '\\.(ts|tsx)$': ['ts-jest', {
-      tsconfig: {
-        jsx: 'react-jsx',
-        esModuleInterop: true,
-        allowSyntheticDefaultImports: true,
-      },
+      tsconfig: '<rootDir>/tsconfig.jest.json',
     }],
     '\\.(js|jsx)$': ['babel-jest', { presets: ['next/babel'] }],
   },

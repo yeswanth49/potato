@@ -2,16 +2,24 @@
 import '@testing-library/jest-dom';
 
 // Mock IntersectionObserver
-global.IntersectionObserver = class IntersectionObserver {
+const mockIntersectionObserver = jest.fn()
+const mockObserve = jest.fn()
+const mockDisconnect = jest.fn()
+const mockUnobserve = jest.fn()
+
+const MockIntersectionObserver = class IntersectionObserver {
   private callback: IntersectionObserverCallback;
   private options: IntersectionObserverInit;
 
   constructor(callback: IntersectionObserverCallback, options?: IntersectionObserverInit) {
     this.callback = callback;
     this.options = options || {};
+    // Call the jest mock to track constructor calls
+    mockIntersectionObserver(callback, options);
   }
 
   observe(element: Element) {
+    mockObserve(element);
     // Immediately trigger intersection for testing
     const entry: IntersectionObserverEntry = {
       target: element,
@@ -26,13 +34,22 @@ global.IntersectionObserver = class IntersectionObserver {
   }
 
   disconnect() {
+    mockDisconnect();
     return null;
   }
 
   unobserve() {
+    mockUnobserve();
     return null;
   }
 };
+
+// Make the mock available globally for tests
+;(global as any).mockIntersectionObserver = mockIntersectionObserver;
+;(global as any).mockObserve = mockObserve;
+;(global as any).mockDisconnect = mockDisconnect;
+;(global as any).mockUnobserve = mockUnobserve;
+global.IntersectionObserver = MockIntersectionObserver as any;
 
 // Shared mock functions for Next.js router
 const mockPush = jest.fn();

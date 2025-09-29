@@ -43,7 +43,7 @@ exports[`Hero Snapshot matches DOM snapshot 1`] = `
       >
         <a
           class="group flex items-center gap-2 text-muted-foreground hover:text-foreground transition-all duration-300 ease-in-out"
-          href="https://twitter.com/yeswanth49"
+          href="https://x.com/Yeshh49"
           rel="noopener noreferrer"
           target="_blank"
         >
@@ -55,6 +55,22 @@ exports[`Hero Snapshot matches DOM snapshot 1`] = `
             class="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 ease-in-out whitespace-nowrap"
           >
             Twitter
+          </span>
+        </a>
+        <a
+          class="group flex items-center gap-2 text-muted-foreground hover:text-foreground transition-all duration-300 ease-in-out"
+          href="https://www.linkedin.com/in/yeswanth-madasu-41525b297/"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          <svg
+            class="w-5 h-5"
+            data-testid="linkedin-icon"
+          />
+          <span
+            class="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 ease-in-out whitespace-nowrap"
+          >
+            LinkedIn
           </span>
         </a>
         <a
@@ -75,35 +91,7 @@ exports[`Hero Snapshot matches DOM snapshot 1`] = `
         </a>
         <a
           class="group flex items-center gap-2 text-muted-foreground hover:text-foreground transition-all duration-300 ease-in-out"
-          href="tel:+919032690321"
-        >
-          <svg
-            class="w-5 h-5"
-            data-testid="phone-icon"
-          />
-          <span
-            class="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 ease-in-out whitespace-nowrap"
-          >
-            +91 9032690321
-          </span>
-        </a>
-        <a
-          class="group flex items-center gap-2 text-muted-foreground hover:text-foreground transition-all duration-300 ease-in-out"
-          href="mailto:work.yeswanth@gmail.com"
-        >
-          <svg
-            class="w-5 h-5"
-            data-testid="mail-icon"
-          />
-          <span
-            class="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 ease-in-out whitespace-nowrap"
-          >
-            work.yeswanth@gmail.com
-          </span>
-        </a>
-        <a
-          class="group flex items-center gap-2 text-muted-foreground hover:text-foreground transition-all duration-300 ease-in-out"
-          href="/resume.pdf"
+          href="/Yeswanth_Madasu.pdf"
           rel="noopener noreferrer"
           target="_blank"
         >
@@ -117,29 +105,13 @@ exports[`Hero Snapshot matches DOM snapshot 1`] = `
             Resume
           </span>
         </a>
-        <a
-          class="group flex items-center gap-2 text-muted-foreground hover:text-foreground transition-all duration-300 ease-in-out"
-          href="https://linkedin.com/in/yeswanthm"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          <svg
-            class="w-5 h-5"
-            data-testid="linkedin-icon"
-          />
-          <span
-            class="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 ease-in-out whitespace-nowrap"
-          >
-            LinkedIn
-          </span>
-        </a>
       </div>
     </div>
     <div
       class="opacity-0 animate-fade-in-up animate-delay-500"
     >
       <a
-        class="group transition-colors hover:bg-foreground hover:text-background bg-transparent"
+        class="group transition-colors hover:bg-transparent hover:text-foreground bg-transparent"
         data-size="sm"
         data-testid="hero-button"
         data-variant="outline"

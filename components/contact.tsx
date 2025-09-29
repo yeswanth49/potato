@@ -24,14 +24,14 @@ export function Contact() {
                 <Button
                   variant="outline"
                   size="sm"
-                  className="h-12 group hover:bg-foreground hover:text-background transition-colors bg-transparent"
+                  className="h-12 group hover:bg-transparent hover:text-foreground transition-colors bg-transparent"
                   asChild
                 >
                   <a href="mailto:work.yeswanth@gmail.com" className="flex items-center gap-3">
                     <Mail className="w-4 h-4 group-hover:scale-110 transition-transform" />
                     <div className="text-left">
                       <div className="font-medium text-sm">Email</div>
-                      <div className="text-xs text-muted-foreground group-hover:text-background/80">
+                      <div className="text-xs text-muted-foreground group-hover:text-foreground/80">
                         work.yeswanth@gmail.com
                       </div>
                     </div>
@@ -41,14 +41,14 @@ export function Contact() {
                 <Button
                   variant="outline"
                   size="sm"
-                  className="h-12 group hover:bg-foreground hover:text-background transition-colors bg-transparent"
+                  className="h-12 group hover:bg-transparent hover:text-foreground transition-colors bg-transparent"
                   asChild
                 >
                   <a href="tel:9032690321" className="flex items-center gap-3">
                     <Phone className="w-4 h-4 group-hover:scale-110 transition-transform" />
                     <div className="text-left">
                       <div className="font-medium text-sm">Phone</div>
-                      <div className="text-xs text-muted-foreground group-hover:text-background/80">9032690321</div>
+                      <div className="text-xs text-muted-foreground group-hover:text-foreground/80">9032690321</div>
                     </div>
                   </a>
                 </Button>
@@ -56,7 +56,7 @@ export function Contact() {
                 <Button
                   variant="outline"
                   size="sm"
-                  className="h-12 group hover:bg-foreground hover:text-background transition-colors bg-transparent"
+                  className="h-12 group hover:bg-transparent hover:text-foreground transition-colors bg-transparent"
                   asChild
                 >
                   <a
@@ -68,7 +68,7 @@ export function Contact() {
                     <Github className="w-4 h-4 group-hover:scale-110 transition-transform" />
                     <div className="text-left">
                       <div className="font-medium text-sm">GitHub</div>
-                      <div className="text-xs text-muted-foreground group-hover:text-background/80">@yeswanth49</div>
+                      <div className="text-xs text-muted-foreground group-hover:text-foreground/80">@yeswanth49</div>
                     </div>
                   </a>
                 </Button>
@@ -76,11 +76,11 @@ export function Contact() {
                 <Button
                   variant="outline"
                   size="sm"
-                  className="h-12 group hover:bg-foreground hover:text-background transition-colors bg-transparent"
+                  className="h-12 group hover:bg-transparent hover:text-foreground transition-colors bg-transparent"
                   asChild
                 >
                   <a
-                    href="https://linkedin.com/in/yeswanthm"
+                    href="https://www.linkedin.com/in/yeswanth-madasu-41525b297/"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-3"
@@ -88,7 +88,7 @@ export function Contact() {
                     <Linkedin className="w-4 h-4 group-hover:scale-110 transition-transform" />
                     <div className="text-left">
                       <div className="font-medium text-sm">LinkedIn</div>
-                      <div className="text-xs text-muted-foreground group-hover:text-background/80">@yeswanthm</div>
+                      <div className="text-xs text-muted-foreground group-hover:text-foreground/80">@yeswanthm</div>
                     </div>
                   </a>
                 </Button>
