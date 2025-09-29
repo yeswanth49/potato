@@ -177,10 +177,10 @@ export function Projects() {
           {canScrollLeft && (
             <button
               onClick={scrollLeft}
-              className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-background/80 backdrop-blur-sm border border-gray-400 rounded-full p-2 shadow-lg shadow-gray-400/20 hover:bg-background hover:shadow-gray-400/40 hover:shadow-xl transition-all duration-300 group"
-              aria-label="Scroll left"
+              className="absolute left-2 top-1/2 -translate-y-1/2 z-20 bg-background/90 backdrop-blur-md border-2 border-gray-400 rounded-full p-3 shadow-xl shadow-gray-400/30 hover:bg-background hover:shadow-gray-400/50 hover:shadow-2xl hover:scale-110 transition-all duration-300 group"
+              aria-label="Scroll left to see previous projects"
             >
-              <ChevronLeft className="w-5 h-5 text-foreground group-hover:text-primary transition-colors" />
+              <ChevronLeft className="w-6 h-6 text-foreground group-hover:text-primary transition-colors" />
             </button>
           )}
 
@@ -188,16 +188,16 @@ export function Projects() {
           {canScrollRight && (
             <button
               onClick={scrollRight}
-              className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-background/80 backdrop-blur-sm border border-gray-400 rounded-full p-2 shadow-lg shadow-gray-400/20 hover:bg-background hover:shadow-gray-400/40 hover:shadow-xl transition-all duration-300 group"
-              aria-label="Scroll right"
+              className="absolute right-2 top-1/2 -translate-y-1/2 z-20 bg-background/90 backdrop-blur-md border-2 border-gray-400 rounded-full p-3 shadow-xl shadow-gray-400/30 hover:bg-background hover:shadow-gray-400/50 hover:shadow-2xl hover:scale-110 transition-all duration-300 group"
+              aria-label="Scroll right to see more projects"
             >
-              <ChevronRight className="w-5 h-5 text-foreground group-hover:text-primary transition-colors" />
+              <ChevronRight className="w-6 h-6 text-foreground group-hover:text-primary transition-colors" />
             </button>
           )}
 
           <div
             ref={scrollContainerRef}
-            className="flex gap-6 overflow-x-auto pb-4 scrollbar-hide px-12"
+            className="flex gap-6 overflow-x-auto pb-4 scrollbar-hide px-16"
           >
             {projects.map((project, index) => (
             <div
