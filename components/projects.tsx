@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { ExternalLink, Github } from "lucide-react"
+import { ExternalLink, Github, ChevronLeft, ChevronRight } from "lucide-react"
 
 const projects = [
   {
@@ -91,7 +91,10 @@ const projects = [
 export function Projects() {
   const cardRefs = useRef<Record<string, HTMLDivElement | null>>({})
   const observersRef = useRef<Map<string, IntersectionObserver>>(new Map())
+  const scrollContainerRef = useRef<HTMLDivElement | null>(null)
   const [visibleIndices, setVisibleIndices] = useState<Set<string>>(new Set())
+  const [canScrollLeft, setCanScrollLeft] = useState(false)
+  const [canScrollRight, setCanScrollRight] = useState(true)
 
   useEffect(() => {
     projects.forEach((project, idx) => {
@@ -131,6 +134,37 @@ export function Projects() {
     }
   }, [])
 
+  const checkScrollPosition = () => {
+    const container = scrollContainerRef.current
+    if (!container) return
+
+    const { scrollLeft, scrollWidth, clientWidth } = container
+    setCanScrollLeft(scrollLeft > 0)
+    setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 1)
+  }
+
+  const scrollLeft = () => {
+    const container = scrollContainerRef.current
+    if (!container) return
+    container.scrollBy({ left: -320, behavior: 'smooth' })
+  }
+
+  const scrollRight = () => {
+    const container = scrollContainerRef.current
+    if (!container) return
+    container.scrollBy({ left: 320, behavior: 'smooth' })
+  }
+
+  useEffect(() => {
+    const container = scrollContainerRef.current
+    if (!container) return
+
+    checkScrollPosition()
+    container.addEventListener('scroll', checkScrollPosition)
+
+    return () => container.removeEventListener('scroll', checkScrollPosition)
+  }, [])
+
   return (
     <section id="projects" className="px-4">
       <div className="max-w-5xl mx-auto">
@@ -138,8 +172,34 @@ export function Projects() {
           <h2 className="text-2xl md:text-3xl font-semibold mb-6 text-center">Featured Projects</h2>
         </div>
 
-        <div className="flex gap-6 overflow-x-auto pb-4 scrollbar-hide">
-          {projects.map((project, index) => (
+        <div className="relative">
+          {/* Left Arrow */}
+          {canScrollLeft && (
+            <button
+              onClick={scrollLeft}
+              className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-background/80 backdrop-blur-sm border border-border rounded-full p-2 shadow-lg hover:bg-background transition-colors duration-200 group"
+              aria-label="Scroll left"
+            >
+              <ChevronLeft className="w-5 h-5 text-foreground group-hover:text-primary transition-colors" />
+            </button>
+          )}
+
+          {/* Right Arrow */}
+          {canScrollRight && (
+            <button
+              onClick={scrollRight}
+              className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-background/80 backdrop-blur-sm border border-border rounded-full p-2 shadow-lg hover:bg-background transition-colors duration-200 group"
+              aria-label="Scroll right"
+            >
+              <ChevronRight className="w-5 h-5 text-foreground group-hover:text-primary transition-colors" />
+            </button>
+          )}
+
+          <div
+            ref={scrollContainerRef}
+            className="flex gap-6 overflow-x-auto pb-4 scrollbar-hide px-12"
+          >
+            {projects.map((project, index) => (
             <div
               key={project.id}
               ref={(el) => { cardRefs.current[project.id] = el }}
@@ -188,6 +248,7 @@ export function Projects() {
               </Card>
             </div>
           ))}
+          </div>
         </div>
       </div>
     </section>
