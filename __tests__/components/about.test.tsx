@@ -1,36 +1,14 @@
 import '@testing-library/jest-dom'
-import { render, screen, act } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { About } from '@/components/about'
 
 // Tests leverage React Testing Library with Jest.
 
-// Mock IntersectionObserver to make animation assertions deterministic
-const mockIntersectionObserver = jest.fn()
-mockIntersectionObserver.mockReturnValue({
-  observe: jest.fn(),
-  unobserve: jest.fn(),
-  disconnect: jest.fn(),
-})
-
-Object.defineProperty(window, 'IntersectionObserver', {
-  writable: true,
-  configurable: true,
-  value: mockIntersectionObserver,
-})
-
 const renderAbout = () => render(<About />)
 
 describe('About component', () => {
-  let mockObserverInstance: any
-
   beforeEach(() => {
     jest.clearAllMocks()
-    mockObserverInstance = {
-      observe: jest.fn(),
-      unobserve: jest.fn(),
-      disconnect: jest.fn(),
-    }
-    mockIntersectionObserver.mockReturnValue(mockObserverInstance)
   })
   describe('structure and accessibility', () => {
     it('renders section region with expected id and accessible name', () => {
@@ -60,29 +38,13 @@ describe('About component', () => {
       expect(heading).toHaveClass('text-2xl', 'md:text-3xl', 'font-semibold', 'mb-6', 'text-center')
     })
 
-    it('includes fade-in-up animations for heading and content sections', () => {
-      // Set up mock to immediately trigger intersection
-      let intersectionCallback: (entries: any[]) => void = () => {}
-      mockIntersectionObserver.mockImplementation((callback) => {
-        intersectionCallback = callback
-        return mockObserverInstance
-      })
-
+    it('includes motion-safe fade-in-up classes for heading and content', () => {
       const { container } = renderAbout()
-
-      // Immediately trigger intersection to make animation classes appear
-      const mockEntry = {
-        isIntersecting: true,
-        target: container.querySelector('#about'),
-      }
-      act(() => intersectionCallback([mockEntry]))
-
-      const animatedSections = container.querySelectorAll('.animate-fade-in-up')
+      const animatedSections = container.querySelectorAll('.motion-safe\\:animate-fade-in-up')
       expect(animatedSections).toHaveLength(2)
-
-      expect(animatedSections[0]).toHaveClass('animate-fade-in-up')
-      expect(animatedSections[1]).toHaveClass('animate-fade-in-up')
-      expect(animatedSections[1]).toHaveClass('animate-delay-200')
+      expect(animatedSections[0]).toHaveClass('motion-safe:animate-fade-in-up')
+      expect(animatedSections[1]).toHaveClass('motion-safe:animate-fade-in-up')
+      expect(animatedSections[1]).toHaveClass('motion-safe:animate-delay-200')
     })
   })
 
