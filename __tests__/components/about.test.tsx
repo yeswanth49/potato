@@ -42,8 +42,6 @@ describe('About component', () => {
       const { container } = renderAbout()
       const animatedSections = container.querySelectorAll('.motion-safe\\:animate-fade-in-up')
       expect(animatedSections).toHaveLength(2)
-      expect(animatedSections[0]).toHaveClass('motion-safe:animate-fade-in-up')
-      expect(animatedSections[1]).toHaveClass('motion-safe:animate-fade-in-up')
       expect(animatedSections[1]).toHaveClass('motion-safe:animate-delay-200')
     })
   })

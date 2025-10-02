@@ -1,5 +1,3 @@
-'use client';
-
 export function About() {
   return (
     <section id="about" aria-labelledby="about-heading" className="px-4">
