@@ -1,0 +1,129 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`Hero Snapshot matches DOM snapshot 1`] = `
+<section
+  class="flex items-center justify-center px-4"
+  id="hero"
+>
+  <div
+    class="max-w-3xl mx-auto text-center"
+  >
+    <div
+      class="opacity-0 animate-fade-in-up"
+    >
+      <h1
+        class="text-4xl md:text-5xl font-semibold mb-3 text-balance"
+      >
+        Hi, I'm Yeswanth Madasu
+      </h1>
+    </div>
+    <div
+      class="opacity-0 animate-fade-in-up animate-delay-200"
+    >
+      <p
+        class="text-base md:text-lg text-muted-foreground mb-4 text-balance"
+      >
+        Full Stack Developer
+      </p>
+    </div>
+    <div
+      class="opacity-0 animate-fade-in-up animate-delay-300"
+    >
+      <p
+        class="text-sm text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed text-pretty"
+      >
+        Frontend-focused developer building accessible, performant web apps with React and Next.js. Focusing on building accessible, performant web apps with React and Next.js.
+      </p>
+    </div>
+    <div
+      class="opacity-0 animate-fade-in-up animate-delay-400"
+    >
+      <div
+        class="flex flex-wrap items-center justify-center gap-6 mb-8"
+      >
+        <a
+          class="group flex items-center gap-2 text-muted-foreground hover:text-foreground transition-all duration-300 ease-in-out"
+          href="https://x.com/Yeshh49"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          <svg
+            class="w-5 h-5"
+            data-testid="twitter-icon"
+          />
+          <span
+            class="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 ease-in-out whitespace-nowrap"
+          >
+            Twitter
+          </span>
+        </a>
+        <a
+          class="group flex items-center gap-2 text-muted-foreground hover:text-foreground transition-all duration-300 ease-in-out"
+          href="https://www.linkedin.com/in/yeswanth-madasu-41525b297/"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          <svg
+            class="w-5 h-5"
+            data-testid="linkedin-icon"
+          />
+          <span
+            class="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 ease-in-out whitespace-nowrap"
+          >
+            LinkedIn
+          </span>
+        </a>
+        <a
+          class="group flex items-center gap-2 text-muted-foreground hover:text-foreground transition-all duration-300 ease-in-out"
+          href="https://github.com/yeswanth49"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          <svg
+            class="w-5 h-5"
+            data-testid="github-icon"
+          />
+          <span
+            class="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 ease-in-out whitespace-nowrap"
+          >
+            GitHub
+          </span>
+        </a>
+        <a
+          class="group flex items-center gap-2 text-muted-foreground hover:text-foreground transition-all duration-300 ease-in-out"
+          href="/Yeswanth_Madasu.pdf"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          <svg
+            class="w-5 h-5"
+            data-testid="file-text-icon"
+          />
+          <span
+            class="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 ease-in-out whitespace-nowrap"
+          >
+            Resume
+          </span>
+        </a>
+      </div>
+    </div>
+    <div
+      class="opacity-0 animate-fade-in-up animate-delay-500"
+    >
+      <a
+        class="group transition-colors hover:bg-transparent hover:text-foreground bg-transparent"
+        data-size="sm"
+        data-testid="hero-button"
+        data-variant="outline"
+        href="#about"
+      >
+        Explore My Work
+        <svg
+          class="w-4 h-4 ml-2 group-hover:translate-y-0.5 transition-transform"
+          data-testid="arrow-down-icon"
+        />
+      </a>
+    </div>
+  </div>
+</section>
+`;

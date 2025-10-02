@@ -1,10 +1,15 @@
 "use client"
 
 import type React from "react"
+import { useState, useEffect, useCallback, useRef } from "react"
+import dynamic from "next/dynamic"
 
-import { useState, useEffect, useCallback } from "react"
 import { cn } from "@/lib/utils"
-import { KeyboardBackground } from "./keyboard-background"
+
+const KeyboardBackgroundClient = dynamic(
+  () => import("./keyboard-background").then((mod) => ({ default: mod.KeyboardBackground })),
+  { ssr: false },
+)
 
 const KEYBOARD_LAYOUT = {
   numbers: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"],
@@ -13,25 +18,30 @@ const KEYBOARD_LAYOUT = {
   bottomRow: ["Z", "X", "C", "V", "B", "N", "M"],
 }
 
-interface KeyProps {
+const TARGET_TEXT = "yesh"
+const HINT_SEQUENCE = ["y", "e", "s", "h", "return"] as const
+const MAX_HINT_ITERATIONS = 2
+
+type HintKey = (typeof HINT_SEQUENCE)[number]
+
+type KeyProps = Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'type'> & {
   children: React.ReactNode
-  onClick?: () => void
-  className?: string
   isPressed?: boolean
   size?: "sm" | "md" | "lg" | "xl"
 }
 
-function Key({ children, onClick, className, isPressed, size = "md" }: KeyProps) {
+function Key({ children, className, isPressed, size = "md", ...props }: KeyProps) {
   const sizeClasses = {
     sm: "w-12 h-12 text-sm",
     md: "w-14 h-14 text-base",
     lg: "w-20 h-14 text-base",
     xl: "w-96 h-14 text-base",
-  }
+  } as const
 
   return (
     <button
-      onClick={onClick}
+      {...props}
+      type="button"
       className={cn(
         "rounded-lg border border-[#1A1B1C] bg-gradient-to-b from-[#090A0B] to-[#0E0E10] text-gray-300 font-medium",
         "relative before:absolute before:inset-0 before:rounded-lg before:p-[1px] before:bg-gradient-to-b before:from-[#1A1B1C] before:to-[#141415] before:-z-10",
@@ -49,146 +59,203 @@ function Key({ children, onClick, className, isPressed, size = "md" }: KeyProps)
 
 interface KeyboardLandingProps {
   onCorrectEntry: () => void
+  backgroundMode?: "dark" | "keyboard"
 }
 
-export function KeyboardLanding({ onCorrectEntry }: KeyboardLandingProps) {
-  // 🎨 BACKGROUND TOGGLE: Change this to switch between dark background and keyboard background
-  // Set to 'dark' for solid black background, 'keyboard' for animated keyboard background
-  const BACKGROUND_MODE = 'dark' as 'dark' | 'keyboard' // <- Change this value to toggle
-  
+export function KeyboardLanding({ onCorrectEntry, backgroundMode = "dark" }: KeyboardLandingProps) {
   const [text, setText] = useState("")
   const [pressedKeys, setPressedKeys] = useState<Set<string>>(new Set())
   const [capsLock, setCapsLock] = useState(false)
   const [showError, setShowError] = useState(false)
   const [highlightIndex, setHighlightIndex] = useState(0)
   const [iterationCount, setIterationCount] = useState(0)
-  const targetText = "yesh"
-  const hintSequence = ["y", "e", "s", "h", "return"]
-  const maxIterations = 2
+  const errorResetTimeout = useRef<number | null>(null)
+  const isSubmittingRef = useRef(false)
 
-  // Highlighting loop for YESH + RETURN sequence with better rhythm (2 iterations only)
   useEffect(() => {
-    if (iterationCount >= maxIterations) return
-    
-    let timeoutId: NodeJS.Timeout
-    
-    const scheduleNext = () => {
-      const currentHint = hintSequence[highlightIndex]
-      let delay: number
-      
-      if (currentHint === "return") {
-        // Longer pause after RETURN before starting over
-        delay = 1200
-      } else if (highlightIndex === hintSequence.length - 2) {
-        // Shorter pause before RETURN (after 'h')
-        delay = 500
-      } else {
-        // Normal rhythm for Y-E-S-H
-        delay = 600
+    return () => {
+      if (errorResetTimeout.current) {
+        window.clearTimeout(errorResetTimeout.current)
+        errorResetTimeout.current = null
       }
-      
-      timeoutId = setTimeout(() => {
-        const nextIndex = (highlightIndex + 1) % hintSequence.length
+    }
+  }, [])
+
+  useEffect(() => {
+    if (iterationCount >= MAX_HINT_ITERATIONS) return
+
+    let timeoutId: number | undefined
+
+    const scheduleNext = () => {
+      const currentHint = HINT_SEQUENCE[highlightIndex]
+      let delay = 600
+
+      if (currentHint === "return") {
+        delay = 1200
+      } else if (highlightIndex === HINT_SEQUENCE.length - 2) {
+        delay = 500
+      }
+
+      timeoutId = window.setTimeout(() => {
+        const nextIndex = (highlightIndex + 1) % HINT_SEQUENCE.length
         setHighlightIndex(nextIndex)
-        
-        // If we completed a full cycle (back to start), increment iteration count
+
         if (nextIndex === 0) {
-          setIterationCount(prev => prev + 1)
+          setIterationCount((prev) => prev + 1)
         }
       }, delay)
     }
-    
-    scheduleNext()
-    
-    return () => {
-      if (timeoutId) clearTimeout(timeoutId)
-    }
-  }, [highlightIndex, iterationCount, hintSequence, maxIterations])
 
-  // Helper function to check if a key should be highlighted (pressed state only)
-  const isKeyHighlighted = (key: string) => {
-    if (iterationCount >= maxIterations) return false // Stop highlighting after 2 iterations
-    
-    const currentHint = hintSequence[highlightIndex]
-    if (currentHint === "return") {
-      return false // Don't use regular highlight for return key
+    scheduleNext()
+
+    return () => {
+      if (timeoutId) window.clearTimeout(timeoutId)
     }
+  }, [highlightIndex, iterationCount])
+
+  const isKeyHighlighted = (key: string) => {
+    if (iterationCount >= MAX_HINT_ITERATIONS) return false
+    const currentHint = HINT_SEQUENCE[highlightIndex]
+    if (currentHint === "return") return false
     return key.toLowerCase() === currentHint
   }
 
-  // Helper function to check if return key should be green
   const isReturnKeyGreen = () => {
-    if (iterationCount >= maxIterations) return false // Stop highlighting after 2 iterations
-    return hintSequence[highlightIndex] === "return"
+    if (iterationCount >= MAX_HINT_ITERATIONS) return false
+    return HINT_SEQUENCE[highlightIndex] === "return"
   }
+
+  const textRef = useRef(text)
+  const capsLockRef = useRef(capsLock)
+  const pressedKeysRef = useRef(pressedKeys)
+
+  useEffect(() => {
+    textRef.current = text
+  }, [text])
+
+  useEffect(() => {
+    capsLockRef.current = capsLock
+  }, [capsLock])
+
+  useEffect(() => {
+    pressedKeysRef.current = pressedKeys
+  }, [pressedKeys])
 
   const handleKeyPress = useCallback(
     (key: string) => {
       if (key === "BACKSPACE") {
         setText((prev) => prev.slice(0, -1))
         setShowError(false)
-      } else if (key === "SPACE") {
+        return
+      }
+
+      if (key === "SPACE") {
         setText((prev) => prev + " ")
-      } else if (key === "CAPS") {
-        setCapsLock((prev) => !prev)
-      } else if (key === "SHIFT") {
-        // Handle SHIFT as a modifier, don't append text
+        return
+      }
+
+      if (key === "CAPS") {
         setCapsLock((prev) => !prev)
         return
-      } else if (key === "ENTER") {
-        if (text.toLowerCase() === targetText.toLowerCase()) {
+      }
+
+      // SHIFT is handled as a momentary key in pressedKeys state
+      // No toggle action needed here
+
+      if (key === "ENTER") {
+        if (textRef.current.toLowerCase() === "yesh") {
           onCorrectEntry()
         } else {
           setShowError(true)
           setText("")
-          setTimeout(() => setShowError(false), 2000)
+          // clear any existing timeout before creating a new one
+          if (errorResetTimeout.current) {
+            window.clearTimeout(errorResetTimeout.current)
+          }
+          errorResetTimeout.current = window.setTimeout(() => {
+            setShowError(false)
+            errorResetTimeout.current = null
+          }, 2000)
         }
-      } else {
-        const finalKey = capsLock ? key.toUpperCase() : key.toLowerCase()
-        setText((prev) => prev + finalKey)
-        setShowError(false)
+        return
       }
+
+      if (key === "SHIFT") {
+        return
+      }
+
+      const shouldUppercase = capsLockRef.current !== pressedKeysRef.current.has("SHIFT")
+      const finalKey = shouldUppercase ? key.toUpperCase() : key.toLowerCase()
+      setText((prev) => prev + finalKey)
+      setShowError(false)
     },
-    [capsLock, text, onCorrectEntry, targetText],
+    [onCorrectEntry],
   )
 
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      const key = e.key.toUpperCase()
+    const handleKeyDown = (event: KeyboardEvent) => {
+      const { key, target } = event
+      const upperKey = key.toUpperCase()
 
-      // Check if this is a key the virtual keyboard handles
-      const isHandledKey = 
-        key === "BACKSPACE" ||
-        key === " " ||
-        key === "CAPSLOCK" ||
-        key === "ENTER" ||
-        /^[A-Z0-9]$/.test(key)
+      const isInteractiveTarget =
+        target instanceof HTMLElement &&
+        (target.tagName === "INPUT" ||
+          target.tagName === "TEXTAREA" ||
+          target.isContentEditable ||
+          Boolean(target.closest("[contenteditable]")))
 
-      // Only prevent default for keys we handle
-      if (isHandledKey) {
-        e.preventDefault()
-        setPressedKeys((prev) => new Set(prev).add(key))
+      const handledKeys =
+        upperKey === "BACKSPACE" ||
+        upperKey === " " ||
+        upperKey === "CAPSLOCK" ||
+        upperKey === "SHIFT" ||
+        upperKey === "ENTER" ||
+        /^[A-Z0-9]$/.test(upperKey)
 
-        if (key === "BACKSPACE") {
+      if (handledKeys && !isInteractiveTarget) {
+        event.preventDefault()
+        setPressedKeys((prev) => new Set(prev).add(upperKey))
+
+        if (upperKey === "BACKSPACE") {
           handleKeyPress("BACKSPACE")
-        } else if (key === " ") {
+          return
+        }
+
+        if (upperKey === " ") {
           handleKeyPress("SPACE")
-        } else if (key === "CAPSLOCK") {
-          handleKeyPress("CAPS")
-        } else if (key === "ENTER") {
+          return
+        }
+
+        if (upperKey === "CAPSLOCK") {
+          setCapsLock(event.getModifierState("CapsLock"))
+          return
+        }
+
+        if (upperKey === "SHIFT") {
+          handleKeyPress("SHIFT")
+          return
+        }
+
+        if (upperKey === "ENTER") {
+          if (isSubmittingRef.current) {
+            return
+          }
           handleKeyPress("ENTER")
-        } else if (/^[A-Z0-9]$/.test(key)) {
-          handleKeyPress(key)
+          return
+        }
+
+        if (/^[A-Z0-9]$/.test(upperKey)) {
+          handleKeyPress(upperKey)
         }
       }
     }
 
-    const handleKeyUp = (e: KeyboardEvent) => {
-      const key = e.key.toUpperCase()
+    const handleKeyUp = (event: KeyboardEvent) => {
+      const upperKey = event.key.toUpperCase()
       setPressedKeys((prev) => {
-        const newSet = new Set(prev)
-        newSet.delete(key)
-        return newSet
+        const next = new Set(prev)
+        next.delete(upperKey)
+        return next
       })
     }
 
@@ -201,132 +268,129 @@ export function KeyboardLanding({ onCorrectEntry }: KeyboardLandingProps) {
     }
   }, [handleKeyPress])
 
-  // Determine background class based on mode
-  const backgroundClass = BACKGROUND_MODE === 'dark' 
-    ? 'bg-black' // Solid black background
-    : 'bg-gray-900' // Slightly lighter background to show keyboard behind
-
-  // Debug: Log the current mode (remove this after testing)
-  console.log('BACKGROUND_MODE:', BACKGROUND_MODE, 'Should show keyboard:', BACKGROUND_MODE === 'keyboard')
+  const backgroundClass = backgroundMode === "dark" ? "bg-black" : "bg-gray-900"
 
   return (
-    <div className={`min-h-screen p-8 flex flex-col items-center justify-center gap-8 relative ${backgroundClass}`}>
-      {/* Conditional Background - Keyboard background only shows when BACKGROUND_MODE is 'keyboard' */}
-      {BACKGROUND_MODE === 'keyboard' && <KeyboardBackground />}
-      
-      {/* Text Display */}
-      <div className="w-full max-w-4xl"></div>
+    <div className={cn("min-h-screen p-8 flex flex-col items-center justify-center gap-8 relative", backgroundClass)}>
+      {backgroundMode === "keyboard" ? <KeyboardBackgroundClient /> : null}
 
-      {/* Error Message */}
-      {showError && (
+      {/* removed empty spacer */}
+
+      {showError ? (
         <div className="absolute top-1/3 z-20">
-          <p className="text-red-400 text-xl animate-pulse font-light">
-            Try again...
-          </p>
+          <p className="text-red-400 text-xl animate-pulse font-light">Try again...</p>
         </div>
-      )}
+      ) : null}
 
-      {/* Keyboard */}
-      <div className="relative flex flex-col gap-2 p-8 bg-black rounded-2xl scale-150">
-        <div className="absolute left-0 top-0 bottom-0 w-64 bg-gradient-to-r from-black to-transparent z-10 rounded-l-2xl pointer-events-none"></div>
+      <div className="relative flex flex-col gap-2 p-8 bg-black rounded-2xl sm:scale-100 md:scale-125 lg:scale-150">
+        <div className="absolute left-0 top-0 bottom-0 w-64 bg-gradient-to-r from-black to-transparent z-10 rounded-l-2xl pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-64 bg-gradient-to-l from-black to-transparent z-10 rounded-r-2xl pointer-events-none" />
+        <div className="absolute top-0 left-0 right-0 h-48 bg-gradient-to-b from-black to-transparent z-10 rounded-t-2xl pointer-events-none" />
 
-        <div className="absolute right-0 top-0 bottom-0 w-64 bg-gradient-to-l from-black to-transparent z-10 rounded-r-2xl pointer-events-none"></div>
-
-        <div className="absolute top-0 left-0 right-0 h-48 bg-gradient-to-b from-black to-transparent z-10 rounded-t-2xl pointer-events-none"></div>
-
-        {/* Number Row */}
         <div className="flex gap-2 justify-center">
           {KEYBOARD_LAYOUT.numbers.map((key) => (
-            <Key 
-              key={key} 
-              onClick={() => handleKeyPress(key)} 
+            <Key
+              key={key}
+              onClick={() => handleKeyPress(key)}
               isPressed={pressedKeys.has(key) || isKeyHighlighted(key)}
-              className={isKeyHighlighted(key) ? "!bg-white-500 !text-white !border-white-400 !shadow-lg !shadow-white-500/50" : ""}
+              className={isKeyHighlighted(key) ? "!bg-white !text-black !border-white/60 !shadow-lg !shadow-white/50" : undefined}
             >
               {key}
             </Key>
           ))}
         </div>
 
-        {/* Top Row (QWERTY) */}
         <div className="flex gap-2 justify-center">
           {KEYBOARD_LAYOUT.topRow.map((key) => (
-            <Key 
-              key={key} 
-              onClick={() => handleKeyPress(key)} 
+            <Key
+              key={key}
+              onClick={() => handleKeyPress(key)}
               isPressed={pressedKeys.has(key) || isKeyHighlighted(key)}
-              className=""
             >
               {key}
             </Key>
           ))}
         </div>
 
-        {/* Middle Row (ASDF) */}
         <div className="flex gap-2 justify-center">
           <Key
             onClick={() => handleKeyPress("CAPS")}
             isPressed={capsLock}
             size="lg"
-            className={capsLock ? "bg-blue-600 hover:bg-blue-500" : ""}
+            aria-pressed={capsLock}
+            className={capsLock ? "bg-blue-600 hover:bg-blue-500" : undefined}
           >
             caps
           </Key>
           {KEYBOARD_LAYOUT.middleRow.map((key) => (
-            <Key 
-              key={key} 
-              onClick={() => handleKeyPress(key)} 
+            <Key
+              key={key}
+              onClick={() => handleKeyPress(key)}
               isPressed={pressedKeys.has(key) || isKeyHighlighted(key)}
-              className=""
             >
               {key}
             </Key>
           ))}
-          <Key 
-            onClick={() => handleKeyPress("ENTER")} 
-            isPressed={pressedKeys.has("ENTER")} 
+          <Key
+            onClick={() => handleKeyPress("ENTER")}
+            isPressed={pressedKeys.has("ENTER")}
             size="lg"
-            className={isReturnKeyGreen() ? "!bg-green-600 hover:!bg-green-500 !text-white !border-green-500" : ""}
+            className={isReturnKeyGreen() ? "!bg-green-600 hover:!bg-green-500 !text-white !border-green-500" : undefined}
           >
             return
           </Key>
         </div>
 
-        {/* Bottom Row (ZXCV) */}
         <div className="flex gap-2 justify-center">
-          <Key 
-            onClick={() => handleKeyPress("SHIFT")} 
-            isPressed={pressedKeys.has("SHIFT")} 
+          <Key
+            onClick={() => handleKeyPress("SHIFT")}
+            onPointerDown={() => setPressedKeys((prev) => new Set(prev).add("SHIFT"))}
+            onPointerCancel={() =>
+              setPressedKeys((prev) => {
+                const next = new Set(prev)
+                next.delete("SHIFT")
+                return next
+              })
+            }
+            onPointerUp={() =>
+              setPressedKeys((prev) => {
+                const next = new Set(prev)
+                next.delete("SHIFT")
+                return next
+              })
+            }
+            onBlur={() =>
+              setPressedKeys((prev) => {
+                const next = new Set(prev)
+                next.delete("SHIFT")
+                return next
+              })
+            }
+            isPressed={pressedKeys.has("SHIFT")}
             size="lg"
           >
             shift
           </Key>
           {KEYBOARD_LAYOUT.bottomRow.map((key) => (
-            <Key 
-              key={key} 
-              onClick={() => handleKeyPress(key)} 
+            <Key
+              key={key}
+              onClick={() => handleKeyPress(key)}
               isPressed={pressedKeys.has(key) || isKeyHighlighted(key)}
-              className=""
             >
               {key}
             </Key>
           ))}
-          <Key 
-            onClick={() => handleKeyPress("BACKSPACE")} 
-            isPressed={pressedKeys.has("BACKSPACE")} 
-            size="lg"
-          >
+          <Key onClick={() => handleKeyPress("BACKSPACE")} isPressed={pressedKeys.has("BACKSPACE")} size="lg">
             delete
           </Key>
         </div>
 
-        {/* Space Row */}
         <div className="flex gap-2 justify-center items-center">
           <Key size="md">fn</Key>
           <Key size="md">^</Key>
           <Key size="md">⌥</Key>
           <Key size="md">⌘</Key>
-          <Key onClick={() => handleKeyPress("SPACE")} isPressed={pressedKeys.has(" ")} size="xl">
+          <Key onClick={() => handleKeyPress("SPACE")} isPressed={pressedKeys.has(" ")} aria-label="space" size="xl">
             {" "}
           </Key>
           <Key size="md">⌘</Key>
@@ -334,8 +398,7 @@ export function KeyboardLanding({ onCorrectEntry }: KeyboardLandingProps) {
         </div>
       </div>
 
-      {/* Instructions */}
-      <div className="text-gray-500 text-center max-w-md"></div>
+      {/* removed empty footer spacer */}
     </div>
   )
 }

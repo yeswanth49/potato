@@ -1,9 +1,6 @@
-"use client"
-
-import { useEffect, useRef, useState } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { ExternalLink } from "lucide-react"
+import { ExternalLink, Github } from "lucide-react"
 
 const experiences = [
   {
@@ -20,19 +17,7 @@ const experiences = [
     ],
     technologies: ["Next.js", "React", "TypeScript", "Tailwind CSS", "AI SDK", "Vercel"],
     link: "https://goopenbook.in",
-  },
-  {
-    title: "Founder & Developer",
-    company: "safeLINK",
-    period: "2024 – Present",
-    description: "Mobile-first emergency QR profile app; generates QR-linked profiles for rapid access",
-    achievements: [
-      "SQLite + Jinja2 CRUD; server-side QR generation (qrcode/Pillow) with secure IDs; inline/downloadable PNGs",
-      "In-browser QR scanner using WebRTC getUserMedia + jsQR; guided UX with modal prompts",
-      "Exposed 8 routes (landing, template select, generate, profile, download, scanner, edit, verify)",
-      "Password-gated edits with JSON verification; production-ready with Gunicorn",
-    ],
-    technologies: ["Flask", "SQLite", "Jinja2", "QR (qrcode/Pillow)", "WebRTC", "Gunicorn"],
+    githubUrl: "https://github.com/yeswanth49/openbook",
   },
   {
     title: "Founder & Developer",
@@ -45,47 +30,25 @@ const experiences = [
       "Successfully scaled to handle high concurrent user loads during peak exam periods",
     ],
     technologies: ["HTML", "CSS", "JavaScript", "Node.js"],
+    link: "https://pecup.in",
+    githubUrl: "https://github.com/yeswanth49/pecup-dead",
   },
 ]
 
 export function Experience() {
-  const [isVisible, setIsVisible] = useState(false)
-  const ref = useRef<HTMLElement>(null)
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true)
-        }
-      },
-      { threshold: 0.1 },
-    )
-
-    if (ref.current) {
-      observer.observe(ref.current)
-    }
-
-    return () => observer.disconnect()
-  }, [])
-
   return (
-    <section id="experience" ref={ref} className="px-4 bg-muted/30">
+    <section id="experience" className="px-4 bg-muted/30">
       <div className="max-w-5xl mx-auto">
-        <div
-          className={`transition-all duration-800 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
-        >
+        <div className="motion-safe:animate-fade-in-up">
           <h2 className="text-2xl md:text-3xl font-semibold mb-6 text-center">Professional Experience</h2>
         </div>
 
         <div className="space-y-6">
           {experiences.map((exp, index) => (
             <div
-              key={index}
-              className={`transition-all duration-800 ${
-                isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-              }`}
-              style={{ transitionDelay: `${(index + 1) * 200}ms` }}
+              key={`${exp.company}-${exp.title}`}
+              className="motion-safe:animate-fade-in-up"
+              style={{ animationDelay: `${(index + 1) * 120}ms` }}
             >
               <Card className="transition-colors border-border/50">
                 <CardHeader>
@@ -93,7 +56,7 @@ export function Experience() {
                     <div>
                       <CardTitle className="text-lg mb-1.5 flex items-center gap-2">
                         {exp.title} — {exp.company}
-                        {exp.link && (
+                        {exp.link ? (
                           <a
                             href={exp.link}
                             target="_blank"
@@ -102,7 +65,17 @@ export function Experience() {
                           >
                             <ExternalLink className="w-4 h-4" />
                           </a>
-                        )}
+                        ) : null}
+                        {exp.githubUrl ? (
+                          <a
+                            href={exp.githubUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-muted-foreground hover:text-foreground transition-colors"
+                          >
+                            <Github className="w-4 h-4" />
+                          </a>
+                        ) : null}
                       </CardTitle>
                       <CardDescription className="text-sm">{exp.period}</CardDescription>
                     </div>
@@ -112,8 +85,8 @@ export function Experience() {
                 <CardContent className="pt-2">
                   <ul className="space-y-1.5 mb-4">
                     {exp.achievements.map((achievement, i) => (
-                      <li key={i} className="text-sm text-muted-foreground leading-relaxed flex items-start gap-2">
-                        <span className="text-foreground mt-1">•</span>
+                      <li key={achievement} className="text-sm text-muted-foreground leading-relaxed flex items-start gap-2">
+                        <span className="text-foreground mt-1" aria-hidden="true">•</span>
                         {achievement}
                       </li>
                     ))}

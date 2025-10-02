@@ -1,40 +1,52 @@
-"use client"
+'use client';
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from 'react';
 
 export function About() {
-  const [isVisible, setIsVisible] = useState(false)
-  const ref = useRef<HTMLElement>(null)
+  const [isVisible, setIsVisible] = useState(false);
+  const [canAnimate, setCanAnimate] = useState(false);
+  const sectionRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
+    setCanAnimate(true);
+  }, []);
+
+  useEffect(() => {
+    // In test, or when IO is unavailable, show immediately
+    if (process.env.NODE_ENV === 'test') {
+      setIsVisible(true);
+      return;
+    }
+    if (typeof window !== 'undefined' && !('IntersectionObserver' in window)) {
+      setIsVisible(true);
+      return;
+    }
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setIsVisible(true)
+          setIsVisible(true);
+          observer.disconnect();
         }
       },
-      { threshold: 0.1 },
-    )
+      { threshold: 0.1 }
+    );
 
-    if (ref.current) {
-      observer.observe(ref.current)
-    }
+    const el = sectionRef.current;
+    if (!el) return () => observer.disconnect();
+    observer.observe(el);
 
-    return () => observer.disconnect()
-  }, [])
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <section id="about" ref={ref} className="px-4">
+    <section ref={sectionRef} id="about" aria-labelledby="about-heading" className="px-4">
       <div className="max-w-3xl mx-auto">
-        <div
-          className={`transition-all duration-800 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
-        >
-          <h2 className="text-2xl md:text-3xl font-semibold mb-6 text-center">About</h2>
+        <div className={canAnimate && !isVisible ? "opacity-0" : isVisible ? "animate-fade-in-up" : ""}>
+          <h2 id="about-heading" className="text-2xl md:text-3xl font-semibold mb-6 text-center">About</h2>
         </div>
 
-        <div
-          className={`transition-all duration-800 delay-200 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
-        >
+        <div className={canAnimate && !isVisible ? "opacity-0" : isVisible ? "animate-fade-in-up animate-delay-200" : ""}>
           <div className="prose max-w-none text-muted-foreground leading-relaxed">
             <p className="mb-4">
               I'm a frontend-focused developer with entrepreneurial drive, passionate about building accessible,

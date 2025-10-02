@@ -1,13 +1,10 @@
-"use client"
+'use client';
+
+import { ArrowDown, Github, Linkedin, Twitter, FileText } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
-import { ArrowDown, Github, Linkedin, Twitter, Phone, Mail, FileText } from "lucide-react"
 
 export function Hero() {
-  const scrollToAbout = () => {
-    document.getElementById("about")?.scrollIntoView({ behavior: "smooth" })
-  }
-
   return (
     <section id="hero" className="flex items-center justify-center px-4">
       <div className="max-w-3xl mx-auto text-center">
@@ -29,7 +26,7 @@ export function Hero() {
         <div className="opacity-0 animate-fade-in-up animate-delay-400">
           <div className="flex flex-wrap items-center justify-center gap-6 mb-8">
             <a
-              href="https://twitter.com/yeswanth49"
+              href="https://x.com/Yeshh49"
               target="_blank"
               rel="noopener noreferrer"
               className="group flex items-center gap-2 text-muted-foreground hover:text-foreground transition-all duration-300 ease-in-out"
@@ -37,6 +34,17 @@ export function Hero() {
               <Twitter className="w-5 h-5" />
               <span className="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 ease-in-out whitespace-nowrap">
                 Twitter
+              </span>
+            </a>
+            <a
+              href="https://www.linkedin.com/in/yeswanth-madasu-41525b297/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex items-center gap-2 text-muted-foreground hover:text-foreground transition-all duration-300 ease-in-out"
+            >
+              <Linkedin className="w-5 h-5" />
+              <span className="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 ease-in-out whitespace-nowrap">
+                LinkedIn
               </span>
             </a>
             <a
@@ -51,25 +59,7 @@ export function Hero() {
               </span>
             </a>
             <a
-              href="tel:+919032690321"
-              className="group flex items-center gap-2 text-muted-foreground hover:text-foreground transition-all duration-300 ease-in-out"
-            >
-              <Phone className="w-5 h-5" />
-              <span className="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 ease-in-out whitespace-nowrap">
-                +91 9032690321
-              </span>
-            </a>
-            <a
-              href="mailto:work.yeswanth@gmail.com"
-              className="group flex items-center gap-2 text-muted-foreground hover:text-foreground transition-all duration-300 ease-in-out"
-            >
-              <Mail className="w-5 h-5" />
-              <span className="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 ease-in-out whitespace-nowrap">
-                work.yeswanth@gmail.com
-              </span>
-            </a>
-            <a
-              href="/resume.pdf"
+              href="/Yeswanth_Madasu.pdf"
               target="_blank"
               rel="noopener noreferrer"
               className="group flex items-center gap-2 text-muted-foreground hover:text-foreground transition-all duration-300 ease-in-out"
@@ -79,29 +69,20 @@ export function Hero() {
                 Resume
               </span>
             </a>
-            <a
-              href="https://linkedin.com/in/yeswanthm"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group flex items-center gap-2 text-muted-foreground hover:text-foreground transition-all duration-300 ease-in-out"
-            >
-              <Linkedin className="w-5 h-5" />
-              <span className="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 ease-in-out whitespace-nowrap">
-                LinkedIn
-              </span>
-            </a>
           </div>
         </div>
 
         <div className="opacity-0 animate-fade-in-up animate-delay-500">
           <Button
-            onClick={scrollToAbout}
+            asChild
             variant="outline"
             size="sm"
-            className="group transition-colors hover:bg-foreground hover:text-background bg-transparent"
+            className="group transition-colors hover:bg-transparent hover:text-foreground bg-transparent"
           >
-            Explore My Work
-            <ArrowDown className="w-4 h-4 ml-2 group-hover:translate-y-0.5 transition-transform" />
+            <a href="#about">
+              Explore My Work
+              <ArrowDown className="w-4 h-4 ml-2 group-hover:translate-y-0.5 transition-transform" />
+            </a>
           </Button>
         </div>
       </div>

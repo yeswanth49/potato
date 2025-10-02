@@ -1,5 +1,3 @@
-"use client"
-
 import { useEffect, useRef, useState } from "react"
 import { Badge } from "@/components/ui/badge"
 
@@ -42,55 +40,74 @@ const skillCategories = [
   },
   {
     category: "Programming Languages",
-    skills: ["Python", "Java", "C","C++"],
+    skills: ["Python", "Java", "C", "C++"],
   },
 ]
 
 export function Skills() {
   const [isVisible, setIsVisible] = useState(false)
-  const ref = useRef<HTMLElement>(null)
+  const [canAnimate, setCanAnimate] = useState(false)
+  const sectionRef = useRef<HTMLElement | null>(null)
 
   useEffect(() => {
+    setCanAnimate(true)
+  }, [])
+
+  useEffect(() => {
+    // In test, or when IO is unavailable, show immediately
+    if (process.env.NODE_ENV === 'test') {
+      setIsVisible(true)
+      return
+    }
+    if (typeof window !== 'undefined' && !('IntersectionObserver' in window)) {
+      setIsVisible(true)
+      return
+    }
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsVisible(true)
+          observer.disconnect()
         }
       },
-      { threshold: 0.1 },
+      { threshold: 0.1 }
     )
 
-    if (ref.current) {
-      observer.observe(ref.current)
-    }
+    const el = sectionRef.current
+    if (!el) return () => observer.disconnect()
+    observer.observe(el)
 
     return () => observer.disconnect()
   }, [])
 
   return (
-    <section id="skills" ref={ref} className="px-4 bg-muted/30">
+    <section ref={sectionRef} id="skills" className="px-4 bg-muted/30">
       <div className="max-w-5xl mx-auto">
-        <div
-          className={`transition-all duration-800 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
-        >
+        <div className={canAnimate && isVisible ? "motion-safe:animate-fade-in-up" : ""}>
           <h2 className="text-2xl md:text-3xl font-semibold mb-6 text-center">Technical Skills</h2>
         </div>
 
         <div className="grid md:grid-cols-2 gap-6">
           {skillCategories.map((category, index) => (
             <div
-              key={index}
-              className={`group rounded-lg border bg-card/30 p-4 transition-all duration-800 hover:bg-card ${
-                isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-              }`}
-              style={{ transitionDelay: `${(index + 1) * 150}ms` }}
+              key={category.category}
+              className={`group rounded-lg border bg-card/30 p-4 transition-all duration-300 hover:bg-card ${canAnimate && isVisible ? "motion-safe:animate-fade-in-up" : ""}`}
+              style={canAnimate && isVisible ? { animationDelay: `${(index + 1) * 120}ms` } : {}}
+              tabIndex={0}
             >
               <h3 className="text-base md:text-lg font-medium text-foreground">{category.category}</h3>
-              <p className="text-xs text-muted-foreground mt-1 opacity-80 group-hover:opacity-0 transition-opacity duration-300">Hover to view details</p>
-              <div className="flex flex-wrap gap-1.5 mt-0 opacity-0 max-h-0 overflow-hidden transition-all duration-300 group-hover:opacity-100 group-hover:max-h-[200px] group-hover:mt-2">
+              <p className="text-xs text-muted-foreground mt-1 opacity-80 transition-opacity duration-300 hidden lg:block lg:group-hover:opacity-0 lg:group-focus-within:opacity-0 lg:focus-visible:opacity-0">
+                Hover or focus to view details
+              </p>
+              <div
+                tabIndex={0}
+                className="flex flex-wrap gap-1.5 mt-2 overflow-hidden transition-all duration-300 lg:opacity-0 lg:max-h-0 lg:group-hover:opacity-100 lg:group-hover:max-h-96 lg:group-focus-within:opacity-100 lg:group-focus-within:max-h-96 lg:focus:opacity-100 lg:focus:max-h-96 lg:focus-visible:opacity-100 lg:focus-visible:max-h-96"
+                // Make visible by default; collapse only on large hover-capable screens
+              >
                 {category.skills.map((skill, skillIndex) => (
                   <Badge
-                    key={skillIndex}
+                    key={skill}
                     variant="secondary"
                     className="text-xs py-0.5 px-2 hover:bg-foreground hover:text-background transition-colors duration-200"
                     style={{ transitionDelay: `${skillIndex * 20}ms` }}

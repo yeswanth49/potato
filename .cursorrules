@@ -145,6 +145,192 @@ if (detectPerformanceChanges(fileChange)) {
 - Add new bundling strategies
 - Refresh animation performance notes
 
+## Automated Git Operations & PR Creation
+
+### Overview
+These rules automatically handle Git operations and PR creation for significant code changes to enable CodeRabbit reviews.
+
+### 6. Automatic Commit & Push for Medium Changes
+
+When medium-impact changes are detected (architectural significance score 7-10):
+
+```typescript
+// Trigger: Medium architectural changes (score 7-10)
+// Action: Auto-commit, push to current branch for CodeRabbit review
+
+if (architecturalSignificance >= 7 && architecturalSignificance <= 10) {
+  const commitMessage = generateCommitMessage(fileChanges);
+  const branchName = getCurrentBranch();
+
+  // Validate Git state before proceeding
+  const gitState = validateGitState(fileChanges);
+  if (!gitState.isValid) {
+    notify({
+      type: 'auto_commit_failed',
+      message: `Auto-commit aborted: ${gitState.error}`,
+      action: 'Manual commit required',
+      reviewRequired: true
+    });
+    return;
+  }
+
+  // Stage only the intended files
+  const filePaths = fileChanges.map(change => change.path);
+  if (!stageFiles(filePaths)) {
+    notify({
+      type: 'auto_commit_failed',
+      message: 'Failed to stage files for commit',
+      action: 'Manual staging required',
+      reviewRequired: true
+    });
+    return;
+  }
+
+  // Commit with descriptive message (escape commit message)
+  try {
+    runCommand(`git commit -m ${escapeShellArg(commitMessage)}`);
+  } catch (error) {
+    notify({
+      type: 'auto_commit_failed',
+      message: 'Failed to commit changes',
+      action: 'Manual commit required',
+      reviewRequired: true
+    });
+    return;
+  }
+
+  // Push to origin branch (escape branch name)
+  try {
+    runCommand(`git push origin ${escapeShellArg(branchName)}`);
+  } catch (error) {
+    notify({
+      type: 'auto_commit_failed',
+      message: 'Failed to push changes to remote',
+      action: 'Manual push required',
+      reviewRequired: true
+    });
+    return;
+  }
+
+  notify({
+    type: 'auto_commit_push',
+    message: `Changes committed and pushed to ${branchName}`,
+    action: 'CodeRabbit review triggered',
+    commitHash: getLastCommitHash()
+  });
+}
+```
+
+**Actions Performed:**
+- Validate Git state (check for detached HEAD, unmerged changes, unexpected dirty files)
+- Stage only the intended files (not `git add .`)
+- Generate descriptive commit message based on changes
+- Commit changes to local repository (with proper shell escaping)
+- Push to origin branch for CodeRabbit review (with proper shell escaping)
+- Notify user of successful push or abort with clear error message
+
+### 7. PR Creation for Major Changes
+
+When major architectural changes are detected (architectural significance score 11+):
+
+```typescript
+// Trigger: Major architectural changes (score 11+)
+// Action: Create PR to merge with main branch
+
+if (architecturalSignificance >= 11) {
+  const prDetails = {
+    title: generatePRTitle(fileChanges),
+    body: generatePRDescription(fileChanges, architecturalSignificance),
+    baseBranch: 'main',
+    headBranch: getCurrentBranch(),
+    labels: ['auto-generated', 'architectural-change']
+  };
+
+  // Validate Git state before proceeding
+  const gitState = validateGitState(fileChanges);
+  if (!gitState.isValid) {
+    notify({
+      type: 'auto_pr_failed',
+      message: `Auto-PR aborted: ${gitState.error}`,
+      action: 'Manual PR creation required',
+      reviewRequired: true
+    });
+    return;
+  }
+
+  // Ensure changes are committed and pushed first
+  if (hasUncommittedChanges()) {
+    // Stage only the intended files
+    const filePaths = fileChanges.map(change => change.path);
+    if (!stageFiles(filePaths)) {
+      notify({
+        type: 'auto_pr_failed',
+        message: 'Failed to stage files for PR commit',
+        action: 'Manual staging required',
+        reviewRequired: true
+      });
+      return;
+    }
+
+    // Commit with escaped message
+    try {
+      runCommand(`git commit -m ${escapeShellArg(`feat: ${prDetails.title}`)}`);
+    } catch (error) {
+      notify({
+        type: 'auto_pr_failed',
+        message: 'Failed to commit changes for PR',
+        action: 'Manual commit required',
+        reviewRequired: true
+      });
+      return;
+    }
+
+    // Push to origin branch (escape branch name)
+    try {
+      runCommand(`git push origin ${escapeShellArg(prDetails.headBranch)}`);
+    } catch (error) {
+      notify({
+        type: 'auto_pr_failed',
+        message: 'Failed to push changes for PR',
+        action: 'Manual push required',
+        reviewRequired: true
+      });
+      return;
+    }
+  }
+
+  // Create pull request
+  const prUrl = createPullRequest(prDetails);
+
+  if (!prUrl) {
+    notify({
+      type: 'auto_pr_failed',
+      message: 'Failed to create pull request',
+      action: 'Manual PR creation required',
+      reviewRequired: true
+    });
+    return;
+  }
+
+  notify({
+    type: 'auto_pr_created',
+    message: `Major changes detected - PR created: ${prDetails.title}`,
+    action: 'CodeRabbit will review the PR',
+    prUrl: prUrl,
+    reviewRequired: true
+  });
+}
+```
+
+**Actions Performed:**
+- Validate Git state (check for detached HEAD, unmerged changes, unexpected dirty files)
+- Stage only the intended files if uncommitted changes exist
+- Commit any remaining changes (with proper shell escaping)
+- Push to feature branch (with proper shell escaping)
+- Create pull request using temporary file for body (prevents command injection)
+- Add appropriate labels for tracking (with proper shell escaping)
+- Clean up temporary files and notify user with PR link or abort with clear error message
+
 ## Rule Implementation Details
 
 ### Change Detection Algorithms
@@ -153,22 +339,33 @@ if (detectPerformanceChanges(fileChange)) {
 ```typescript
 function calculateArchitecturalSignificance(change: FileChange): number {
   let score = 0;
-  
-  // High impact changes
-  if (change.path.includes('app/') && change.type === 'create') score += 10;
-  if (change.path === 'package.json') score += 8;
-  if (change.path.includes('components/') && change.type === 'create') score += 7;
-  
-  // Medium impact changes
+
+  // Critical impact changes (score 11+) - Trigger PR creation
+  if (change.path.includes('app/') && change.type === 'create') score += 12; // New pages
+  if (change.path === 'package.json') score += 15; // Major dependency changes
+  if (change.affectsMultipleComponents) score += 13; // Cross-component changes
+  if (change.type === 'delete' && change.path.includes('components/')) score += 12; // Component removal
+
+  // High impact changes (score 7-10) - Trigger auto-commit & push
+  if (change.path.includes('components/') && change.type === 'create') score += 8; // New components
+  if (change.path.includes('hooks/') && change.type === 'create') score += 7; // New hooks
+  if (change.path.includes('lib/') && change.type === 'create') score += 7; // New utilities
+  if (change.path.includes('config') && change.type === 'modify') score += 8; // Config changes
+
+  // Medium impact changes (score 4-6) - May trigger documentation updates
   if (change.path.includes('hooks/')) score += 5;
   if (change.path.includes('lib/')) score += 4;
   if (change.path.includes('styles/')) score += 3;
-  
+
   // Configuration changes
-  if (change.path.includes('config')) score += 6;
-  if (change.path.includes('tsconfig')) score += 5;
-  
-  return score;
+  if (change.path.includes('tsconfig')) score += 6;
+  if (change.path.includes('next.config')) score += 7;
+
+  // Multiple file changes increase significance
+  if (change.batchSize > 5) score += 3;
+  if (change.batchSize > 10) score += 5;
+
+  return Math.min(score, 20); // Cap at 20 for extreme changes
 }
 ```
 
@@ -181,6 +378,232 @@ const architecturalPatterns = {
   apiEndpoint: /export\s+async\s+function\s+(GET|POST|PUT|DELETE)/,
   configChange: /(module\.exports|export\s+default)/
 };
+```
+
+#### 3. Security & Safety Helper Functions
+```typescript
+// Shell argument escaping to prevent command injection
+function escapeShellArg(arg: string): string {
+  // Use single quotes and escape any single quotes within the argument
+  return `'${arg.replace(/'/g, "'\"'\"'")}'`;
+}
+
+// Create a temporary file with content and return its path
+function createTempFile(content: string, prefix: string = 'cursor-rules'): string {
+  try {
+    const tempDir = runCommand('mktemp -d').trim();
+    const tempFile = `${tempDir}/${prefix}-${Date.now()}.md`;
+    runCommand(`cat > ${escapeShellArg(tempFile)} << 'EOF'
+${content}
+EOF`);
+    return tempFile;
+  } catch (error) {
+    console.error('Failed to create temporary file:', error);
+    throw new Error('Unable to create temporary file for PR body');
+  }
+}
+
+// Clean up temporary file
+function cleanupTempFile(filePath: string): void {
+  try {
+    if (filePath && filePath.startsWith('/tmp/')) {
+      runCommand(`rm -rf ${escapeShellArg(filePath)}`);
+    }
+  } catch (error) {
+    // Ignore cleanup errors
+  }
+}
+
+// Git state validation functions
+function isDetachedHead(): boolean {
+  try {
+    const branch = runCommand('git symbolic-ref -q HEAD 2>/dev/null || echo detached');
+    return branch.trim() === 'detached';
+  } catch {
+    return true; // Assume detached if we can't determine
+  }
+}
+
+function hasUnmergedChanges(): boolean {
+  try {
+    const status = runCommand('git status --porcelain | grep "^U[AD] \\|^A[AD] \\|^D[AD] " | wc -l');
+    return parseInt(status.trim()) > 0;
+  } catch {
+    return false;
+  }
+}
+
+function getDirtyFiles(): string[] {
+  try {
+    const status = runCommand('git status --porcelain');
+    return status.trim().split('\n')
+      .filter(line => line.trim().length > 0)
+      .map(line => line.substring(3).trim()); // Remove status codes, keep file paths
+  } catch {
+    return [];
+  }
+}
+
+function validateGitState(fileChanges: FileChange[]): { isValid: boolean; error?: string } {
+  // Check for detached HEAD
+  if (isDetachedHead()) {
+    return { isValid: false, error: 'Cannot auto-commit: currently on detached HEAD. Please checkout a branch first.' };
+  }
+
+  // Check for unmerged changes
+  if (hasUnmergedChanges()) {
+    return { isValid: false, error: 'Cannot auto-commit: repository has unmerged changes. Please resolve conflicts first.' };
+  }
+
+  // Check for unexpected dirty files
+  const dirtyFiles = getDirtyFiles();
+  const expectedPaths = fileChanges.map(change => change.path);
+
+  const unexpectedFiles = dirtyFiles.filter(dirtyFile =>
+    !expectedPaths.some(expectedPath =>
+      dirtyFile === expectedPath || dirtyFile.startsWith(expectedPath + '/')
+    )
+  );
+
+  if (unexpectedFiles.length > 0) {
+    return {
+      isValid: false,
+      error: `Cannot auto-commit: unexpected dirty files detected: ${unexpectedFiles.join(', ')}. Only stage intended changes.`
+    };
+  }
+
+  return { isValid: true };
+}
+
+function stageFiles(filePaths: string[]): boolean {
+  try {
+    // Stage each file individually with proper escaping
+    for (const filePath of filePaths) {
+      runCommand(`git add -- ${escapeShellArg(filePath)}`);
+    }
+    return true;
+  } catch (error) {
+    console.error('Failed to stage files:', error);
+    return false;
+  }
+}
+```
+
+#### 3. Git Automation Helper Functions
+```typescript
+// Generate descriptive commit messages based on changes
+function generateCommitMessage(changes: FileChange[]): string {
+  const changeTypes = changes.map(c => c.type);
+  const affectedPaths = changes.map(c => c.path);
+
+  // Determine primary change type
+  const hasNewComponents = affectedPaths.some(p => p.includes('components/') && changeTypes.includes('create'));
+  const hasConfigChanges = affectedPaths.some(p => p.includes('config') || p === 'package.json');
+  const hasNewPages = affectedPaths.some(p => p.includes('app/') && changeTypes.includes('create'));
+  const hasHookChanges = affectedPaths.some(p => p.includes('hooks/'));
+
+  if (hasNewPages) return `feat: add new page components and routing`;
+  if (hasNewComponents) return `feat: add new components and update component architecture`;
+  if (hasConfigChanges) return `chore: update configuration and dependencies`;
+  if (hasHookChanges) return `feat: add custom hooks and state management`;
+
+  return `feat: implement new features and improvements`;
+}
+
+// Generate PR titles based on changes
+function generatePRTitle(changes: FileChange[]): string {
+  const changeTypes = changes.map(c => c.type);
+  const affectedPaths = changes.map(c => c.path);
+
+  if (affectedPaths.includes('package.json')) return 'Major dependency and configuration updates';
+  if (affectedPaths.some(p => p.includes('app/') && changeTypes.includes('create'))) return 'New page implementation and routing changes';
+  if (affectedPaths.some(p => p.includes('components/') && changeTypes.includes('create'))) return 'Component architecture expansion';
+
+  return 'Significant architectural improvements';
+}
+
+// Generate detailed PR descriptions
+function generatePRDescription(changes: FileChange[], significance: number): string {
+  const affectedFiles = changes.map(c => `- ${c.type}: ${c.path}`).join('\n');
+  const impactLevel = significance >= 15 ? 'Critical' : significance >= 12 ? 'Major' : 'Significant';
+
+  return `## Changes Overview
+${affectedFiles}
+
+## Impact Assessment
+- **Architectural Significance**: ${significance}/20
+- **Impact Level**: ${impactLevel}
+- **Files Modified**: ${changes.length}
+
+## What This Includes
+${changes.some(c => c.path.includes('components/')) ? '- Component architecture updates\n' : ''}
+${changes.some(c => c.path.includes('app/')) ? '- Page routing and layout changes\n' : ''}
+${changes.some(c => c.path === 'package.json') ? '- Dependency management updates\n' : ''}
+${changes.some(c => c.path.includes('hooks/')) ? '- Custom hooks and state management\n' : ''}
+
+This PR was automatically generated due to ${impactLevel.toLowerCase()} architectural changes. Please review carefully before merging.
+
+**Auto-generated by Cursor Rules v2.0**`;
+}
+
+// Check if there are uncommitted changes
+function hasUncommittedChanges(): boolean {
+  try {
+    const status = runCommand('git status --porcelain');
+    return status.trim().length > 0;
+  } catch {
+    return false;
+  }
+}
+
+// Get current branch name
+function getCurrentBranch(): string {
+  try {
+    return runCommand('git branch --show-current').trim();
+  } catch {
+    return 'main';
+  }
+}
+
+// Get last commit hash
+function getLastCommitHash(): string {
+  try {
+    return runCommand('git rev-parse HEAD').trim();
+  } catch {
+    return '';
+  }
+}
+
+// Create a pull request (GitHub CLI required)
+function createPullRequest(details: PRDetails): string {
+  let tempFile: string | null = null;
+  try {
+    const { title, body, baseBranch, headBranch, labels } = details;
+
+    // Create temporary file for PR body to avoid command injection
+    tempFile = createTempFile(body, 'pr-body');
+
+    // Create PR using GitHub CLI with file-based body (escape all arguments)
+    const prCommand = `gh pr create --title ${escapeShellArg(title)} --body-file ${escapeShellArg(tempFile)} --base ${escapeShellArg(baseBranch)} --head ${escapeShellArg(headBranch)}`;
+    const prUrl = runCommand(prCommand).trim();
+
+    // Add labels if specified (escape label arguments)
+    if (labels && labels.length > 0) {
+      const escapedLabels = labels.map(label => escapeShellArg(label)).join(' ');
+      runCommand(`gh pr edit ${escapeShellArg(prUrl)} --add-label ${escapedLabels}`);
+    }
+
+    return prUrl;
+  } catch (error) {
+    console.error('Failed to create PR:', error);
+    return '';
+  } finally {
+    // Clean up temporary file
+    if (tempFile) {
+      cleanupTempFile(tempFile);
+    }
+  }
+}
 ```
 
 ### Update Strategies
@@ -274,9 +697,14 @@ if (architecturalSignificance >= 8) {
 const ruleConfig = {
   architecturalThreshold: 5,        // Minimum score for auto-update
   reviewThreshold: 9,               // Score requiring human review
+  gitCommitThreshold: 7,            // Minimum score for auto-commit & push
+  prCreationThreshold: 11,          // Minimum score for auto-PR creation
   updateFrequency: 'immediate',     // Update timing
   backupRetention: 30,              // Days to keep backups
-  validationLevel: 'strict'         // Validation strictness
+  validationLevel: 'strict',        // Validation strictness
+  gitAutoPush: true,                // Enable automatic push after commit
+  prAutoCreate: true,               // Enable automatic PR creation
+  requireGitHubCLI: true            // Require GitHub CLI for PR creation
 };
 ```
 
@@ -307,6 +735,18 @@ cursor-rules update --dry-run --file=package.json
 
 # Manual rule execution
 cursor-rules execute --rule="dependency-update" --force
+
+# Test Git automation (dry run)
+cursor-rules git-test --score=8 --dry-run
+
+# Test PR creation (dry run)
+cursor-rules pr-test --score=12 --dry-run
+
+# Check current branch and Git status
+cursor-rules git-status
+
+# Validate GitHub CLI setup
+cursor-rules validate-github-cli
 ```
 
 ### Validation Checks
@@ -348,5 +788,5 @@ cursor-rules execute --rule="dependency-update" --force
 ---
 
 **Last Updated**: Automatically maintained by these Cursor rules
-**Rule Version**: 1.0.0
+**Rule Version**: 2.0.0
 **Next Review**: Quarterly review scheduled
