@@ -82,28 +82,45 @@ export function HireMe() {
     setIsSubmitting(true)
 
     const selectedTechList = getAllSelectedTech()
-    const techStackText = selectedTechList.length > 0 
-      ? selectedTechList.map(({ category, tech }) => `${tech} (${category})`).join(', ')
-      : 'No specific technologies selected'
+    const techStackText = selectedTechList.length > 0
+      ? selectedTechList.map(({ category, tech }) => `• ${tech} (${category})`).join('\n')
+      : 'No specific technologies specified'
 
-    const emailBody = `
-Name: ${formData.name}
-Email: ${formData.email}
+    const emailBody = `Dear Yeswanth,
 
-Selected Tech Stack:
+I hope this email finds you well.
+
+I am writing to inquire about potential collaboration on a project and wanted to share some details about my requirements:
+
+CLIENT INFORMATION:
+• Name: ${formData.name}
+• Email: ${formData.email}
+
+PROJECT TECH STACK:
 ${techStackText}
 
-Message:
+PROJECT DETAILS:
 ${formData.message}
 
+I believe your expertise would be valuable for this project and would appreciate the opportunity to discuss this further. Please let me know your availability for a brief call or meeting to explore how we might work together.
+
+Thank you for your time and consideration.
+
+Best regards,
+${formData.name}
+
 ---
-This email was sent from the portfolio contact form.
+This inquiry was submitted through your portfolio contact form.
     `.trim()
 
-    const mailtoLink = `mailto:work.yeswanth@gmail.com?subject=Project Inquiry - Tech Stack: ${selectedTechList.slice(0, 3).map(({tech}) => tech).join(', ')}${selectedTechList.length > 3 ? '...' : ''}&body=${encodeURIComponent(emailBody)}`
-    
+    const subjectTech = selectedTechList.length > 0
+      ? `Project Collaboration - ${selectedTechList.slice(0, 3).map(({tech}) => tech).join(', ')}${selectedTechList.length > 3 ? ' & more' : ''}`
+      : 'Project Collaboration Inquiry'
+
+    const mailtoLink = `mailto:work.yeswanth@gmail.com?subject=${encodeURIComponent(subjectTech)}&body=${encodeURIComponent(emailBody)}`
+
     window.location.href = mailtoLink
-    
+
     setTimeout(() => {
       setFormData({ name: "", email: "", message: "" })
       setSelectedTech({ frontend: [], backend: [], database: [], other: [] })
