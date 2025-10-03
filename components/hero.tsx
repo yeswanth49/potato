@@ -37,7 +37,7 @@ export function Hero() {
               </span>
             </a>
             <a
-              href="https://www.linkedin.com/in/yeswanth-madasu-41525b297/"
+              href="www.linkedin.com/in/yeswanth49"
               target="_blank"
               rel="noopener noreferrer"
               className="group flex items-center gap-2 text-muted-foreground hover:text-foreground transition-all duration-300 ease-in-out"

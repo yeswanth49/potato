@@ -143,7 +143,7 @@ describe('Hero Component', () => {
       expect(github).toHaveAttribute('rel', 'noopener noreferrer')
 
       const linkedin = screen.getByRole('link', { name: /linkedin/i })
-      expect(linkedin).toHaveAttribute('href', 'https://www.linkedin.com/in/yeswanth-madasu-41525b297/')
+      expect(linkedin).toHaveAttribute('href', 'www.linkedin.com/in/yeswanth49')
       expect(linkedin).toHaveAttribute('target', '_blank')
       expect(linkedin).toHaveAttribute('rel', 'noopener noreferrer')
     })
