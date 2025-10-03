@@ -1,52 +1,12 @@
-'use client';
-
-import { useEffect, useRef, useState } from 'react';
-
 export function About() {
-  const [isVisible, setIsVisible] = useState(false);
-  const [canAnimate, setCanAnimate] = useState(false);
-  const sectionRef = useRef<HTMLElement | null>(null);
-
-  useEffect(() => {
-    setCanAnimate(true);
-  }, []);
-
-  useEffect(() => {
-    // In test, or when IO is unavailable, show immediately
-    if (process.env.NODE_ENV === 'test') {
-      setIsVisible(true);
-      return;
-    }
-    if (typeof window !== 'undefined' && !('IntersectionObserver' in window)) {
-      setIsVisible(true);
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    const el = sectionRef.current;
-    if (!el) return () => observer.disconnect();
-    observer.observe(el);
-
-    return () => observer.disconnect();
-  }, []);
-
   return (
-    <section ref={sectionRef} id="about" aria-labelledby="about-heading" className="px-4">
+    <section id="about" aria-labelledby="about-heading" className="px-4">
       <div className="max-w-3xl mx-auto">
-        <div className={canAnimate && !isVisible ? "opacity-0" : isVisible ? "animate-fade-in-up" : ""}>
+        <div className="motion-safe:animate-fade-in-up">
           <h2 id="about-heading" className="text-2xl md:text-3xl font-semibold mb-6 text-center">About</h2>
         </div>
 
-        <div className={canAnimate && !isVisible ? "opacity-0" : isVisible ? "animate-fade-in-up animate-delay-200" : ""}>
+        <div className="motion-safe:animate-fade-in-up motion-safe:animate-delay-200">
           <div className="prose max-w-none text-muted-foreground leading-relaxed">
             <p className="mb-4">
               I'm a frontend-focused developer with entrepreneurial drive, passionate about building accessible,
