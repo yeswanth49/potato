@@ -97,7 +97,7 @@ describe('Contact Component', () => {
 
     it('renders LinkedIn link with correct attributes', () => {
       const linkedinLink = screen.getByRole('link', { name: /linkedin/i })
-      expect(linkedinLink).toHaveAttribute('href', 'www.linkedin.com/in/yeswanth49')
+      expect(linkedinLink).toHaveAttribute('href', 'https://www.linkedin.com/in/yeswanth49')
       expect(linkedinLink).toHaveAttribute('target', '_blank')
       expect(linkedinLink).toHaveAttribute('rel', 'noopener noreferrer')
       
