@@ -541,10 +541,10 @@ export function KeyboardLanding({ onCorrectEntry, backgroundMode = "dark" }: Key
                 "transition-all duration-300",
                 isKeyHighlighted(key) && (
                   hintState.urgency === 'high'
-                    ? "!bg-white !text-black !border-white/80 !shadow-lg !shadow-white/60 !animate-pulse"
+                    ? "!border-white/80 !shadow-lg !shadow-white/60 !animate-pulse"
                     : hintState.urgency === 'medium'
-                    ? "!bg-gray-200 !text-black !border-gray-300 !shadow-lg !shadow-gray-300/60"
-                    : "!bg-white !text-black !border-white/60 !shadow-lg !shadow-white/50"
+                    ? "!border-gray-300 !shadow-lg !shadow-gray-300/60"
+                    : "!border-white/60 !shadow-lg !shadow-white/50"
                 )
               )}
             >
@@ -584,10 +584,10 @@ export function KeyboardLanding({ onCorrectEntry, backgroundMode = "dark" }: Key
                 "transition-all duration-300",
                 isKeyHighlighted(key) && (
                   hintState.urgency === 'high'
-                    ? "!bg-white !text-black !border-white/80 !shadow-lg !shadow-white/60 !animate-pulse"
+                    ? "!border-white/80 !shadow-lg !shadow-white/60 !animate-pulse"
                     : hintState.urgency === 'medium'
-                    ? "!bg-gray-200 !text-black !border-gray-300 !shadow-lg !shadow-gray-300/60"
-                    : "!bg-white !text-black !border-white/60 !shadow-lg !shadow-white/50"
+                    ? "!border-gray-300 !shadow-lg !shadow-gray-300/60"
+                    : "!border-white/60 !shadow-lg !shadow-white/50"
                 )
               )}
             >
@@ -652,10 +652,10 @@ export function KeyboardLanding({ onCorrectEntry, backgroundMode = "dark" }: Key
                 "transition-all duration-300",
                 isKeyHighlighted(key) && (
                   hintState.urgency === 'high'
-                    ? "!bg-white !text-black !border-white/80 !shadow-lg !shadow-white/60 !animate-pulse"
+                    ? "!border-white/80 !shadow-lg !shadow-white/60 !animate-pulse"
                     : hintState.urgency === 'medium'
-                    ? "!bg-gray-200 !text-black !border-gray-300 !shadow-lg !shadow-gray-300/60"
-                    : "!bg-white !text-black !border-white/60 !shadow-lg !shadow-white/50"
+                    ? "!border-gray-300 !shadow-lg !shadow-gray-300/60"
+                    : "!border-white/60 !shadow-lg !shadow-white/50"
                 )
               )}
             >
