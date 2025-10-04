@@ -1,10 +1,30 @@
 'use client';
 
 import { ArrowDown, Github, Linkedin, Twitter, FileText } from "lucide-react"
+import { useCallback } from "react"
 
 import { Button } from "@/components/ui/button"
 
 export function Hero() {
+  const scrollToProjects = useCallback(() => {
+    const projectsSection = document.getElementById('projects')
+    if (projectsSection) {
+      // Add slow scroll class for smoother, slower animation
+      document.documentElement.classList.add('slow-scroll')
+
+      projectsSection.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+        inline: 'nearest'
+      })
+
+      // Remove the class after animation completes
+      setTimeout(() => {
+        document.documentElement.classList.remove('slow-scroll')
+      }, 4000)
+    }
+  }, [])
+
   return (
     <section id="hero" className="flex items-center justify-center px-4">
       <div className="max-w-3xl mx-auto text-center">
@@ -74,15 +94,13 @@ export function Hero() {
 
         <div className="opacity-0 animate-fade-in-up animate-delay-500">
           <Button
-            asChild
             variant="outline"
             size="sm"
             className="group transition-colors hover:bg-transparent hover:text-foreground bg-transparent"
+            onClick={scrollToProjects}
           >
-            <a href="#about">
-              Explore My Work
-              <ArrowDown className="w-4 h-4 ml-2 group-hover:translate-y-0.5 transition-transform" />
-            </a>
+            Explore My Work
+            <ArrowDown className="w-4 h-4 ml-2 group-hover:translate-y-0.5 transition-transform" />
           </Button>
         </div>
       </div>
