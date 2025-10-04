@@ -13,9 +13,9 @@ export function Hero() {
       const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
       if (prefersReducedMotion) {
-        // Use native smooth scroll for users who prefer reduced motion
+        // Use instant scroll for users who prefer reduced motion
         projectsSection.scrollIntoView({
-          behavior: 'smooth',
+          behavior: 'auto',
           block: 'start',
           inline: 'nearest'
         })
