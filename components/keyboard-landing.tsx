@@ -601,9 +601,9 @@ export function KeyboardLanding({ onCorrectEntry, backgroundMode = "dark" }: Key
             className={cn(
               "transition-all duration-300",
               isReturnKeyGreen()
-                ? "!bg-white !text-black !border-white !shadow-lg !shadow-white/30"
+                ? "!border-white !shadow-lg !shadow-white/30"
                 : progressState.completedChars === TARGET_TEXT.length - 1
-                ? "!bg-gray-200 !text-black !border-gray-200 animate-pulse"
+                ? "!border-gray-200 animate-pulse"
                 : progressState.completedChars > 0
                 ? "!bg-gray-700 !text-white !border-gray-600"
                 : undefined
