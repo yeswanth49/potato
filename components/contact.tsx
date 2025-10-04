@@ -80,7 +80,7 @@ export function Contact() {
                   asChild
                 >
                   <a
-                    href="https://www.linkedin.com/in/yeswanth-madasu-41525b297/"
+                    href="https://www.linkedin.com/in/yeswanth49"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-3"
