@@ -129,7 +129,7 @@ export function KeyboardLanding({ onCorrectEntry, backgroundMode = "dark" }: Key
   }, [typingPatterns])
 
   const updateProgressState = useCallback((newText: string) => {
-    const completedChars = newText.length
+    const completedChars = Math.min(newText.length, TARGET_TEXT.length)
     const isComplete = newText.toLowerCase() === TARGET_TEXT
 
     setProgressState({

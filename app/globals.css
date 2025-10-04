@@ -149,8 +149,6 @@
     /* Override scroll behavior for elements that need slow scrolling */
     .slow-scroll {
       scroll-behavior: smooth !important;
-      animation-duration: 4000ms !important;
-      animation-timing-function: ease-in-out !important;
     }
   }
 

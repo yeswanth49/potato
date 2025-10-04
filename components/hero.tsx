@@ -9,19 +9,52 @@ export function Hero() {
   const scrollToProjects = useCallback(() => {
     const projectsSection = document.getElementById('projects')
     if (projectsSection) {
-      // Add slow scroll class for smoother, slower animation
-      document.documentElement.classList.add('slow-scroll')
+      // Check if user prefers reduced motion
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
-      projectsSection.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start',
-        inline: 'nearest'
-      })
+      if (prefersReducedMotion) {
+        // Use native smooth scroll for users who prefer reduced motion
+        projectsSection.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start',
+          inline: 'nearest'
+        })
+        return
+      }
 
-      // Remove the class after animation completes
-      setTimeout(() => {
-        document.documentElement.classList.remove('slow-scroll')
-      }, 4000)
+      // Programmatic smooth scroll with custom duration and easing
+      const startPosition = window.pageYOffset
+      const targetPosition = projectsSection.offsetTop
+      const distance = targetPosition - startPosition
+      const duration = 4000 // 4 seconds
+      let startTime: number | null = null
+
+      function easeInOutCubic(t: number): number {
+        return t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1
+      }
+
+      function animateScroll(currentTime: number) {
+        if (startTime === null) {
+          startTime = currentTime
+        }
+
+        const timeElapsed = currentTime - startTime
+        const progress = Math.min(timeElapsed / duration, 1)
+
+        // Apply easing function
+        const easeProgress = easeInOutCubic(progress)
+
+        // Calculate new scroll position
+        const newPosition = startPosition + (distance * easeProgress)
+
+        window.scrollTo(0, newPosition)
+
+        if (progress < 1) {
+          requestAnimationFrame(animateScroll)
+        }
+      }
+
+      requestAnimationFrame(animateScroll)
     }
   }, [])
 
