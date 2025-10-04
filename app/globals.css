@@ -135,6 +135,24 @@
     scroll-snap-type: y mandatory;
   }
 
+  /* Custom slow scroll animation for programmatic scrolling */
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: auto; /* Disable default smooth scroll */
+    }
+
+    /* Custom smooth scroll with slower duration for anchor links */
+    body {
+      animation: none !important;
+    }
+
+    /* Override scroll behavior for elements that need slow scrolling */
+    .slow-scroll {
+      scroll-behavior: smooth !important;
+    }
+  }
+
+
   /* Ensure every section fills the viewport with vertical padding and accounts for fixed nav */
   section {
     @apply min-h-screen py-24 scroll-mt-16;
