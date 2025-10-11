@@ -62,7 +62,12 @@ export function Hero() {
     <section id="hero" className="flex items-center justify-center px-4">
       <div className="max-w-3xl mx-auto text-center">
         <div className="opacity-0 animate-fade-in-up">
-          <h1 className="text-4xl md:text-5xl font-semibold mb-3 text-balance">Hi, I'm Yeswanth Madasu</h1>
+          <h1 className="text-6xl md:text-7xl lg:text-8xl mb-3 text-left font-league_spartan font-bold leading-none" style={{ fontFamily: 'var(--font-league-spartan)', fontWeight: '700', transform: 'translateX(2rem) translateY(4rem)' }}>
+            <div className="flex flex-col items-start">
+              <span>hi, i'm</span>
+              <span className="mt-[-0.15em]">yeswanth</span>
+            </div>
+          </h1>
         </div>
 
         <div className="opacity-0 animate-fade-in-up animate-delay-200">
