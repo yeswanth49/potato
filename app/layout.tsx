@@ -7,11 +7,25 @@ import { Suspense } from "react"
 import "./globals.css"
 
 export const metadata: Metadata = {
-  title: "Yeswanth Madasu - Frontend Developer",
-  description:
-    "Frontend-focused developer with entrepreneurial drive, building accessible, performant web apps using React.js, Next.js, and modern technologies.",
-  generator: "v0.app",
-}
+  title: 'Yeshhh', // Update as needed
+  description: '19, trying to learn by breaking things', // Optional but recommended for OG
+  openGraph: {
+    title: "hi, i'm yeswanth.", // OG-specific title
+    description: '19, trying to learn by breaking things', // OG-specific description
+    url: 'https://yesh.pecup.in', // Your production URL
+    siteName: "Yeshh's portfolio",
+    images: [
+      {
+        url: '/portfolio-og.png', // Path relative to public/ (e.g., /placeholder.jpg if using that)
+        width: 1200, // Recommended width
+        height: 630, // Recommended height
+        alt: "hi, i'm yeswanth.", // For accessibility
+      },
+    ],
+    locale: 'en_US', // Optional
+    type: 'website', // Or 'article' for blog pages
+  },
+};
 
 export default function RootLayout({
   children,
