@@ -7,7 +7,7 @@ import { Suspense } from "react"
 import "./globals.css"
 
 export const metadata: Metadata = {
-  title: 'Yeshhh', // Update as needed
+  title: "hi, i'm yeswanth.", // Update as needed
   description: '19, trying to learn by breaking things', // Optional but recommended for OG
   openGraph: {
     title: "hi, i'm yeswanth.", // OG-specific title
@@ -24,6 +24,12 @@ export const metadata: Metadata = {
     ],
     locale: 'en_US', // Optional
     type: 'website', // Or 'article' for blog pages
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: "hi, i'm yeswanth.",
+    description: '19, trying to learn by breaking things',
+    images: ['/portfolio-og.png'],
   },
 };
 
