@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     siteName: "Yeshh's portfolio",
     images: [
       {
-        url: '/portfolio-og.png', // Path relative to public/ (e.g., /placeholder.jpg if using that)
+        url: './portfolio-og.png', // Path relative to public/ (e.g., /placeholder.jpg if using that)
         width: 1200, // Recommended width
         height: 630, // Recommended height
         alt: "hi, i'm yeswanth.", // For accessibility
