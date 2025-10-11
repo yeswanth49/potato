@@ -2,9 +2,16 @@ import type React from "react"
 import type { Metadata } from "next"
 import { GeistSans } from "geist/font/sans"
 import { GeistMono } from "geist/font/mono"
+import { League_Spartan } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { Suspense } from "react"
 import "./globals.css"
+
+const leagueSpartan = League_Spartan({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-league-spartan",
+})
 
 export const metadata: Metadata = {
   title: "hi, i'm yeswanth.", // Update as needed
@@ -40,7 +47,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
-      <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable} antialiased bg-black text-gray-300`}>
+      <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable} ${leagueSpartan.variable} antialiased bg-black text-gray-300`}>
         <Suspense fallback={null}>{children}</Suspense>
         <Analytics />
       </body>
