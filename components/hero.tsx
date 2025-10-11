@@ -6,7 +6,13 @@ import { useCallback, useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 
 export function Hero() {
-  const [currentAge, setCurrentAge] = useState("21.515332880")
+  const [currentAge, setCurrentAge] = useState(() => {
+    const birthDate = new Date('2006-01-02T00:00:00Z')
+    const now = new Date()
+    const diffTime = Math.abs(now.getTime() - birthDate.getTime())
+    const diffYears = diffTime / (1000 * 60 * 60 * 24 * 365.25)
+    return diffYears.toFixed(9)
+  })
 
   useEffect(() => {
     const updateAge = () => {
@@ -90,6 +96,11 @@ export function Hero() {
         <div className="opacity-0 animate-fade-in-up animate-delay-300">
           <p className="text-sm text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed text-pretty" style={{ transform: 'translateX(2rem) translateY(4rem)' }}>
             been here for {currentAge} years
+          </p>
+        </div>
+        <div className="opacity-0 animate-fade-in-up animate-delay-300">
+          <p className="text-sm text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed text-pretty" style={{ transform: 'translateX(2rem) translateY(3rem)' }}>
+            trying to learn everything, by breaking everything.
           </p>
         </div>
 
