@@ -71,13 +71,27 @@ export function Hero() {
             </div>
             <div className="opacity-0 animate-fade-in-up animate-delay-300">
               <p className="text-sm text-muted-foreground mb-0 leading-relaxed text-pretty">
-              things i admire the most.
+                <a
+                  href="https://yesh.bearblog.dev/things-i-admire-the-most/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-foreground hover:underline transition-colors duration-200 cursor-pointer"
+                >
+                  things i admire the most.
+                </a>
               </p>
             </div>
 
             <div className="opacity-0 animate-fade-in-up animate-delay-300">
               <p className="text-sm text-muted-foreground mb-8 leading-relaxed text-pretty">
-                things i learnt meanwhile.
+                <a
+                  href="https://yesh.bearblog.dev/things-i-learnt-in-meanwhile/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-foreground hover:underline transition-colors duration-200 cursor-pointer"
+                >
+                  things i learnt meanwhile.
+                </a>
               </p>
             </div>
 
@@ -124,4 +138,5 @@ export function Hero() {
     </section>
   )
 }
+
 
