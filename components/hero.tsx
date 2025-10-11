@@ -1,7 +1,7 @@
 'use client';
 
 import { ArrowDown, Github, Linkedin, Twitter, FileText } from "lucide-react"
-import { useCallback, useState, useEffect } from "react"
+import { useState, useEffect } from "react"
 import Image from "next/image"
 
 import { Button } from "@/components/ui/button"
@@ -45,6 +45,7 @@ export function Hero() {
                   fill
                   className="object-cover"
                   priority
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                 />
               </div>
             </div>
