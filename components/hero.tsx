@@ -1,11 +1,28 @@
 'use client';
 
 import { ArrowDown, Github, Linkedin, Twitter, FileText } from "lucide-react"
-import { useCallback } from "react"
+import { useCallback, useState, useEffect } from "react"
 
 import { Button } from "@/components/ui/button"
 
 export function Hero() {
+  const [currentAge, setCurrentAge] = useState("21.515332880")
+
+  useEffect(() => {
+    const updateAge = () => {
+      const birthDate = new Date('2006-01-02T00:00:00Z')
+      const now = new Date()
+      const diffTime = Math.abs(now.getTime() - birthDate.getTime())
+      const diffYears = diffTime / (1000 * 60 * 60 * 24 * 365.25)
+      setCurrentAge(diffYears.toFixed(9))
+    }
+
+    updateAge() // Initial calculation
+    const interval = setInterval(updateAge, 100) // Update every 100ms for smooth counting
+
+    return () => clearInterval(interval)
+  }, [])
+
   const scrollToProjects = useCallback(() => {
     const projectsSection = document.getElementById('projects')
     if (projectsSection) {
@@ -72,8 +89,7 @@ export function Hero() {
 
         <div className="opacity-0 animate-fade-in-up animate-delay-300">
           <p className="text-sm text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed text-pretty" style={{ transform: 'translateX(2rem) translateY(4rem)' }}>
-            Frontend-focused developer building accessible, performant web apps with React and Next.js.
-            Focusing on building accessible, performant web apps with React and Next.js.
+            been here for {currentAge} years
           </p>
         </div>
 
