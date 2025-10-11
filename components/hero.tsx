@@ -30,57 +30,6 @@ export function Hero() {
     return () => clearInterval(interval)
   }, [])
 
-  const scrollToProjects = useCallback(() => {
-    const projectsSection = document.getElementById('projects')
-    if (projectsSection) {
-      // Check if user prefers reduced motion
-      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-
-      if (prefersReducedMotion) {
-        // Use instant scroll for users who prefer reduced motion
-        projectsSection.scrollIntoView({
-          behavior: 'auto',
-          block: 'start',
-          inline: 'nearest'
-        })
-        return
-      }
-
-      // Programmatic smooth scroll with custom duration and easing
-      const startPosition = window.pageYOffset
-      const targetPosition = projectsSection.offsetTop
-      const distance = targetPosition - startPosition
-      const duration = 4000 // 4 seconds
-      let startTime: number | null = null
-
-      function easeInOutCubic(t: number): number {
-        return t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1
-      }
-
-      function animateScroll(currentTime: number) {
-        if (startTime === null) {
-          startTime = currentTime
-        }
-
-        const timeElapsed = currentTime - startTime
-        const progress = Math.min(timeElapsed / duration, 1)
-
-        // Apply easing function
-        const easeProgress = easeInOutCubic(progress)
-
-        // Calculate new scroll position
-        const newPosition = startPosition + (distance * easeProgress)
-
-        window.scrollTo(0, newPosition)
-
-        if (progress < 1) {
-          requestAnimationFrame(animateScroll)
-        }
-      }
-
-      requestAnimationFrame(animateScroll)
-    }
-  }, [])
 
   return (
     <section id="hero" className="flex items-center justify-center px-4">
@@ -116,8 +65,19 @@ export function Hero() {
             </div>
 
             <div className="opacity-0 animate-fade-in-up animate-delay-300">
-              <p className="text-sm text-muted-foreground mb-8 leading-relaxed text-pretty">
+              <p className="text-sm text-muted-foreground mb-0 leading-relaxed text-pretty">
                 trying to learn everything, by breaking everything.
+              </p>
+            </div>
+            <div className="opacity-0 animate-fade-in-up animate-delay-300">
+              <p className="text-sm text-muted-foreground mb-0 leading-relaxed text-pretty">
+              things i admire the most.
+              </p>
+            </div>
+
+            <div className="opacity-0 animate-fade-in-up animate-delay-300">
+              <p className="text-sm text-muted-foreground mb-8 leading-relaxed text-pretty">
+                things i learnt meanwhile.
               </p>
             </div>
 
@@ -158,17 +118,6 @@ export function Hero() {
               </div>
             </div>
 
-            <div className="opacity-0 animate-fade-in-up animate-delay-500">
-              <Button
-                variant="outline"
-                size="sm"
-                className="group transition-colors hover:bg-transparent hover:text-foreground bg-transparent"
-                onClick={scrollToProjects}
-              >
-                Explore My Work
-                <ArrowDown className="w-4 h-4 ml-2 group-hover:translate-y-0.5 transition-transform" />
-              </Button>
-            </div>
           </div>
         </div>
       </div>
