@@ -71,11 +71,11 @@ export function Hero() {
         </div>
 
         <div className="opacity-0 animate-fade-in-up animate-delay-200">
-          <p className="text-base md:text-lg text-muted-foreground mb-4 text-balance" style={{ transform: 'translateX(2rem)' }}>Full Stack Developer</p>
+          <p className="text-base md:text-lg text-muted-foreground mb-4 text-balance" style={{ transform: 'translateX(2rem) translateY(0.5rem)' }}>Full Stack Developer</p>
         </div>
 
         <div className="opacity-0 animate-fade-in-up animate-delay-300">
-          <p className="text-sm text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed text-pretty" style={{ transform: 'translateX(2rem)' }}>
+          <p className="text-sm text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed text-pretty" style={{ transform: 'translateX(2rem) translateY(1rem)' }}>
             Frontend-focused developer building accessible, performant web apps with React and Next.js.
             Focusing on building accessible, performant web apps with React and Next.js.
           </p>
