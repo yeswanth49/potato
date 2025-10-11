@@ -62,27 +62,23 @@ export function Hero() {
     <section id="hero" className="flex items-center justify-center px-4">
       <div className="max-w-3xl mx-auto text-center">
         <div className="opacity-0 animate-fade-in-up">
-          <h1 className="text-6xl md:text-7xl lg:text-8xl mb-3 text-left font-league_spartan font-bold leading-none" style={{ fontFamily: 'var(--font-league-spartan)', fontWeight: '700', transform: 'translateX(2rem) translateY(4rem)' }}>
-            <div className="flex flex-col items-start">
-              <span>hi, i'm</span>
-              <span className="mt-[-0.15em]">yeswanth</span>
+        <h1 className="text-6xl md:text-7xl lg:text-8xl mb-3 font-league_spartan font-bold leading-none flex justify-center" style={{ fontFamily: 'var(--font-league-spartan)', fontWeight: '700', transform: 'translateX(2rem) translateY(4rem)' }}>
+            <div className="flex flex-col">
+              <span className="text-left">hi, i'm yeswanth.</span>
             </div>
           </h1>
         </div>
 
-        <div className="opacity-0 animate-fade-in-up animate-delay-200">
-          <p className="text-base md:text-lg text-muted-foreground mb-4 text-balance" style={{ transform: 'translateX(2rem) translateY(0.5rem)' }}>Full Stack Developer</p>
-        </div>
 
         <div className="opacity-0 animate-fade-in-up animate-delay-300">
-          <p className="text-sm text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed text-pretty" style={{ transform: 'translateX(2rem) translateY(1rem)' }}>
+          <p className="text-sm text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed text-pretty" style={{ transform: 'translateX(2rem) translateY(4rem)' }}>
             Frontend-focused developer building accessible, performant web apps with React and Next.js.
             Focusing on building accessible, performant web apps with React and Next.js.
           </p>
         </div>
 
         <div className="opacity-0 animate-fade-in-up animate-delay-400">
-          <div className="flex flex-wrap items-center justify-center gap-6 mb-8" style={{ transform: 'translateX(2rem)' }}>
+          <div className="flex flex-wrap items-center justify-center gap-6 mb-8" style={{ transform: 'translateX(2rem) translateY(4rem)' }}>
             <a
               href="https://x.com/Yeshh49"
               target="_blank"
@@ -135,7 +131,7 @@ export function Hero() {
             variant="outline"
             size="sm"
             className="group transition-colors hover:bg-transparent hover:text-foreground bg-transparent"
-            style={{ transform: 'translateX(2rem)' }}
+            style={{ transform: 'translateX(2rem) translateY(4rem)' }}
             onClick={scrollToProjects}
           >
             Explore My Work
