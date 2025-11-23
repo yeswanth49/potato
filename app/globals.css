@@ -300,24 +300,10 @@
 
 /* Custom scrollbar styling for better accessibility */
 .scrollbar-hide {
-  /* Keep scrollbars visible but styled for better accessibility */
-  scrollbar-width: thin;  /* Firefox */
-  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;  /* Firefox */
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
 }
 
 .scrollbar-hide::-webkit-scrollbar {
-  height: 6px;  /* Thin scrollbar for horizontal scrolling */
-}
-
-.scrollbar-hide::-webkit-scrollbar-track {
-  background: transparent;  /* Transparent track */
-}
-
-.scrollbar-hide::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.2);  /* Semi-transparent thumb */
-  border-radius: 3px;  /* Rounded corners */
-}
-
-.scrollbar-hide::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 0, 0, 0.4);  /* Darker on hover for better visibility */
+  display: none;
 }
