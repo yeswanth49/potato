@@ -37,7 +37,7 @@ const experiences = [
 
 export function Experience() {
   return (
-    <section id="experience" className="px-4 bg-muted/30">
+    <section id="experience" className="px-4">
       <div className="max-w-5xl mx-auto">
         <div className="motion-safe:animate-fade-in-up">
           <h2 className="text-2xl md:text-3xl font-semibold mb-6 text-center">Professional Experience</h2>
