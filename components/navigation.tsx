@@ -7,7 +7,7 @@ const navItems = [
   { name: "About", href: "#about" },
   { name: "Experience", href: "#experience" },
   { name: "Projects", href: "#projects" },
-  { name: "Skills", href: "#skills" },
+
   { name: "Hire Me", href: "#hire-me" },
   { name: "Contact", href: "#contact" },
 ]
@@ -57,7 +57,7 @@ export function Navigation() {
             const rect = element.getBoundingClientRect()
             const elementTop = rect.top + window.scrollY
             const elementBottom = elementTop + rect.height
-            
+
             if (scrollPosition >= elementTop && scrollPosition < elementBottom) {
               mostVisibleSection = section
               break
@@ -94,7 +94,7 @@ export function Navigation() {
             const rect = element.getBoundingClientRect()
             const elementTop = rect.top + window.scrollY
             const elementBottom = elementTop + rect.height
-            
+
             if (scrollPosition >= elementTop && scrollPosition < elementBottom) {
               if (section !== activeSection) {
                 setActiveSection(section)
@@ -107,7 +107,7 @@ export function Navigation() {
     }
 
     window.addEventListener("scroll", handleScroll, { passive: true })
-    
+
     // Initial check
     handleScroll()
 
@@ -129,7 +129,7 @@ export function Navigation() {
       if (activeButton) {
         const rect = activeButton.getBoundingClientRect()
         const navRect = navRef.current.getBoundingClientRect()
-        
+
         setUnderlineStyle({
           top: rect.top - navRect.top,
           height: rect.height
@@ -166,25 +166,23 @@ export function Navigation() {
             transform: `translateX(-12px)`
           }}
         />
-        
+
         <ul ref={navRef} className="flex flex-col gap-3 text-sm">
           {navItems.map((item, index) => (
-            <li 
+            <li
               key={item.name}
-              className={`${
-                isVisible ? 'animate-slide-in-from-left' : 'opacity-0'
-              }`}
-              style={{ 
-                animationDelay: `${index * 100}ms` 
+              className={`${isVisible ? 'animate-slide-in-from-left' : 'opacity-0'
+                }`}
+              style={{
+                animationDelay: `${index * 100}ms`
               }}
             >
               <button
                 onClick={() => scrollToSection(item.href)}
-                className={`transition-colors ${
-                  activeSection === item.href.slice(1)
+                className={`transition-colors ${activeSection === item.href.slice(1)
                     ? "text-foreground"
                     : "text-muted-foreground hover:text-foreground"
-                } ${item.name === "Hire Me" ? "text-blue-400 hover:text-blue-300 font-medium" : ""}`}
+                  } ${item.name === "Hire Me" ? "text-blue-400 hover:text-blue-300 font-medium" : ""}`}
               >
                 {item.name}
               </button>

@@ -55,7 +55,7 @@ export function Hero() {
           <div className="flex-1 text-center lg:text-left max-w-2xl">
             <div className="opacity-0 animate-fade-in-up animate-delay-200">
               <h1 className="text-5xl md:text-6xl lg:text-7xl mb-3 font-league_spartan font-bold leading-none" style={{ fontFamily: 'var(--font-league-spartan)', fontWeight: '700' }}>
-                hi, i'm yeswanth.
+                hi, i'm yswnth.
               </h1>
             </div>
 

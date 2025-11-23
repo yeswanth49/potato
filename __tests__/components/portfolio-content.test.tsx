@@ -36,10 +36,7 @@ jest.mock('@/components/projects', () => ({
   Projects: jest.fn(() => <div data-testid="projects">Projects</div>),
 }), { virtual: true })
 
-jest.mock('@/components/skills', () => ({
-  __esModule: true,
-  Skills: jest.fn(() => <div data-testid="skills">Skills</div>),
-}), { virtual: true })
+
 
 jest.mock('@/components/contact', () => ({
   __esModule: true,
@@ -98,7 +95,7 @@ describe('PortfolioContent - structure and composition', () => {
       'about',
       'experience',
       'projects',
-      'skills',
+
       'hire-me-dynamic',
       'contact',
     ]
@@ -165,7 +162,7 @@ describe('PortfolioContent - child component interactions', () => {
     const aboutMod = require('@/components/about')
     const expMod = require('@/components/experience')
     const projMod = require('@/components/projects')
-    const skillsMod = require('@/components/skills')
+
     const contactMod = require('@/components/contact')
 
     const { PortfolioContent } = importPortfolio()
@@ -176,7 +173,7 @@ describe('PortfolioContent - child component interactions', () => {
     expect(aboutMod.About).toHaveBeenCalledTimes(1)
     expect(expMod.Experience).toHaveBeenCalledTimes(1)
     expect(projMod.Projects).toHaveBeenCalledTimes(1)
-    expect(skillsMod.Skills).toHaveBeenCalledTimes(1)
+
     expect(contactMod.Contact).toHaveBeenCalledTimes(1)
   })
 

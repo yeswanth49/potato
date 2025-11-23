@@ -7,7 +7,7 @@ import { Hero } from "@/components/hero"
 import { About } from "@/components/about"
 import { Experience } from "@/components/experience"
 import { Projects } from "@/components/projects"
-import { Skills } from "@/components/skills"
+
 import { Contact } from "@/components/contact"
 
 const HireMeSection = dynamic(() => import("@/components/hire-me").then((mod) => ({ default: mod.HireMe })), {
@@ -29,7 +29,7 @@ export function PortfolioContent() {
       <About />
       <Experience />
       <Projects />
-      <Skills />
+
       <HireMeSection />
       <Contact />
     </div>
