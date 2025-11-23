@@ -50,7 +50,7 @@ export function Experience() {
               className="motion-safe:animate-fade-in-up"
               style={{ animationDelay: `${(index + 1) * 120}ms` }}
             >
-              <Card className="transition-colors border-border/50">
+              <Card className="transition-colors border-none shadow-none bg-transparent">
                 <CardHeader>
                   <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
                     <div>
