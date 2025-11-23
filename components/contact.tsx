@@ -227,14 +227,12 @@ This inquiry was submitted through your portfolio contact form.
           <div className="grid lg:grid-cols-3 gap-8">
             {/* Tech Stack Selection - Takes up 2 columns */}
             <div className="lg:col-span-2">
-              <Card className="border-border/50">
-                <CardContent className="space-y-6">
-                  {renderTechCategory('frontend', 'Frontend')}
-                  {renderTechCategory('backend', 'Backend')}
-                  {renderTechCategory('database', 'Database')}
-                  {renderTechCategory('other', 'DevOps & Other')}
-                </CardContent>
-              </Card>
+              <div className="space-y-6">
+                {renderTechCategory('frontend', 'Frontend')}
+                {renderTechCategory('backend', 'Backend')}
+                {renderTechCategory('database', 'Database')}
+                {renderTechCategory('other', 'DevOps & Other')}
+              </div>
             </div>
 
             {/* Contact Form - Takes up 1 column */}
