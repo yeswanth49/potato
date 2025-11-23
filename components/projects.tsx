@@ -172,7 +172,7 @@ export function Projects() {
   }, [])
 
   return (
-    <section id="projects" className="px-4">
+    <section id="projects" className="px-8 md:px-16 lg:px-24">
       <div className="max-w-5xl mx-auto">
         <div className="motion-safe:animate-fade-in-up">
           <h2 className="text-2xl md:text-3xl font-semibold mb-6 text-center">Projects.</h2>

@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 
 export function About() {
   return (
-    <section id="about" aria-labelledby="about-heading" className="px-4">
+    <section id="about" aria-labelledby="about-heading" className="px-8 md:px-16 lg:px-24">
       <div className="max-w-3xl mx-auto flex flex-col min-h-[400px]">
         <div className="motion-safe:animate-fade-in-up">
           <h2 id="about-heading" className="text-2xl md:text-3xl font-semibold mb-6 text-center">About</h2>

@@ -208,7 +208,7 @@ This inquiry was submitted through your portfolio contact form.
   }
 
   return (
-    <section id="contact" ref={ref} className="px-4 snap-start">
+    <section id="contact" ref={ref} className="px-8 md:px-16 lg:px-24 snap-start">
       <div className="max-w-6xl mx-auto">
         <div
           className={`transition-all duration-800 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}

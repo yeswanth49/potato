@@ -32,7 +32,7 @@ export function Hero() {
 
 
   return (
-    <section id="hero" className="flex items-center justify-center px-4">
+    <section id="hero" className="flex items-center justify-center px-8 md:px-16 lg:px-24">
       <div className="max-w-6xl mx-auto">
         <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-12">
           {/* Profile Image - Left Side */}
