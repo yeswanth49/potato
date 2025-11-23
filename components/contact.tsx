@@ -146,13 +146,13 @@ This inquiry was submitted through your portfolio contact form.
                 layout
                 initial={false}
                 animate={{
-                  backgroundColor: isSelected ? colors.selected : "rgba(39, 39, 42, 0.3)",
+                  backgroundColor: isSelected ? colors.selected : "rgba(255, 255, 255, 0.08)",
                 }}
                 whileHover={{
-                  backgroundColor: isSelected ? colors.selected : "rgba(39, 39, 42, 0.5)",
+                  backgroundColor: isSelected ? colors.selected : "rgba(255, 255, 255, 0.12)",
                 }}
                 whileTap={{
-                  backgroundColor: isSelected ? colors.selectedBg : "rgba(39, 39, 42, 0.7)",
+                  backgroundColor: isSelected ? colors.selectedBg : "rgba(255, 255, 255, 0.16)",
                 }}
                 transition={{
                   type: "spring", stiffness: 500, damping: 30, mass: 0.5,
