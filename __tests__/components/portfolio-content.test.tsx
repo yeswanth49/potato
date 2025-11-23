@@ -38,10 +38,7 @@ jest.mock('@/components/projects', () => ({
 
 
 
-jest.mock('@/components/contact', () => ({
-  __esModule: true,
-  Contact: jest.fn(() => <div data-testid="contact">Contact</div>),
-}), { virtual: true })
+
 
 jest.mock('@/components/hire-me', () => ({
   __esModule: true,
@@ -97,7 +94,7 @@ describe('PortfolioContent - structure and composition', () => {
       'projects',
 
       'hire-me-dynamic',
-      'contact',
+
     ]
 
     const nodes = Array.from(container.querySelectorAll('[data-testid]'))
@@ -163,7 +160,7 @@ describe('PortfolioContent - child component interactions', () => {
     const expMod = require('@/components/experience')
     const projMod = require('@/components/projects')
 
-    const contactMod = require('@/components/contact')
+
 
     const { PortfolioContent } = importPortfolio()
     render(<PortfolioContent />)
@@ -174,7 +171,7 @@ describe('PortfolioContent - child component interactions', () => {
     expect(expMod.Experience).toHaveBeenCalledTimes(1)
     expect(projMod.Projects).toHaveBeenCalledTimes(1)
 
-    expect(contactMod.Contact).toHaveBeenCalledTimes(1)
+
   })
 
   it('passes no props to child components (empty props object)', () => {

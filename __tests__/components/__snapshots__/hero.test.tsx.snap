@@ -6,123 +6,152 @@ exports[`Hero Snapshot matches DOM snapshot 1`] = `
   id="hero"
 >
   <div
-    class="max-w-3xl mx-auto text-center"
+    class="max-w-6xl mx-auto"
   >
     <div
-      class="opacity-0 animate-fade-in-up"
-    >
-      <h1
-        class="text-4xl md:text-5xl font-semibold mb-3 text-balance"
-      >
-        Hi, I'm Yeswanth Madasu
-      </h1>
-    </div>
-    <div
-      class="opacity-0 animate-fade-in-up animate-delay-200"
-    >
-      <p
-        class="text-base md:text-lg text-muted-foreground mb-4 text-balance"
-      >
-        Full Stack Developer
-      </p>
-    </div>
-    <div
-      class="opacity-0 animate-fade-in-up animate-delay-300"
-    >
-      <p
-        class="text-sm text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed text-pretty"
-      >
-        Frontend-focused developer building accessible, performant web apps with React and Next.js. Focusing on building accessible, performant web apps with React and Next.js.
-      </p>
-    </div>
-    <div
-      class="opacity-0 animate-fade-in-up animate-delay-400"
+      class="flex flex-col lg:flex-row items-center gap-8 lg:gap-12"
     >
       <div
-        class="flex flex-wrap items-center justify-center gap-6 mb-8"
+        class="flex-shrink-0"
       >
-        <a
-          class="group flex items-center gap-2 text-muted-foreground hover:text-foreground transition-all duration-300 ease-in-out"
-          href="https://x.com/Yeshh49"
-          rel="noopener noreferrer"
-          target="_blank"
+        <div
+          class="opacity-0 animate-fade-in-up"
         >
-          <svg
-            class="w-5 h-5"
-            data-testid="twitter-icon"
-          />
-          <span
-            class="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 ease-in-out whitespace-nowrap"
+          <div
+            class="relative w-48 h-48 md:w-64 md:h-64 lg:w-80 lg:h-80 rounded-full overflow-hidden border-4 border-border/20 shadow-lg"
           >
-            Twitter
-          </span>
-        </a>
-        <a
-          class="group flex items-center gap-2 text-muted-foreground hover:text-foreground transition-all duration-300 ease-in-out"
-          href="https://www.linkedin.com/in/yeswanth-madasu-41525b297/"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          <svg
-            class="w-5 h-5"
-            data-testid="linkedin-icon"
-          />
-          <span
-            class="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 ease-in-out whitespace-nowrap"
-          >
-            LinkedIn
-          </span>
-        </a>
-        <a
-          class="group flex items-center gap-2 text-muted-foreground hover:text-foreground transition-all duration-300 ease-in-out"
-          href="https://github.com/yeswanth49"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          <svg
-            class="w-5 h-5"
-            data-testid="github-icon"
-          />
-          <span
-            class="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 ease-in-out whitespace-nowrap"
-          >
-            GitHub
-          </span>
-        </a>
-        <a
-          class="group flex items-center gap-2 text-muted-foreground hover:text-foreground transition-all duration-300 ease-in-out"
-          href="/Yeswanth_Madasu.pdf"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          <svg
-            class="w-5 h-5"
-            data-testid="file-text-icon"
-          />
-          <span
-            class="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 ease-in-out whitespace-nowrap"
-          >
-            Resume
-          </span>
-        </a>
+            <img
+              alt="Yeswanth's profile picture"
+              class="object-cover"
+              data-nimg="fill"
+              decoding="async"
+              fetchpriority="high"
+              sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              src="/_next/image?url=%2Fprofile.JPG&w=3840&q=75"
+              srcset="/_next/image?url=%2Fprofile.JPG&w=256&q=75 256w, /_next/image?url=%2Fprofile.JPG&w=384&q=75 384w, /_next/image?url=%2Fprofile.JPG&w=640&q=75 640w, /_next/image?url=%2Fprofile.JPG&w=750&q=75 750w, /_next/image?url=%2Fprofile.JPG&w=828&q=75 828w, /_next/image?url=%2Fprofile.JPG&w=1080&q=75 1080w, /_next/image?url=%2Fprofile.JPG&w=1200&q=75 1200w, /_next/image?url=%2Fprofile.JPG&w=1920&q=75 1920w, /_next/image?url=%2Fprofile.JPG&w=2048&q=75 2048w, /_next/image?url=%2Fprofile.JPG&w=3840&q=75 3840w"
+              style="position: absolute; height: 100%; width: 100%; left: 0px; top: 0px; right: 0px; bottom: 0px; color: transparent;"
+            />
+          </div>
+        </div>
       </div>
-    </div>
-    <div
-      class="opacity-0 animate-fade-in-up animate-delay-500"
-    >
-      <a
-        class="group transition-colors hover:bg-transparent hover:text-foreground bg-transparent"
-        data-size="sm"
-        data-testid="hero-button"
-        data-variant="outline"
-        href="#about"
+      <div
+        class="flex-1 text-center lg:text-left max-w-2xl"
       >
-        Explore My Work
-        <svg
-          class="w-4 h-4 ml-2 group-hover:translate-y-0.5 transition-transform"
-          data-testid="arrow-down-icon"
-        />
-      </a>
+        <div
+          class="opacity-0 animate-fade-in-up animate-delay-200"
+        >
+          <h1
+            class="text-5xl md:text-6xl lg:text-7xl mb-3 font-league_spartan font-bold leading-none"
+            style="font-family: var(--font-league-spartan); font-weight: 700;"
+          >
+            hi, i'm yswnth.
+          </h1>
+        </div>
+        <div
+          class="opacity-0 animate-fade-in-up animate-delay-300"
+        >
+          <p
+            class="text-sm text-muted-foreground mb-6 leading-relaxed text-pretty"
+          >
+            been here for 
+            19.891015869
+             years
+          </p>
+        </div>
+        <div
+          class="opacity-0 animate-fade-in-up animate-delay-300"
+        >
+          <p
+            class="text-sm text-muted-foreground mb-0 leading-relaxed text-pretty"
+          >
+            trying to learn everything, by breaking everything.
+          </p>
+        </div>
+        <div
+          class="opacity-0 animate-fade-in-up animate-delay-300"
+        >
+          <p
+            class="text-sm text-muted-foreground mb-0 leading-relaxed text-pretty"
+          >
+            <a
+              class="hover:text-foreground hover:underline transition-colors duration-200 cursor-pointer"
+              href="https://yesh.bearblog.dev/things-i-admire-the-most/"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              things i admire the most.
+            </a>
+          </p>
+        </div>
+        <div
+          class="opacity-0 animate-fade-in-up animate-delay-300"
+        >
+          <p
+            class="text-sm text-muted-foreground mb-8 leading-relaxed text-pretty"
+          >
+            <a
+              class="hover:text-foreground hover:underline transition-colors duration-200 cursor-pointer"
+              href="https://yesh.bearblog.dev/things-i-learnt-in-meanwhile/"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              things i learnt meanwhile.
+            </a>
+          </p>
+        </div>
+        <div
+          class="opacity-0 animate-fade-in-up animate-delay-400"
+        >
+          <div
+            class="flex flex-wrap items-center justify-center lg:justify-start gap-6 mb-8"
+          >
+            <a
+              class="group flex items-center gap-2 text-muted-foreground hover:text-foreground hover:scale-110 transition-all duration-300 ease-in-out"
+              href="https://x.com/Yeshh49"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <svg
+                class="w-5 h-5 group-hover:drop-shadow-lg"
+                data-testid="twitter-icon"
+              />
+            </a>
+            <a
+              class="group flex items-center gap-2 text-muted-foreground hover:text-foreground hover:scale-110 transition-all duration-300 ease-in-out"
+              href="https://www.linkedin.com/in/yeswanth49"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <svg
+                class="w-5 h-5 group-hover:drop-shadow-lg"
+                data-testid="linkedin-icon"
+              />
+            </a>
+            <a
+              class="group flex items-center gap-2 text-muted-foreground hover:text-foreground hover:scale-110 transition-all duration-300 ease-in-out"
+              href="https://github.com/yeswanth49"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <svg
+                class="w-5 h-5 group-hover:drop-shadow-lg"
+                data-testid="github-icon"
+              />
+            </a>
+            <a
+              class="group flex items-center gap-2 text-muted-foreground hover:text-foreground hover:scale-110 transition-all duration-300 ease-in-out"
+              href="/Yeswanth_Madasu.pdf"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <svg
+                class="w-5 h-5 group-hover:drop-shadow-lg"
+                data-testid="file-text-icon"
+              />
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>

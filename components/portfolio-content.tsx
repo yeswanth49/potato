@@ -8,7 +8,7 @@ import { About } from "@/components/about"
 import { Experience } from "@/components/experience"
 import { Projects } from "@/components/projects"
 
-import { Contact } from "@/components/contact"
+
 
 const HireMeSection = dynamic(() => import("@/components/hire-me").then((mod) => ({ default: mod.HireMe })), {
   ssr: false,
@@ -31,7 +31,7 @@ export function PortfolioContent() {
       <Projects />
 
       <HireMeSection />
-      <Contact />
+
     </div>
   )
 }

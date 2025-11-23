@@ -9,7 +9,7 @@ const navItems = [
   { name: "Projects", href: "#projects" },
 
   { name: "Hire Me", href: "#hire-me" },
-  { name: "Contact", href: "#contact" },
+
 ]
 
 export function Navigation() {
@@ -180,8 +180,8 @@ export function Navigation() {
               <button
                 onClick={() => scrollToSection(item.href)}
                 className={`transition-colors ${activeSection === item.href.slice(1)
-                    ? "text-foreground"
-                    : "text-muted-foreground hover:text-foreground"
+                  ? "text-foreground"
+                  : "text-muted-foreground hover:text-foreground"
                   } ${item.name === "Hire Me" ? "text-blue-400 hover:text-blue-300 font-medium" : ""}`}
               >
                 {item.name}

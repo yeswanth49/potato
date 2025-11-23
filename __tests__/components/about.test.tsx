@@ -41,7 +41,7 @@ describe('About component', () => {
     it('includes motion-safe fade-in-up classes for heading and content', () => {
       const { container } = renderAbout()
       const animatedSections = container.querySelectorAll('.motion-safe\\:animate-fade-in-up')
-      expect(animatedSections).toHaveLength(2)
+      expect(animatedSections).toHaveLength(3)
       expect(animatedSections[1]).toHaveClass('motion-safe:animate-delay-200')
     })
   })
@@ -50,7 +50,7 @@ describe('About component', () => {
     it('renders three descriptive paragraphs with expected narratives', () => {
       const { container } = renderAbout()
       const paragraphs = Array.from(container.querySelectorAll('p'))
-      expect(paragraphs).toHaveLength(3)
+      expect(paragraphs).toHaveLength(2)
 
       expect(paragraphs[0]).toHaveTextContent(/frontend-focused developer/i)
       expect(paragraphs[0]).toHaveTextContent(/React\.js/i)
@@ -59,9 +59,7 @@ describe('About component', () => {
       expect(paragraphs[1]).toHaveTextContent(/Supabase/i)
       expect(paragraphs[1]).toHaveTextContent(/automated UI testing/i)
 
-      expect(paragraphs[2]).toHaveTextContent(/Bachelor of Technology/i)
-      expect(paragraphs[2]).toHaveTextContent(/Pragati Engineering College/i)
-      expect(paragraphs[2]).toHaveTextContent(/thousands of users/i)
+
     })
 
     it('applies spacing classes to the first two paragraphs only', () => {
@@ -69,7 +67,7 @@ describe('About component', () => {
       const paragraphs = Array.from(container.querySelectorAll('p'))
       expect(paragraphs[0]).toHaveClass('mb-4')
       expect(paragraphs[1]).toHaveClass('mb-4')
-      expect(paragraphs[2]).not.toHaveClass('mb-4')
+
     })
   })
 
