@@ -95,7 +95,7 @@ export function LandingShell({
 
   return (
     <main
-      className={cn("min-h-screen bg-black relative", isTransitioning && "animate-fade-in-portfolio")}
+      className={cn("min-h-screen bg-background relative", isTransitioning && "animate-fade-in-portfolio")}
       data-testid="portfolio-root"
     >
       {mainBackgroundMode === "keyboard" ? <KeyboardBackgroundClient /> : null}

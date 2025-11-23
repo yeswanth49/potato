@@ -6,6 +6,8 @@ import { League_Spartan } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { Suspense } from "react"
 import "./globals.css"
+import { ThemeProvider } from "@/components/theme-provider"
+import { ThemeToggle } from "@/components/theme-toggle"
 
 const leagueSpartan = League_Spartan({
   subsets: ["latin"],
@@ -46,10 +48,22 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className="dark">
-      <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable} ${leagueSpartan.variable} antialiased bg-black text-gray-300`}>
-        <Suspense fallback={null}>{children}</Suspense>
-        <Analytics />
+    <html lang="en" suppressHydrationWarning>
+      <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable} ${leagueSpartan.variable} antialiased bg-background text-foreground`}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <div className="relative min-h-screen flex flex-col">
+            <div className="absolute top-4 right-4 z-50">
+              <ThemeToggle />
+            </div>
+            <Suspense fallback={null}>{children}</Suspense>
+          </div>
+          <Analytics />
+        </ThemeProvider>
       </body>
     </html>
   )

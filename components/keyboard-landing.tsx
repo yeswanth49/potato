@@ -63,11 +63,14 @@ function Key({ children, className, isPressed, size = "md", ...props }: KeyProps
       {...props}
       type="button"
       className={cn(
-        "rounded-lg border border-[#1A1B1C] bg-gradient-to-b from-[#090A0B] to-[#0E0E10] text-gray-300 font-medium",
-        "relative before:absolute before:inset-0 before:rounded-lg before:p-[1px] before:bg-gradient-to-b before:from-[#1A1B1C] before:to-[#141415] before:-z-10",
-        "hover:from-[#0A0B0C] hover:to-[#0F0F11] active:from-[#080909] active:to-[#0D0D0F] transition-all duration-150",
+        "rounded-lg border border-border bg-gradient-to-b from-background to-muted/50 text-foreground font-medium shadow-sm",
+        "relative before:absolute before:inset-0 before:rounded-lg before:p-[1px] before:bg-gradient-to-b before:from-border before:to-border/50 before:-z-10",
+        "hover:bg-muted/50 transition-all duration-150",
+        "dark:border-[#1A1B1C] dark:bg-gradient-to-b dark:from-[#090A0B] dark:to-[#0E0E10] dark:text-gray-300",
+        "dark:before:from-[#1A1B1C] dark:before:to-[#141415]",
+        "dark:hover:from-[#0A0B0C] dark:hover:to-[#0F0F11] dark:active:from-[#080909] dark:active:to-[#0D0D0F]",
         "flex items-center justify-center select-none",
-        isPressed && "from-[#080909] to-[#0D0D0F] scale-95",
+        isPressed && "scale-95 bg-muted dark:from-[#080909] dark:to-[#0D0D0F]",
         sizeClasses[size],
         className,
       )}
@@ -453,7 +456,7 @@ export function KeyboardLanding({ onCorrectEntry, backgroundMode = "dark" }: Key
     }
   }, [handleKeyPress])
 
-  const backgroundClass = backgroundMode === "dark" ? "bg-black" : "bg-gray-900"
+  const backgroundClass = "bg-background"
 
   return (
     <div className={cn("min-h-screen p-8 flex flex-col items-center justify-center gap-8 relative", backgroundClass)}>
@@ -471,15 +474,15 @@ export function KeyboardLanding({ onCorrectEntry, backgroundMode = "dark" }: Key
       {text.length > 0 && (
         <div className="absolute top-1/4 z-20 flex flex-col items-center gap-4">
           {/* Progress Bar */}
-          <div className="flex items-center gap-2 bg-black/50 backdrop-blur-sm rounded-full px-4 py-2 border border-gray-700">
-            <div className="text-sm font-mono text-gray-300">
+          <div className="flex items-center gap-2 bg-muted/50 backdrop-blur-sm rounded-full px-4 py-2 border border-border">
+            <div className="text-sm font-mono text-muted-foreground">
               {text.split('').map((char, index) => (
                 <span
                   key={index}
                   className={cn(
                     "transition-all duration-300",
                     index < progressState.completedChars
-                      ? "text-white"
+                      ? "text-foreground"
                       : "text-gray-500"
                   )}
                 >
@@ -487,12 +490,12 @@ export function KeyboardLanding({ onCorrectEntry, backgroundMode = "dark" }: Key
                 </span>
               ))}
               {Array.from({ length: TARGET_TEXT.length - text.length }).map((_, index) => (
-                <span key={`empty-${index}`} className="text-gray-600">
+                <span key={`empty-${index}`} className="text-muted-foreground/50">
                   _
                 </span>
               ))}
             </div>
-            <div className="text-gray-500 text-sm">
+            <div className="text-muted-foreground text-sm">
               {progressState.completedChars}/{TARGET_TEXT.length}
             </div>
           </div>
@@ -503,8 +506,8 @@ export function KeyboardLanding({ onCorrectEntry, backgroundMode = "dark" }: Key
               className={cn(
                 "h-full transition-all duration-500 ease-out",
                 progressState.isComplete
-                  ? "bg-white"
-                  : "bg-gray-400"
+                  ? "bg-foreground"
+                  : "bg-muted"
               )}
               style={{ width: `${(progressState.completedChars / TARGET_TEXT.length) * 100}%` }}
             />
@@ -517,8 +520,8 @@ export function KeyboardLanding({ onCorrectEntry, backgroundMode = "dark" }: Key
               hintState.urgency === 'high'
                 ? "bg-white/20 border-white text-white animate-pulse"
                 : hintState.urgency === 'medium'
-                ? "bg-gray-300/20 border-gray-300 text-gray-200"
-                : "bg-gray-500/20 border-gray-400 text-gray-400"
+                  ? "bg-gray-300/20 border-gray-300 text-gray-200"
+                  : "bg-muted/20 border-muted-foreground/20 text-muted-foreground"
             )}>
               Next: {getContextualHint().toUpperCase()}
             </div>
@@ -526,10 +529,10 @@ export function KeyboardLanding({ onCorrectEntry, backgroundMode = "dark" }: Key
         </div>
       )}
 
-      <div className="relative flex flex-col gap-2 p-8 bg-black rounded-2xl sm:scale-100 md:scale-125 lg:scale-150">
-        <div className="absolute left-0 top-0 bottom-0 w-64 bg-gradient-to-r from-black to-transparent z-10 rounded-l-2xl pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-64 bg-gradient-to-l from-black to-transparent z-10 rounded-r-2xl pointer-events-none" />
-        <div className="absolute top-0 left-0 right-0 h-48 bg-gradient-to-b from-black to-transparent z-10 rounded-t-2xl pointer-events-none" />
+      <div className="relative flex flex-col gap-2 p-8 bg-card rounded-2xl sm:scale-100 md:scale-125 lg:scale-150 border border-border shadow-xl">
+        <div className="absolute left-0 top-0 bottom-0 w-64 bg-gradient-to-r from-background to-transparent z-10 rounded-l-2xl pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-64 bg-gradient-to-l from-background to-transparent z-10 rounded-r-2xl pointer-events-none" />
+        <div className="absolute top-0 left-0 right-0 h-48 bg-gradient-to-b from-background to-transparent z-10 rounded-t-2xl pointer-events-none" />
 
         <div className="flex gap-2 justify-center">
           {KEYBOARD_LAYOUT.numbers.map((key) => (
@@ -543,8 +546,8 @@ export function KeyboardLanding({ onCorrectEntry, backgroundMode = "dark" }: Key
                   hintState.urgency === 'high'
                     ? "!border-white/80 !shadow-lg !shadow-white/60 !animate-pulse"
                     : hintState.urgency === 'medium'
-                    ? "!border-gray-300 !shadow-lg !shadow-gray-300/60"
-                    : "!border-white/60 !shadow-lg !shadow-white/50"
+                      ? "!border-gray-300 !shadow-lg !shadow-gray-300/60"
+                      : "!border-white/60 !shadow-lg !shadow-white/50"
                 )
               )}
             >
@@ -586,8 +589,8 @@ export function KeyboardLanding({ onCorrectEntry, backgroundMode = "dark" }: Key
                   hintState.urgency === 'high'
                     ? "!border-white/80 !shadow-lg !shadow-white/60 !animate-pulse"
                     : hintState.urgency === 'medium'
-                    ? "!border-gray-300 !shadow-lg !shadow-gray-300/60"
-                    : "!border-white/60 !shadow-lg !shadow-white/50"
+                      ? "!border-gray-300 !shadow-lg !shadow-gray-300/60"
+                      : "!border-white/60 !shadow-lg !shadow-white/50"
                 )
               )}
             >
@@ -603,10 +606,10 @@ export function KeyboardLanding({ onCorrectEntry, backgroundMode = "dark" }: Key
               isReturnKeyGreen()
                 ? "!border-white !shadow-lg !shadow-white/30"
                 : progressState.completedChars === TARGET_TEXT.length - 1
-                ? "!border-gray-200 animate-pulse"
-                : progressState.completedChars > 0
-                ? "!bg-gray-700 !text-white !border-gray-600"
-                : undefined
+                  ? "!border-gray-200 animate-pulse"
+                  : progressState.completedChars > 0
+                    ? "!bg-gray-700 !text-white !border-gray-600"
+                    : undefined
             )}
           >
             {isReturnKeyGreen() ? "✓ return" : "return"}
@@ -654,8 +657,8 @@ export function KeyboardLanding({ onCorrectEntry, backgroundMode = "dark" }: Key
                   hintState.urgency === 'high'
                     ? "!border-white/80 !shadow-lg !shadow-white/60 !animate-pulse"
                     : hintState.urgency === 'medium'
-                    ? "!border-gray-300 !shadow-lg !shadow-gray-300/60"
-                    : "!border-white/60 !shadow-lg !shadow-white/50"
+                      ? "!border-gray-300 !shadow-lg !shadow-gray-300/60"
+                      : "!border-white/60 !shadow-lg !shadow-white/50"
                 )
               )}
             >
