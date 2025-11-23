@@ -1,10 +1,23 @@
 'use client';
 
-import { ArrowDown, Github, Linkedin, Twitter, Mail } from "lucide-react"
+import { ArrowDown, Github, Linkedin, Mail } from "lucide-react"
 import { useState, useEffect } from "react"
 import Image from "next/image"
 
 import { Button } from "@/components/ui/button"
+
+const XIcon = ({ className }: { className?: string }) => (
+  <svg
+    role="img"
+    viewBox="0 0 24 24"
+    xmlns="http://www.w3.org/2000/svg"
+    fill="currentColor"
+    className={className}
+  >
+    <title>X</title>
+    <path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z" />
+  </svg>
+)
 
 export function Hero() {
   const [currentAge, setCurrentAge] = useState(() => {
@@ -105,10 +118,10 @@ export function Hero() {
                   href="https://x.com/Yeshh49"
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label="Twitter profile"
+                  aria-label="X profile"
                   className="group flex items-center gap-2 text-muted-foreground hover:text-foreground hover:scale-110 transition-all duration-300 ease-in-out"
                 >
-                  <Twitter className="w-5 h-5 group-hover:drop-shadow-lg" />
+                  <XIcon className="w-4 h-4 group-hover:drop-shadow-lg" />
                 </a>
                 <a
                   href="https://www.linkedin.com/in/yeswanth49"
