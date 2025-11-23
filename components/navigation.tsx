@@ -12,10 +12,13 @@ const navItems = [
 
 ]
 
+import { Menu, X } from "lucide-react"
+
 export function Navigation() {
   const [activeSection, setActiveSection] = useState("")
   const [underlineStyle, setUnderlineStyle] = useState({ top: 0, height: 0 })
   const [isVisible, setIsVisible] = useState(false)
+  const [isOpen, setIsOpen] = useState(false)
   const navRef = useRef<HTMLUListElement>(null)
 
   // Trigger slide-in animation after component mounts
@@ -151,45 +154,74 @@ export function Navigation() {
   const scrollToSection = (href: string) => {
     const element = document.querySelector(href)
     element?.scrollIntoView({ behavior: "smooth" })
+    setIsOpen(false) // Close sidebar on mobile after clicking
   }
 
   return (
-    <nav className="fixed left-8 md:left-12 top-1/2 -translate-y-1/2 z-40">
-      <div className="relative">
-        {/* Animated underline */}
-        <div
-          className="absolute left-0 w-0.5 bg-foreground transition-all duration-300 ease-out opacity-0"
-          style={{
-            top: underlineStyle.top,
-            height: underlineStyle.height,
-            opacity: activeSection ? 1 : 0,
-            transform: `translateX(-12px)`
-          }}
-        />
+    <>
+      {/* Mobile Toggle Button */}
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="fixed top-6 left-6 z-50 p-2 md:hidden text-foreground bg-background/80 backdrop-blur-sm rounded-full border border-border/50 shadow-sm"
+        aria-label="Toggle menu"
+      >
+        {isOpen ? <X size={20} /> : <Menu size={20} />}
+      </button>
 
-        <ul ref={navRef} className="flex flex-col gap-3 text-sm">
-          {navItems.map((item, index) => (
-            <li
-              key={item.name}
-              className={`${isVisible ? 'animate-slide-in-from-left' : 'opacity-0'
-                }`}
-              style={{
-                animationDelay: `${index * 100}ms`
-              }}
-            >
-              <button
-                onClick={() => scrollToSection(item.href)}
-                className={`transition-colors ${activeSection === item.href.slice(1)
-                  ? "text-foreground"
-                  : "text-muted-foreground hover:text-foreground"
-                  } ${item.name === "Contact" ? "text-blue-400 hover:text-blue-300 font-medium" : ""}`}
+      {/* Backdrop for mobile */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 z-40 bg-background/60 backdrop-blur-[2px] md:hidden"
+          onClick={() => setIsOpen(false)}
+        />
+      )}
+
+      {/* Navigation Sidebar */}
+      <nav
+        className={`fixed z-40 transition-all duration-300 ease-in-out
+          md:left-12 md:top-1/2 md:-translate-y-1/2 md:translate-x-0 md:opacity-100 md:visible
+          ${isOpen
+            ? "left-8 top-24 opacity-100 visible"
+            : "left-8 top-24 -translate-x-10 opacity-0 invisible md:visible md:translate-x-0 md:opacity-100"
+          }
+        `}
+      >
+        <div className="relative">
+          {/* Animated underline */}
+          <div
+            className="absolute left-0 w-0.5 bg-foreground transition-all duration-300 ease-out opacity-0"
+            style={{
+              top: underlineStyle.top,
+              height: underlineStyle.height,
+              opacity: activeSection ? 1 : 0,
+              transform: `translateX(-12px)`
+            }}
+          />
+
+          <ul ref={navRef} className="flex flex-col gap-3 text-sm">
+            {navItems.map((item, index) => (
+              <li
+                key={item.name}
+                className={`${isVisible ? 'animate-slide-in-from-left' : 'opacity-0'
+                  }`}
+                style={{
+                  animationDelay: `${index * 100}ms`
+                }}
               >
-                {item.name}
-              </button>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </nav>
+                <button
+                  onClick={() => scrollToSection(item.href)}
+                  className={`transition-colors text-left ${activeSection === item.href.slice(1)
+                    ? "text-foreground"
+                    : "text-muted-foreground hover:text-foreground"
+                    } ${item.name === "Contact" ? "text-blue-400 hover:text-blue-300 font-medium" : ""}`}
+                >
+                  {item.name}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </nav>
+    </>
   )
 }
