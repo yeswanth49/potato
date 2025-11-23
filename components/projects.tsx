@@ -183,7 +183,7 @@ export function Projects() {
           {canScrollLeft && (
             <button
               onClick={scrollLeft}
-              className="absolute left-2 top-1/2 -translate-y-1/2 z-10 bg-background/80 backdrop-blur-sm border border-gray-400 rounded-full p-2 shadow-lg shadow-gray-400/20 hover:bg-background hover:shadow-gray-400/40 hover:shadow-xl transition-all duration-300 group"
+              className="absolute left-2 top-1/2 -translate-y-1/2 z-10 p-2 transition-all duration-300 group"
               aria-label="Scroll left"
             >
               <ChevronLeft className="w-5 h-5 text-foreground group-hover:text-primary transition-colors" />
@@ -194,7 +194,7 @@ export function Projects() {
           {canScrollRight && (
             <button
               onClick={scrollRight}
-              className="absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-background/80 backdrop-blur-sm border border-gray-400 rounded-full p-2 shadow-lg shadow-gray-400/20 hover:bg-background hover:shadow-gray-400/40 hover:shadow-xl transition-all duration-300 group"
+              className="absolute right-2 top-1/2 -translate-y-1/2 z-10 p-2 transition-all duration-300 group"
               aria-label="Scroll right"
             >
               <ChevronRight className="w-5 h-5 text-foreground group-hover:text-primary transition-colors" />
