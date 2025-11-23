@@ -23,22 +23,6 @@ const projects = [
     githubUrl: "https://github.com/yeswanth49/openbook",
   },
   {
-    id: "safelink",
-    title: "safeLINK",
-    description:
-      "Mobile-first emergency QR profile application for rapid access to critical information during emergencies.",
-    features: [
-      "QR code generation with secure IDs",
-      "In-browser QR scanner using WebRTC",
-      "Password-protected profile editing",
-      "Multiple profile templates",
-      "Production-ready deployment",
-    ],
-    technologies: ["Flask", "SQLite", "Jinja2", "WebRTC", "Python", "Gunicorn"],
-    liveUrl: "https://safelink.pecup.in",
-    githubUrl: "https://github.com/yeswanth49/safelink",
-  },
-  {
     id: "pecup",
     title: "PEC.UP",
     description:
@@ -53,6 +37,22 @@ const projects = [
     technologies: ["HTML", "CSS", "JavaScript", "Node.js", "REST APIs"],
     liveUrl: "https://pecup.in",
     githubUrl: "https://github.com/yeswanth49/pecup-dead",
+  },
+  {
+    id: "safelink",
+    title: "safeLINK",
+    description:
+      "Mobile-first emergency QR profile application for rapid access to critical information during emergencies.",
+    features: [
+      "QR code generation with secure IDs",
+      "In-browser QR scanner using WebRTC",
+      "Password-protected profile editing",
+      "Multiple profile templates",
+      "Production-ready deployment",
+    ],
+    technologies: ["Flask", "SQLite", "Jinja2", "WebRTC", "Python", "Gunicorn"],
+    liveUrl: "https://safelink.pecup.in",
+    githubUrl: "https://github.com/yeswanth49/safelink",
   },
   {
     id: "openbook-landing",

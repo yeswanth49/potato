@@ -1,6 +1,6 @@
 'use client';
 
-import { ArrowDown, Github, Linkedin, Twitter, FileText } from "lucide-react"
+import { ArrowDown, Github, Linkedin, Twitter, Mail } from "lucide-react"
 import { useState, useEffect } from "react"
 import Image from "next/image"
 
@@ -105,6 +105,7 @@ export function Hero() {
                   href="https://x.com/Yeshh49"
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label="Twitter profile"
                   className="group flex items-center gap-2 text-muted-foreground hover:text-foreground hover:scale-110 transition-all duration-300 ease-in-out"
                 >
                   <Twitter className="w-5 h-5 group-hover:drop-shadow-lg" />
@@ -113,6 +114,7 @@ export function Hero() {
                   href="https://www.linkedin.com/in/yeswanth49"
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label="LinkedIn profile"
                   className="group flex items-center gap-2 text-muted-foreground hover:text-foreground hover:scale-110 transition-all duration-300 ease-in-out"
                 >
                   <Linkedin className="w-5 h-5 group-hover:drop-shadow-lg" />
@@ -121,17 +123,17 @@ export function Hero() {
                   href="https://github.com/yeswanth49"
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label="GitHub profile"
                   className="group flex items-center gap-2 text-muted-foreground hover:text-foreground hover:scale-110 transition-all duration-300 ease-in-out"
                 >
                   <Github className="w-5 h-5 group-hover:drop-shadow-lg" />
                 </a>
                 <a
-                  href="/Yeswanth_Madasu.pdf"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href="mailto:work.yeswanth@gmail.com"
+                  aria-label="Send email"
                   className="group flex items-center gap-2 text-muted-foreground hover:text-foreground hover:scale-110 transition-all duration-300 ease-in-out"
                 >
-                  <FileText className="w-5 h-5 group-hover:drop-shadow-lg" />
+                  <Mail className="w-5 h-5 group-hover:drop-shadow-lg" />
                 </a>
               </div>
             </div>

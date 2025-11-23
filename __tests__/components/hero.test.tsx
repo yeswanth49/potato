@@ -22,7 +22,7 @@ jest.mock('lucide-react', () => ({
   Github: mockIcon('github-icon'),
   Linkedin: mockIcon('linkedin-icon'),
   Twitter: mockIcon('twitter-icon'),
-  FileText: mockIcon('file-text-icon'),
+  Mail: mockIcon('mail-icon'),
 }), { virtual: true })
 
 import { Hero } from '@/components/hero'
@@ -53,7 +53,13 @@ jest.mock('@/components/ui/button', () => {
 
 describe('Hero Component', () => {
   beforeEach(() => {
+    jest.useFakeTimers()
+    jest.setSystemTime(new Date('2025-11-23T13:04:16+05:30'))
     render(<Hero />)
+  })
+
+  afterEach(() => {
+    jest.useRealTimers()
   })
 
   describe('Structure', () => {
@@ -61,42 +67,38 @@ describe('Hero Component', () => {
       const section = document.getElementById('hero') as HTMLElement
       expect(section).toBeInTheDocument()
       expect(section.tagName).toBe('SECTION')
-      expect(section).toHaveClass('flex', 'items-center', 'justify-center', 'px-4')
+      expect(section).toHaveClass('flex', 'items-center', 'justify-center', 'px-8')
     })
 
     it('contains a centered max width container', () => {
       const section = document.getElementById('hero') as HTMLElement
-      const container = section.querySelector('.max-w-3xl') as HTMLElement
+      const container = section.querySelector('.max-w-6xl') as HTMLElement
       expect(container).toBeInTheDocument()
-      expect(container).toHaveClass('mx-auto', 'text-center')
+      expect(container).toHaveClass('mx-auto')
     })
   })
 
   describe('Primary content', () => {
     it('renders main heading text', () => {
       const h1 = screen.getByRole('heading', { level: 1 })
-      expect(h1).toHaveTextContent("Hi, I'm Yeswanth Madasu")
-      expect(h1).toHaveClass('text-4xl', 'md:text-5xl', 'font-semibold', 'mb-3', 'text-balance')
+      expect(h1).toHaveTextContent("hi, i'm yswnth.")
+      expect(h1).toHaveClass('text-2xl', 'sm:text-3xl', 'md:text-6xl', 'lg:text-7xl', 'mb-1', 'md:mb-3', 'font-league_spartan', 'font-bold', 'leading-none')
     })
 
     it('renders subtitle', () => {
-      const subtitle = screen.getByText('Full Stack Developer')
+      const subtitle = screen.getByText(/been here for/)
       expect(subtitle).toBeInTheDocument()
       expect(subtitle.tagName).toBe('P')
-      expect(subtitle).toHaveClass('text-base', 'md:text-lg', 'text-muted-foreground', 'mb-4', 'text-balance')
+      expect(subtitle).toHaveClass('text-xs', 'sm:text-sm', 'text-muted-foreground', 'mb-0', 'md:mb-6', 'leading-relaxed', 'text-pretty')
     })
 
-    it('renders description with both sentences', () => {
-      const description = screen.getByText(/Frontend-focused developer/)
+    it('renders description', () => {
+      const description = screen.getByText(/trying to learn everything, by breaking everything./)
       expect(description).toBeInTheDocument()
-      expect(description).toHaveTextContent(/Frontend-focused developer building accessible/)
-      expect(description).toHaveTextContent(/Focusing on building accessible/)
       expect(description).toHaveClass(
         'text-sm',
         'text-muted-foreground',
-        'mb-8',
-        'max-w-2xl',
-        'mx-auto',
+        'mb-0',
         'leading-relaxed',
         'text-pretty'
       )
@@ -107,26 +109,7 @@ describe('Hero Component', () => {
     it('heading wrapper has fade-in classes', () => {
       const h1 = screen.getByRole('heading', { level: 1 })
       const wrapper = h1.parentElement as HTMLElement
-      expect(wrapper).toHaveClass('opacity-0', 'animate-fade-in-up')
-    })
-
-    it('staggered delay on subtitle and description', () => {
-      const subtitleWrapper = screen.getByText('Full Stack Developer').parentElement as HTMLElement
-      expect(subtitleWrapper).toHaveClass('opacity-0', 'animate-fade-in-up', 'animate-delay-200')
-
-      const descriptionWrapper = screen.getByText(/Frontend-focused developer/).parentElement as HTMLElement
-      expect(descriptionWrapper).toHaveClass('opacity-0', 'animate-fade-in-up', 'animate-delay-300')
-    })
-
-    it('social container and CTA have delayed animations', () => {
-      // Find the main social links container by looking for the flex container that contains all social links
-      const socialLinks = screen.getAllByRole('link')
-      const socialContainer = socialLinks[0].parentElement?.parentElement as HTMLElement
-      expect(socialContainer).toHaveClass('opacity-0', 'animate-fade-in-up', 'animate-delay-400')
-
-      const button = screen.getByTestId('hero-button')
-      const buttonWrapper = button.parentElement as HTMLElement
-      expect(buttonWrapper).toHaveClass('opacity-0', 'animate-fade-in-up', 'animate-delay-500')
+      expect(wrapper).toHaveClass('opacity-0', 'animate-fade-in-up', 'animate-delay-200')
     })
   })
 
@@ -149,11 +132,9 @@ describe('Hero Component', () => {
     })
 
 
-    it('resume link opens in new tab securely', () => {
-      const resume = screen.getByRole('link', { name: /resume/i })
-      expect(resume).toHaveAttribute('href', '/Yeswanth_Madasu.pdf')
-      expect(resume).toHaveAttribute('target', '_blank')
-      expect(resume).toHaveAttribute('rel', 'noopener noreferrer')
+    it('mail link has correct href', () => {
+      const mail = screen.getByRole('link', { name: /mail/i })
+      expect(mail).toHaveAttribute('href', 'mailto:work.yeswanth@gmail.com')
     })
 
     it('social links have expected classes', () => {
@@ -165,19 +146,10 @@ describe('Hero Component', () => {
         'gap-2',
         'text-muted-foreground',
         'hover:text-foreground',
+        'hover:scale-110',
         'transition-all',
         'duration-300',
         'ease-in-out'
-      )
-      const label = screen.getByText('Twitter')
-      expect(label).toHaveClass(
-        'max-w-0',
-        'overflow-hidden',
-        'group-hover:max-w-xs',
-        'transition-all',
-        'duration-300',
-        'ease-in-out',
-        'whitespace-nowrap'
       )
     })
   })
@@ -187,7 +159,7 @@ describe('Hero Component', () => {
       expect(screen.getByTestId('twitter-icon')).toBeInTheDocument()
       expect(screen.getByTestId('github-icon')).toBeInTheDocument()
       expect(screen.getByTestId('linkedin-icon')).toBeInTheDocument()
-      expect(screen.getByTestId('file-text-icon')).toBeInTheDocument()
+      expect(screen.getByTestId('mail-icon')).toBeInTheDocument()
     })
 
     it('applies correct dimensions on representative icons', () => {
@@ -196,43 +168,17 @@ describe('Hero Component', () => {
     })
   })
 
-  describe('CTA Button', () => {
-    it('renders CTA with text and icon', () => {
-      const button = screen.getByTestId('hero-button')
-      expect(button).toBeInTheDocument()
-      expect(button).toHaveTextContent(/Explore My Work/)
-      expect(screen.getByTestId('arrow-down-icon')).toBeInTheDocument()
-    })
-
-    it('applies variant/size and styling classes', () => {
-      const button = screen.getByTestId('hero-button')
-      expect(button).toHaveAttribute('data-variant', 'outline')
-      expect(button).toHaveAttribute('data-size', 'sm')
-      expect(button).toHaveClass('group', 'transition-colors', 'hover:bg-transparent', 'hover:text-foreground', 'bg-transparent')
-    })
-
-    it('contains anchor with correct href', () => {
-      const link = screen.getByRole('link', { name: /explore my work/i })
-      expect(link).toHaveAttribute('href', '#about')
-    })
-
-    it('icon has hover translate and transition classes', () => {
-      const icon = screen.getByTestId('arrow-down-icon')
-      expect(icon).toHaveClass('w-4', 'h-4', 'ml-2', 'group-hover:translate-y-0.5', 'transition-transform')
-    })
-  })
-
   describe('Responsive and animation class patterns', () => {
     it('heading and subtitle have responsive text classes', () => {
-      expect(screen.getByRole('heading', { level: 1 })).toHaveClass('text-4xl', 'md:text-5xl')
-      expect(screen.getByText('Full Stack Developer')).toHaveClass('text-base', 'md:text-lg')
+      expect(screen.getByRole('heading', { level: 1 })).toHaveClass('text-2xl', 'sm:text-3xl', 'md:text-6xl', 'lg:text-7xl')
+      expect(screen.getByText(/been here for/)).toHaveClass('text-xs', 'sm:text-sm')
     })
 
     it('social links container has layout classes', () => {
-      // Find the main social links container by looking for the flex container that contains all social links
-      const socialLinks = screen.getAllByRole('link')
-      const container = socialLinks[0].parentElement as HTMLElement
-      expect(container).toHaveClass('flex', 'flex-wrap', 'items-center', 'justify-center', 'gap-6', 'mb-8')
+      // Find the main social links container by looking for the flex container that contains the Twitter link
+      const twitterLink = screen.getByRole('link', { name: /twitter/i })
+      const container = twitterLink.parentElement as HTMLElement
+      expect(container).toHaveClass('flex', 'flex-wrap', 'items-center', 'justify-start', 'gap-4', 'md:gap-6', 'mb-8')
     })
 
     it('every animated wrapper includes at least one animate-* class', () => {
@@ -249,7 +195,7 @@ describe('Hero Component', () => {
       const text = (document.getElementById('hero') as HTMLElement).textContent || ''
       expect(text).not.toMatch(/lorem ipsum/i)
       expect(text).not.toMatch(/placeholder/i)
-      expect(text).toMatch(/React and Next\.js/)
+      expect(text).toMatch(/trying to learn everything/i)
     })
 
   })
