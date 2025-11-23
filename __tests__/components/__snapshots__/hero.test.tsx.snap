@@ -54,7 +54,7 @@ exports[`Hero Snapshot matches DOM snapshot 1`] = `
             class="text-xs sm:text-sm text-muted-foreground mb-0 md:mb-6 leading-relaxed text-pretty"
           >
             been here for 
-            19.891360412
+            19.891389575
              years
           </p>
         </div>
@@ -110,20 +110,39 @@ exports[`Hero Snapshot matches DOM snapshot 1`] = `
             class="flex flex-wrap items-center justify-start gap-4 md:gap-6 mb-8"
           >
             <a
-              aria-label="Twitter profile"
-              class="group flex items-center gap-2 text-muted-foreground hover:text-foreground hover:scale-110 transition-all duration-300 ease-in-out"
+              aria-label="X profile"
+              class="group flex items-center text-muted-foreground transition-all duration-300 ease-in-out"
               href="https://x.com/Yeshh49"
               rel="noopener noreferrer"
               target="_blank"
             >
               <svg
-                class="w-5 h-5 group-hover:drop-shadow-lg"
-                data-testid="twitter-icon"
-              />
+                class="w-4 h-4 group-hover:text-foreground transition-colors group-hover:drop-shadow-lg"
+                fill="currentColor"
+                role="img"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <title>
+                  X
+                </title>
+                <path
+                  d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"
+                />
+              </svg>
+              <span
+                class="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 ease-in-out whitespace-nowrap text-xs text-muted-foreground group-hover:text-foreground/80"
+              >
+                <span
+                  class="pl-2"
+                >
+                  @yswnth
+                </span>
+              </span>
             </a>
             <a
               aria-label="LinkedIn profile"
-              class="group flex items-center gap-2 text-muted-foreground hover:text-foreground hover:scale-110 transition-all duration-300 ease-in-out"
+              class="group flex items-center text-muted-foreground hover:text-foreground hover:scale-110 transition-all duration-300 ease-in-out"
               href="https://www.linkedin.com/in/yeswanth49"
               rel="noopener noreferrer"
               target="_blank"
@@ -135,7 +154,7 @@ exports[`Hero Snapshot matches DOM snapshot 1`] = `
             </a>
             <a
               aria-label="GitHub profile"
-              class="group flex items-center gap-2 text-muted-foreground hover:text-foreground hover:scale-110 transition-all duration-300 ease-in-out"
+              class="group flex items-center text-muted-foreground hover:text-foreground hover:scale-110 transition-all duration-300 ease-in-out"
               href="https://github.com/yeswanth49"
               rel="noopener noreferrer"
               target="_blank"
@@ -147,7 +166,7 @@ exports[`Hero Snapshot matches DOM snapshot 1`] = `
             </a>
             <a
               aria-label="Send email"
-              class="group flex items-center gap-2 text-muted-foreground hover:text-foreground hover:scale-110 transition-all duration-300 ease-in-out"
+              class="group flex items-center text-muted-foreground hover:text-foreground hover:scale-110 transition-all duration-300 ease-in-out"
               href="mailto:work.yeswanth@gmail.com"
             >
               <svg

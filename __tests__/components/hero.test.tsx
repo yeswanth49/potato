@@ -115,10 +115,10 @@ describe('Hero Component', () => {
 
   describe('Social links', () => {
     it('has external profile links with secure attributes', () => {
-      const twitter = screen.getByRole('link', { name: /twitter/i })
-      expect(twitter).toHaveAttribute('href', 'https://x.com/Yeshh49')
-      expect(twitter).toHaveAttribute('target', '_blank')
-      expect(twitter).toHaveAttribute('rel', 'noopener noreferrer')
+      const xLink = screen.getByRole('link', { name: /x profile/i })
+      expect(xLink).toHaveAttribute('href', 'https://x.com/Yeshh49')
+      expect(xLink).toHaveAttribute('target', '_blank')
+      expect(xLink).toHaveAttribute('rel', 'noopener noreferrer')
 
       const github = screen.getByRole('link', { name: /github/i })
       expect(github).toHaveAttribute('href', 'https://github.com/yeswanth49')
@@ -133,37 +133,35 @@ describe('Hero Component', () => {
 
 
     it('mail link has correct href', () => {
-      const mail = screen.getByRole('link', { name: /mail/i })
+      const mail = screen.getByRole('link', { name: /email/i })
       expect(mail).toHaveAttribute('href', 'mailto:work.yeswanth@gmail.com')
     })
 
     it('social links have expected classes', () => {
-      const twitter = screen.getByRole('link', { name: /twitter/i })
-      expect(twitter).toHaveClass(
+      const xLink = screen.getByRole('link', { name: /x profile/i })
+      expect(xLink).toHaveClass(
         'group',
         'flex',
         'items-center',
-        'gap-2',
         'text-muted-foreground',
-        'hover:text-foreground',
-        'hover:scale-110',
         'transition-all',
         'duration-300',
         'ease-in-out'
       )
+      expect(xLink).not.toHaveClass('hover:scale-110')
     })
   })
 
   describe('Icons', () => {
     it('renders all icons', () => {
-      expect(screen.getByTestId('twitter-icon')).toBeInTheDocument()
+      expect(screen.getByRole('img', { name: 'X' })).toBeInTheDocument()
       expect(screen.getByTestId('github-icon')).toBeInTheDocument()
       expect(screen.getByTestId('linkedin-icon')).toBeInTheDocument()
       expect(screen.getByTestId('mail-icon')).toBeInTheDocument()
     })
 
     it('applies correct dimensions on representative icons', () => {
-      expect(screen.getByTestId('twitter-icon')).toHaveClass('w-5', 'h-5')
+      expect(screen.getByRole('img', { name: 'X' })).toHaveClass('w-4', 'h-4')
       expect(screen.getByTestId('github-icon')).toHaveClass('w-5', 'h-5')
     })
   })
@@ -175,9 +173,9 @@ describe('Hero Component', () => {
     })
 
     it('social links container has layout classes', () => {
-      // Find the main social links container by looking for the flex container that contains the Twitter link
-      const twitterLink = screen.getByRole('link', { name: /twitter/i })
-      const container = twitterLink.parentElement as HTMLElement
+      // Find the main social links container by looking for the flex container that contains the X link
+      const xLink = screen.getByRole('link', { name: /x profile/i })
+      const container = xLink.parentElement as HTMLElement
       expect(container).toHaveClass('flex', 'flex-wrap', 'items-center', 'justify-start', 'gap-4', 'md:gap-6', 'mb-8')
     })
 

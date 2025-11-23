@@ -119,16 +119,19 @@ export function Hero() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="X profile"
-                  className="group flex items-center gap-2 text-muted-foreground hover:text-foreground hover:scale-110 transition-all duration-300 ease-in-out"
+                  className="group flex items-center text-muted-foreground transition-all duration-300 ease-in-out"
                 >
-                  <XIcon className="w-4 h-4 group-hover:drop-shadow-lg" />
+                  <XIcon className="w-4 h-4 group-hover:text-foreground transition-colors group-hover:drop-shadow-lg" />
+                  <span className="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 ease-in-out whitespace-nowrap text-xs text-muted-foreground group-hover:text-foreground/50">
+                    <span className="pl-2">@yswnth</span>
+                  </span>
                 </a>
                 <a
                   href="https://www.linkedin.com/in/yeswanth49"
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="LinkedIn profile"
-                  className="group flex items-center gap-2 text-muted-foreground hover:text-foreground hover:scale-110 transition-all duration-300 ease-in-out"
+                  className="group flex items-center text-muted-foreground hover:text-foreground hover:scale-110 transition-all duration-300 ease-in-out"
                 >
                   <Linkedin className="w-5 h-5 group-hover:drop-shadow-lg" />
                 </a>
@@ -137,14 +140,14 @@ export function Hero() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="GitHub profile"
-                  className="group flex items-center gap-2 text-muted-foreground hover:text-foreground hover:scale-110 transition-all duration-300 ease-in-out"
+                  className="group flex items-center text-muted-foreground hover:text-foreground hover:scale-110 transition-all duration-300 ease-in-out"
                 >
                   <Github className="w-5 h-5 group-hover:drop-shadow-lg" />
                 </a>
                 <a
                   href="mailto:work.yeswanth@gmail.com"
                   aria-label="Send email"
-                  className="group flex items-center gap-2 text-muted-foreground hover:text-foreground hover:scale-110 transition-all duration-300 ease-in-out"
+                  className="group flex items-center text-muted-foreground hover:text-foreground hover:scale-110 transition-all duration-300 ease-in-out"
                 >
                   <Mail className="w-5 h-5 group-hover:drop-shadow-lg" />
                 </a>
