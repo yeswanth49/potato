@@ -11,20 +11,19 @@ import { Label } from "@/components/ui/label"
 
 const techStacks = {
   frontend: [
-    "React", "Next.js", "Vue.js", "Angular", "Svelte", "TypeScript", "JavaScript",
+    "React", "Next.js", "Vue.js", "TypeScript", "JavaScript",
     "Tailwind CSS", "Bootstrap", "Material-UI", "Chakra UI", "Styled Components"
   ],
   backend: [
-    "Node.js", "Express.js", "Nest.js", "Python", "Django", "FastAPI", "Flask",
-    "Java", "Spring Boot", "C#", ".NET", "PHP", "Laravel", "Ruby on Rails", "Go", "Rust"
+    "Node.js", "Express.js", "Next.js", "Python", "FastAPI", "Flask",
+    "Java", "Go", "Rust"
   ],
   database: [
-    "PostgreSQL", "MySQL", "MongoDB", "Redis", "SQLite", "Firebase", "Supabase",
-    "PlanetScale", "DynamoDB", "Cassandra", "InfluxDB", "Neo4j"
+    "PostgreSQL", "MySQL", "MongoDB", "Redis", "SQLite", "Firebase", "Supabase"
   ],
   other: [
     "Docker", "Kubernetes", "AWS", "Google Cloud", "Azure", "Vercel", "Netlify",
-    "GitHub Actions", "Jenkins", "Terraform", "GraphQL", "REST API", "WebSocket",
+    "GitHub Actions", "Jenkins", "REST API", "WebSocket",
     "Microservices", "Serverless", "PWA"
   ]
 }
