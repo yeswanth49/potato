@@ -215,9 +215,9 @@ This inquiry was submitted through your portfolio contact form.
           className={`transition-all duration-800 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
         >
           <div className="text-center mb-8">
-            <h2 className="text-2xl md:text-3xl font-semibold mb-3">Let's Build Something Amazing</h2>
+            <h2 className="text-2xl md:text-3xl font-semibold mb-3">We Build Great Things Together.</h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              Select the technologies you'd like to use for your project, and let's discuss how we can bring your vision to life.
+              Select the tech stack, of your project. that you want to bring life to.
             </p>
           </div>
         </div>
@@ -229,12 +229,6 @@ This inquiry was submitted through your portfolio contact form.
             {/* Tech Stack Selection - Takes up 2 columns */}
             <div className="lg:col-span-2">
               <Card className="border-border/50">
-                <CardHeader>
-                  <CardTitle>Choose Your Tech Stack</CardTitle>
-                  <CardDescription>
-                    Select the technologies that fit your project needs
-                  </CardDescription>
-                </CardHeader>
                 <CardContent className="space-y-6">
                   {renderTechCategory('frontend', 'Frontend')}
                   {renderTechCategory('backend', 'Backend')}
@@ -249,9 +243,6 @@ This inquiry was submitted through your portfolio contact form.
               <Card className="border-border/50 sticky top-6">
                 <CardHeader>
                   <CardTitle>Project Details</CardTitle>
-                  <CardDescription>
-                    Tell me about your project
-                  </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <form onSubmit={handleSubmit} className="space-y-4">
@@ -274,7 +265,7 @@ This inquiry was submitted through your portfolio contact form.
                         value={formData.email}
                         onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
                         required
-                        placeholder="your.email@example.com"
+                        placeholder="mail@example.com"
                       />
                     </div>
 
@@ -286,7 +277,7 @@ This inquiry was submitted through your portfolio contact form.
                         onChange={(e) => setFormData(prev => ({ ...prev, message: e.target.value }))}
                         required
                         className="min-h-[100px]"
-                        placeholder="Describe your project, timeline, and requirements..."
+                        placeholder="Your project, timeline, and requirements."
                       />
                     </div>
 
