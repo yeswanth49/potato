@@ -203,13 +203,13 @@ export function Projects() {
 
           <div
             ref={scrollContainerRef}
-            className="flex gap-6 overflow-x-auto pb-4 scrollbar-hide px-12"
+            className="flex gap-6 overflow-x-auto pb-4 scrollbar-hide px-4 md:px-12"
           >
             {projects.map((project, index) => (
               <div
                 key={project.id}
                 ref={(el) => { cardRefs.current[project.id] = el }}
-                className={`flex-none w-80 ${visibleIndices.has(project.id) ? "motion-safe:animate-fade-in-up" : ""}`}
+                className={`flex-none w-[85vw] md:w-80 ${visibleIndices.has(project.id) ? "motion-safe:animate-fade-in-up" : ""}`}
                 style={{ animationDelay: `${(index + 1) * 120}ms` }}
               >
                 <Card className="h-full transition-colors border-border/50 group">
@@ -257,6 +257,6 @@ export function Projects() {
           </div>
         </div>
       </div>
-    </section>
+    </section >
   )
 }

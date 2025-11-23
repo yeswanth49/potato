@@ -226,7 +226,7 @@ This inquiry was submitted through your portfolio contact form.
         >
           <div className="grid lg:grid-cols-3 gap-8">
             {/* Tech Stack Selection - Takes up 2 columns */}
-            <div className="lg:col-span-2 pl-16">
+            <div className="lg:col-span-2 lg:pl-16">
               <div className="space-y-6">
                 {renderTechCategory('frontend', 'Frontend')}
                 {renderTechCategory('backend', 'Backend')}
