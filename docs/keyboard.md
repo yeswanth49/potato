@@ -39,7 +39,7 @@ Transform the portfolio from having a keyboard background to a dedicated keyboar
 
 **Content**:
 - Move all existing portfolio sections from `app/page.tsx`
-- Include: Hero, About, Experience, Projects, Skills, HireMe, Contact
+- Include: Hero, About, Experience, Projects, Skills, Contact
 - Maintain existing Navigation component
 - Keep keyboard as subtle background (optional)
 

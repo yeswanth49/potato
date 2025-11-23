@@ -54,7 +54,7 @@ exports[`Hero Snapshot matches DOM snapshot 1`] = `
             class="text-sm text-muted-foreground mb-6 leading-relaxed text-pretty"
           >
             been here for 
-            19.891015869
+            19.891037628
              years
           </p>
         </div>

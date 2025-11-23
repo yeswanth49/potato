@@ -40,15 +40,15 @@ jest.mock('@/components/projects', () => ({
 
 
 
-jest.mock('@/components/hire-me', () => ({
+jest.mock('@/components/contact', () => ({
   __esModule: true,
-  HireMe: jest.fn(() => <div data-testid="hire-me">HireMe</div>),
+  Contact: jest.fn(() => <div data-testid="contact">Contact</div>),
 }), { virtual: true })
 
 // Mock Next.js dynamic loader (deterministic by default)
 jest.mock('next/dynamic', () => {
   const impl = (importer: any, options: any) => {
-    const Comp: any = () => <div data-testid="hire-me-dynamic">Dynamic HireMe</div>
+    const Comp: any = () => <div data-testid="contact-dynamic">Dynamic Contact</div>
     Comp.__dynamicOptions = options
     Comp.loading = options?.loading
     return Comp
@@ -93,7 +93,7 @@ describe('PortfolioContent - structure and composition', () => {
       'experience',
       'projects',
 
-      'hire-me-dynamic',
+      'contact-dynamic',
 
     ]
 
@@ -128,7 +128,7 @@ describe('PortfolioContent - dynamic loading states', () => {
     const { PortfolioContent } = importPortfolio()
     const { container } = render(<PortfolioContent />)
 
-    const section = container.querySelector('#hire-me') as HTMLElement
+    const section = container.querySelector('#contact') as HTMLElement
     expect(section).toBeInTheDocument()
     expect(section).toHaveClass('px-4')
 

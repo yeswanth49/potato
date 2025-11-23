@@ -10,10 +10,10 @@ import { Projects } from "@/components/projects"
 
 
 
-const HireMeSection = dynamic(() => import("@/components/hire-me").then((mod) => ({ default: mod.HireMe })), {
+const ContactSection = dynamic(() => import("@/components/contact").then((mod) => ({ default: mod.Contact })), {
   ssr: false,
   loading: () => (
-    <section id="hire-me" className="px-4">
+    <section id="contact" className="px-4">
       <div className="max-w-6xl mx-auto">
         <div className="h-96 rounded-2xl border border-dashed border-border/60 bg-muted/20 animate-pulse" />
       </div>
@@ -30,7 +30,7 @@ export function PortfolioContent() {
       <Experience />
       <Projects />
 
-      <HireMeSection />
+      <ContactSection />
 
     </div>
   )

@@ -11,20 +11,20 @@ import { Label } from "@/components/ui/label"
 
 const techStacks = {
   frontend: [
-    "React", "Next.js", "Vue.js", "Angular", "Svelte", "TypeScript", "JavaScript", 
+    "React", "Next.js", "Vue.js", "Angular", "Svelte", "TypeScript", "JavaScript",
     "Tailwind CSS", "Bootstrap", "Material-UI", "Chakra UI", "Styled Components"
   ],
   backend: [
-    "Node.js", "Express.js", "Nest.js", "Python", "Django", "FastAPI", "Flask", 
+    "Node.js", "Express.js", "Nest.js", "Python", "Django", "FastAPI", "Flask",
     "Java", "Spring Boot", "C#", ".NET", "PHP", "Laravel", "Ruby on Rails", "Go", "Rust"
   ],
   database: [
-    "PostgreSQL", "MySQL", "MongoDB", "Redis", "SQLite", "Firebase", "Supabase", 
+    "PostgreSQL", "MySQL", "MongoDB", "Redis", "SQLite", "Firebase", "Supabase",
     "PlanetScale", "DynamoDB", "Cassandra", "InfluxDB", "Neo4j"
   ],
   other: [
-    "Docker", "Kubernetes", "AWS", "Google Cloud", "Azure", "Vercel", "Netlify", 
-    "GitHub Actions", "Jenkins", "Terraform", "GraphQL", "REST API", "WebSocket", 
+    "Docker", "Kubernetes", "AWS", "Google Cloud", "Azure", "Vercel", "Netlify",
+    "GitHub Actions", "Jenkins", "Terraform", "GraphQL", "REST API", "WebSocket",
     "Microservices", "Serverless", "PWA"
   ]
 }
@@ -36,9 +36,9 @@ const categoryColors = {
   other: { selected: "#7c2d12", selectedText: "#ea580c", selectedBg: "#431407" }
 }
 
-export function HireMe() {
+export function Contact() {
   const [isVisible, setIsVisible] = useState(false)
-  const [selectedTech, setSelectedTech] = useState<{[key: string]: string[]}>({
+  const [selectedTech, setSelectedTech] = useState<{ [key: string]: string[] }>({
     frontend: [], backend: [], database: [], other: []
   })
   const [formData, setFormData] = useState({ name: "", email: "", message: "" })
@@ -65,14 +65,14 @@ export function HireMe() {
   const toggleTech = (category: string, tech: string) => {
     setSelectedTech(prev => ({
       ...prev,
-      [category]: prev[category].includes(tech) 
+      [category]: prev[category].includes(tech)
         ? prev[category].filter(t => t !== tech)
         : [...prev[category], tech]
     }))
   }
 
   const getAllSelectedTech = () => {
-    return Object.entries(selectedTech).flatMap(([category, techs]) => 
+    return Object.entries(selectedTech).flatMap(([category, techs]) =>
       techs.map(tech => ({ category, tech }))
     )
   }
@@ -114,7 +114,7 @@ This inquiry was submitted through your portfolio contact form.
     `.trim()
 
     const subjectTech = selectedTechList.length > 0
-      ? `Project Collaboration - ${selectedTechList.slice(0, 3).map(({tech}) => tech).join(', ')}${selectedTechList.length > 3 ? ' & more' : ''}`
+      ? `Project Collaboration - ${selectedTechList.slice(0, 3).map(({ tech }) => tech).join(', ')}${selectedTechList.length > 3 ? ' & more' : ''}`
       : 'Project Collaboration Inquiry'
 
     const mailtoLink = `mailto:work.yeswanth@gmail.com?subject=${encodeURIComponent(subjectTech)}&body=${encodeURIComponent(emailBody)}`
@@ -133,7 +133,7 @@ This inquiry was submitted through your portfolio contact form.
     return (
       <div key={category} className="mb-6">
         <h4 className="text-sm font-semibold mb-3 text-foreground/80 uppercase tracking-wider">{title}</h4>
-        <motion.div 
+        <motion.div
           className="flex flex-wrap gap-2"
           layout
           transition={{ type: "spring", stiffness: 500, damping: 30, mass: 0.5 }}
@@ -162,15 +162,15 @@ This inquiry was submitted through your portfolio contact form.
                 className={`
                   inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium
                   whitespace-nowrap overflow-hidden ring-1 ring-inset
-                  ${isSelected 
-                    ? `ring-[hsla(0,0%,100%,0.12)]` 
+                  ${isSelected
+                    ? `ring-[hsla(0,0%,100%,0.12)]`
                     : "text-muted-foreground ring-border/20"}
                 `}
                 style={{ color: isSelected ? colors.selectedText : undefined }}
               >
-                <motion.div 
+                <motion.div
                   className="relative flex items-center"
-                  animate={{ 
+                  animate={{
                     width: isSelected ? "auto" : "100%",
                     paddingRight: isSelected ? "1.25rem" : "0",
                   }}
@@ -186,12 +186,12 @@ This inquiry was submitted through your portfolio contact form.
                         transition={{ type: "spring", stiffness: 500, damping: 30, mass: 0.5 }}
                         className="absolute right-0"
                       >
-                        <div 
+                        <div
                           className="w-3 h-3 rounded-full flex items-center justify-center"
                           style={{ backgroundColor: colors.selectedText }}
                         >
-                          <Check 
-                            className="w-2 h-2" 
+                          <Check
+                            className="w-2 h-2"
                             strokeWidth={2}
                             style={{ color: colors.selected }}
                           />
@@ -209,7 +209,7 @@ This inquiry was submitted through your portfolio contact form.
   }
 
   return (
-    <section id="hire-me" ref={ref} className="px-4 snap-start">
+    <section id="contact" ref={ref} className="px-4 snap-start">
       <div className="max-w-6xl mx-auto">
         <div
           className={`transition-all duration-800 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
@@ -265,7 +265,7 @@ This inquiry was submitted through your portfolio contact form.
                         placeholder="Your name"
                       />
                     </div>
-                    
+
                     <div>
                       <Label htmlFor="email">Email</Label>
                       <Input
@@ -277,7 +277,7 @@ This inquiry was submitted through your portfolio contact form.
                         placeholder="your.email@example.com"
                       />
                     </div>
-                    
+
                     <div>
                       <Label htmlFor="message">Project Description</Label>
                       <Textarea
@@ -295,10 +295,10 @@ This inquiry was submitted through your portfolio contact form.
                         <p className="text-sm text-muted-foreground mb-2">Selected Technologies:</p>
                         <div className="flex flex-wrap gap-1">
                           {getAllSelectedTech().slice(0, 6).map(({ category, tech }, index) => (
-                            <span 
+                            <span
                               key={index}
                               className="text-xs px-2 py-1 rounded-full"
-                              style={{ 
+                              style={{
                                 backgroundColor: categoryColors[category as keyof typeof categoryColors].selected + '20',
                                 color: categoryColors[category as keyof typeof categoryColors].selectedText
                               }}
@@ -315,8 +315,8 @@ This inquiry was submitted through your portfolio contact form.
                       </div>
                     )}
 
-                    <Button 
-                      type="submit" 
+                    <Button
+                      type="submit"
                       disabled={isSubmitting}
                       className="w-full"
                     >

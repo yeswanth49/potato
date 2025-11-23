@@ -49,7 +49,7 @@ minimal-portfolio/
 │   ├── contact.tsx             # Contact form component
 │   ├── experience.tsx          # Experience timeline
 │   ├── hero.tsx                # Hero section with social links
-│   ├── hire-me.tsx             # Call-to-action section
+│   ├── contact.tsx             # Contact form component
 │   ├── keyboard-background.tsx  # Background keyboard animation
 │   ├── keyboard-landing.tsx     # Interactive landing keyboard
 │   ├── navigation.tsx          # Sidebar navigation with scroll tracking
@@ -93,8 +93,7 @@ graph TD
     C --> G[Experience]
     C --> H[Projects]
     C --> I[Skills]
-    C --> J[HireMe]
-    C --> K[Contact]
+    C --> J[Contact]
     
     B --> L[KeyboardBackground]
     D --> M[Intersection Observer]
