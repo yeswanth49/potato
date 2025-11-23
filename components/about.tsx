@@ -1,3 +1,7 @@
+
+import { Mail, Twitter } from "lucide-react"
+import { Button } from "@/components/ui/button"
+
 export function About() {
   return (
     <section id="about" aria-labelledby="about-heading" className="px-4">
@@ -20,12 +24,28 @@ export function About() {
               of data structures and algorithms, open-source collaboration, and the complete journey from idea to
               production.
             </p>
-
-            <p>
-              Currently pursuing my Bachelor of Technology in Computer Science and Engineering at Pragati Engineering
-              College, I combine academic knowledge with practical experience in building real-world applications that
-              serve thousands of users.
-            </p>
+            <div className="motion-safe:animate-fade-in-up motion-safe:animate-delay-200">
+              <div className="flex justify-center">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="h-12 group hover:bg-transparent hover:text-foreground transition-colors bg-transparent px-6"
+                  asChild
+                >
+                  <a
+                    href="https://x.com/yswnth"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3"
+                  >
+                    <Twitter className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                    <div className="text-left">
+                      <div className="text-xs text-muted-foreground group-hover:text-foreground/80">@yswnth</div>
+                    </div>
+                  </a>
+                </Button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
