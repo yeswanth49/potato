@@ -175,7 +175,7 @@ export function Projects() {
     <section id="projects" className="px-4">
       <div className="max-w-5xl mx-auto">
         <div className="motion-safe:animate-fade-in-up">
-          <h2 className="text-2xl md:text-3xl font-semibold mb-6 text-center">Featured Projects</h2>
+          <h2 className="text-2xl md:text-3xl font-semibold mb-6 text-center">Projects.</h2>
         </div>
 
         <div className="relative">
@@ -206,54 +206,54 @@ export function Projects() {
             className="flex gap-6 overflow-x-auto pb-4 scrollbar-hide px-12"
           >
             {projects.map((project, index) => (
-            <div
-              key={project.id}
-              ref={(el) => { cardRefs.current[project.id] = el }}
-              className={`flex-none w-80 ${visibleIndices.has(project.id) ? "motion-safe:animate-fade-in-up" : ""}`}
-              style={{ animationDelay: `${(index + 1) * 120}ms` }}
-            >
-              <Card className="h-full transition-colors border-border/50 group">
-                <CardHeader>
-                  <CardTitle className="text-lg mb-1.5 group-hover:text-primary transition-colors">
-                    {project.title}
-                  </CardTitle>
-                  <CardDescription className="leading-relaxed text-sm">{project.description}</CardDescription>
-                </CardHeader>
-                <CardContent className="flex-1 flex flex-col pt-2">
-                  <ul className="space-y-1 mb-4 flex-1">
-                    {project.features.map((feature) => (
-                      <li key={feature} className="text-sm text-muted-foreground flex items-start gap-2">
-                        <span className="text-foreground mt-0.5">•</span>
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
+              <div
+                key={project.id}
+                ref={(el) => { cardRefs.current[project.id] = el }}
+                className={`flex-none w-80 ${visibleIndices.has(project.id) ? "motion-safe:animate-fade-in-up" : ""}`}
+                style={{ animationDelay: `${(index + 1) * 120}ms` }}
+              >
+                <Card className="h-full transition-colors border-border/50 group">
+                  <CardHeader>
+                    <CardTitle className="text-lg mb-1.5 group-hover:text-primary transition-colors">
+                      {project.title}
+                    </CardTitle>
+                    <CardDescription className="leading-relaxed text-sm">{project.description}</CardDescription>
+                  </CardHeader>
+                  <CardContent className="flex-1 flex flex-col pt-2">
+                    <ul className="space-y-1 mb-4 flex-1">
+                      {project.features.map((feature) => (
+                        <li key={feature} className="text-sm text-muted-foreground flex items-start gap-2">
+                          <span className="text-foreground mt-0.5">•</span>
+                          {feature}
+                        </li>
+                      ))}
+                    </ul>
 
-                  <div className="flex flex-wrap gap-1.5 mb-3">
-                    {project.technologies.map((tech) => (
-                      <Badge key={tech} variant="secondary" className="text-[10px] py-0.5">
-                        {tech}
-                      </Badge>
-                    ))}
-                  </div>
+                    <div className="flex flex-wrap gap-1.5 mb-3">
+                      {project.technologies.map((tech) => (
+                        <Badge key={tech} variant="secondary" className="text-[10px] py-0.5">
+                          {tech}
+                        </Badge>
+                      ))}
+                    </div>
 
-                  <div className="flex gap-3">
-                    <Button size="sm" variant="outline" className="flex-1 group/btn bg-transparent hover:bg-transparent hover:text-foreground" asChild>
-                      <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
-                        <ExternalLink className="w-4 h-4 mr-2 group-hover/btn:translate-x-0.5 transition-transform" />
-                        Live Demo
-                      </a>
-                    </Button>
-                    <Button size="sm" variant="ghost" className="group/btn hover:bg-transparent hover:text-foreground" asChild>
-                      <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">
-                        <Github className="w-4 h-4 group-hover/btn:scale-110 transition-transform" />
-                      </a>
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          ))}
+                    <div className="flex gap-3">
+                      <Button size="sm" variant="outline" className="flex-1 group/btn bg-transparent hover:bg-transparent hover:text-foreground" asChild>
+                        <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
+                          <ExternalLink className="w-4 h-4 mr-2 group-hover/btn:translate-x-0.5 transition-transform" />
+                          Live Demo
+                        </a>
+                      </Button>
+                      <Button size="sm" variant="ghost" className="group/btn hover:bg-transparent hover:text-foreground" asChild>
+                        <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">
+                          <Github className="w-4 h-4 group-hover/btn:scale-110 transition-transform" />
+                        </a>
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            ))}
           </div>
         </div>
       </div>
