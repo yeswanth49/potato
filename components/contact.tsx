@@ -351,6 +351,7 @@ This inquiry was submitted through your portfolio contact form.
                               onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
                               required
                               placeholder="Your name"
+                              className="bg-secondary/0 border-white/10"
                             />
                           </div>
 
@@ -363,6 +364,7 @@ This inquiry was submitted through your portfolio contact form.
                               onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
                               required
                               placeholder="mail@example.com"
+                              className="bg-secondary/0 border-white/10"
                             />
                           </div>
 
@@ -373,13 +375,13 @@ This inquiry was submitted through your portfolio contact form.
                               value={formData.message}
                               onChange={(e) => setFormData(prev => ({ ...prev, message: e.target.value }))}
                               required
-                              className="min-h-[100px]"
+                              className="min-h-[100px] bg-secondary/0 border-white/10"
                               placeholder="Your project, timeline, and requirements."
                             />
                           </div>
 
                           {getAllSelectedTech().length > 0 && (
-                            <div className="p-3 bg-muted rounded-lg">
+                            <div className="p-3 bg-muted/30 rounded-lg">
                               <p className="text-sm text-muted-foreground mb-2">Selected Technologies:</p>
                               <div className="flex flex-wrap gap-1">
                                 {getAllSelectedTech().slice(0, 6).map(({ category, tech }, index) => (
@@ -395,7 +397,7 @@ This inquiry was submitted through your portfolio contact form.
                                   </span>
                                 ))}
                                 {getAllSelectedTech().length > 6 && (
-                                  <span className="text-xs px-2 py-1 rounded-full bg-muted-foreground/20 text-muted-foreground">
+                                  <span className="text-xs px-2 py-1 rounded-full bg-muted-foreground/0 text-muted-foreground">
                                     +{getAllSelectedTech().length - 6} more
                                   </span>
                                 )}

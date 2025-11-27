@@ -241,7 +241,7 @@ export function Projects() {
 
                     <div className="flex flex-wrap gap-1.5 mb-3">
                       {project.technologies.map((tech) => (
-                        <Badge key={tech} variant="secondary" className="text-[10px] py-0.5">
+                        <Badge key={tech} variant="secondary" className="text-[10px] py-0.5 bg-secondary/40 hover:bg-secondary/60 transition-colors">
                           {tech}
                         </Badge>
                       ))}
