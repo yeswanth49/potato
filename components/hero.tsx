@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { ArrowDown, Github, Linkedin, Mail } from "lucide-react"
-import { useState, useEffect } from "react"
-import Image from "next/image"
+import { ArrowDown, Github, Linkedin, Mail } from "lucide-react";
+import { useState, useEffect } from "react";
+import Image from "next/image";
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 
 const XIcon = ({ className }: { className?: string }) => (
   <svg
@@ -17,35 +17,37 @@ const XIcon = ({ className }: { className?: string }) => (
     <title>X</title>
     <path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z" />
   </svg>
-)
+);
 
 export function Hero() {
   const [currentAge, setCurrentAge] = useState(() => {
-    const birthDate = new Date('2006-01-02T00:00:00Z')
-    const now = new Date()
-    const diffTime = Math.abs(now.getTime() - birthDate.getTime())
-    const diffYears = diffTime / (1000 * 60 * 60 * 24 * 365.25)
-    return diffYears.toFixed(9)
-  })
+    const birthDate = new Date("2006-01-02T00:00:00Z");
+    const now = new Date();
+    const diffTime = Math.abs(now.getTime() - birthDate.getTime());
+    const diffYears = diffTime / (1000 * 60 * 60 * 24 * 365.25);
+    return diffYears.toFixed(9);
+  });
 
   useEffect(() => {
     const updateAge = () => {
-      const birthDate = new Date('2006-01-02T00:00:00Z')
-      const now = new Date()
-      const diffTime = Math.abs(now.getTime() - birthDate.getTime())
-      const diffYears = diffTime / (1000 * 60 * 60 * 24 * 365.25)
-      setCurrentAge(diffYears.toFixed(9))
-    }
+      const birthDate = new Date("2006-01-02T00:00:00Z");
+      const now = new Date();
+      const diffTime = Math.abs(now.getTime() - birthDate.getTime());
+      const diffYears = diffTime / (1000 * 60 * 60 * 24 * 365.25);
+      setCurrentAge(diffYears.toFixed(9));
+    };
 
-    updateAge() // Initial calculation
-    const interval = setInterval(updateAge, 100) // Update every 100ms for smooth counting
+    updateAge(); // Initial calculation
+    const interval = setInterval(updateAge, 100); // Update every 100ms for smooth counting
 
-    return () => clearInterval(interval)
-  }, [])
-
+    return () => clearInterval(interval);
+  }, []);
 
   return (
-    <section id="hero" className="flex items-center justify-center px-8 md:px-16 lg:px-24">
+    <section
+      id="hero"
+      className="flex items-center justify-center px-8 md:px-16 lg:px-24"
+    >
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-[auto_1fr] items-center gap-x-4 gap-y-6 md:gap-y-0 md:gap-x-8 lg:gap-x-12">
           {/* Profile Image - Left Side */}
@@ -67,7 +69,13 @@ export function Hero() {
           {/* Title & Age - Right Side (Top) */}
           <div className="text-left max-w-2xl self-center md:self-end">
             <div className="opacity-0 animate-fade-in-up animate-delay-200">
-              <h1 className="text-2xl sm:text-3xl md:text-6xl lg:text-7xl mb-1 md:mb-3 font-league_spartan font-bold leading-none" style={{ fontFamily: 'var(--font-league-spartan)', fontWeight: '700' }}>
+              <h1
+                className="text-2xl sm:text-3xl md:text-6xl lg:text-7xl mb-1 md:mb-3 font-league_spartan font-bold leading-none"
+                style={{
+                  fontFamily: "var(--font-league-spartan)",
+                  fontWeight: "700",
+                }}
+              >
                 hi, i'm yswnth.
               </h1>
             </div>
@@ -89,7 +97,7 @@ export function Hero() {
             <div className="opacity-0 animate-fade-in-up animate-delay-300">
               <p className="text-sm text-muted-foreground mb-0 leading-relaxed text-pretty">
                 <a
-                  href="https://yesh.bearblog.dev/things-i-admire-the-most/"
+                  href="https://yswnth.bearblog.dev/things-i-admire-the-most/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-foreground hover:underline transition-colors duration-200 cursor-pointer"
@@ -102,7 +110,7 @@ export function Hero() {
             <div className="opacity-0 animate-fade-in-up animate-delay-300">
               <p className="text-sm text-muted-foreground mb-8 leading-relaxed text-pretty">
                 <a
-                  href="https://yesh.bearblog.dev/things-i-learnt-in-meanwhile/"
+                  href="https://yswnth.bearblog.dev/things-i-learnt-in-meanwhile/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-foreground hover:underline transition-colors duration-200 cursor-pointer"
@@ -157,5 +165,5 @@ export function Hero() {
         </div>
       </div>
     </section>
-  )
+  );
 }
