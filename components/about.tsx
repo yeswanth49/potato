@@ -18,11 +18,10 @@ const blogSeries = [
     ]
   },
   {
-    title: "Linux 101 Series",
+    title: "draft of my writings",
     posts: [
-      { title: "Introduction to Linux", link: "https://yswnth.medium.com" },
-      { title: "File System Hierarchy", link: "https://yswnth.medium.com" },
-      { title: "Basic Commands", link: "https://yswnth.medium.com" },
+      { title: "things i admire the most.", link: "https://yswnth.bearblog.dev/things-i-admire-the-most/" },
+      { title: "things i learnt meanwhile.", link: "https://yswnth.bearblog.dev/things-i-learnt-in-meanwhile/" },
     ]
   },
 ]
