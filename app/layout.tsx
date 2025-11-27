@@ -57,7 +57,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <div className="relative min-h-screen flex flex-col">
-            <div className="absolute top-4 right-4 z-50">
+            <div className="fixed top-4 right-4 z-50">
               <ThemeToggle />
             </div>
             <Suspense fallback={null}>{children}</Suspense>

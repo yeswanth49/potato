@@ -336,7 +336,7 @@ This inquiry was submitted through your portfolio contact form.
                           variant="ghost"
                           size="sm"
                           onClick={() => setShowForm(false)}
-                          className="text-muted-foreground hover:text-foreground -mr-2"
+                          className="text-muted-foreground hover:text-foreground hover:bg-transparent dark:hover:bg-transparent -mr-2"
                         >
                           Back
                         </Button>
