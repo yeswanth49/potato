@@ -6,6 +6,7 @@
 :root {
   /* Updated to minimal black and white theme */
   --background: oklch(1 0 0);
+  --bg-image: url('/back4.png');
   /* Pure white */
   --foreground: oklch(0.1 0 0);
   /* Near black */
@@ -50,6 +51,7 @@
 .dark {
   /* Dark mode with inverted minimal theme */
   --background: oklch(0.05 0 0);
+  --bg-image: url('/back3.png');
   /* Near black */
   --foreground: oklch(0.95 0 0);
   /* Near white */
@@ -139,6 +141,10 @@
 
   body {
     @apply bg-background text-foreground;
+    background-image: var(--bg-image);
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
   }
 
   /* Added smooth scroll behavior */
