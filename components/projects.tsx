@@ -8,6 +8,7 @@ import { ExternalLink, Github, ChevronLeft, ChevronRight } from "lucide-react"
 const projects = [
   {
     id: "openbook",
+    active: true,
     title: "OpenBook",
     description:
       "AI-powered research and learning platform with streaming chat, rich Markdown/LaTeX support, and multiple study workflows.",
@@ -24,6 +25,7 @@ const projects = [
   },
   {
     id: "pecup",
+    active: true,
     title: "PEC.UP",
     description:
       "Resource-sharing platform serving 1.5k+ registered users with high-performance architecture for peak loads.",
@@ -214,9 +216,17 @@ export function Projects() {
               >
                 <Card className="h-full transition-colors border-border/50 group bg-card/0 backdrop-blur-sm">
                   <CardHeader>
-                    <CardTitle className="text-lg mb-1.5 group-hover:text-primary transition-colors">
-                      {project.title}
-                    </CardTitle>
+                    <div className="flex items-center justify-between gap-2 mb-1.5">
+                      <CardTitle className="text-lg group-hover:text-primary transition-colors">
+                        {project.title}
+                      </CardTitle>
+                      {project.active && (
+                        <Badge variant="secondary" className="bg-emerald-500/10 text-emerald-500 border-emerald-500/20 h-5 px-2 text-[10px]">
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5 animate-pulse"></span>
+                          Working
+                        </Badge>
+                      )}
+                    </div>
                     <CardDescription className="leading-relaxed text-sm">{project.description}</CardDescription>
                   </CardHeader>
                   <CardContent className="flex-1 flex flex-col pt-2">
