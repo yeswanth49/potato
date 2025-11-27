@@ -1,6 +1,31 @@
 
 
 import { Button } from "@/components/ui/button"
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
+
+const blogSeries = [
+  {
+    title: "Git 101 Series",
+    posts: [
+      { title: "Day 0/13 of Git 101 Series - Vocabulary and Mental Model", link: "https://yswnth.medium.com" },
+      { title: "Day 1/13 of Git 101 Series - Installation and Setup", link: "https://yswnth.medium.com" },
+      { title: "Day 2/13 of Git 101 Series - Basic Commands", link: "https://yswnth.medium.com" },
+    ]
+  },
+  {
+    title: "Linux 101 Series",
+    posts: [
+      { title: "Introduction to Linux", link: "https://yswnth.medium.com" },
+      { title: "File System Hierarchy", link: "https://yswnth.medium.com" },
+      { title: "Basic Commands", link: "https://yswnth.medium.com" },
+    ]
+  },
+]
 
 export function About() {
   return (
@@ -24,6 +49,34 @@ export function About() {
               of data structures and algorithms, open-source collaboration, and the complete journey from idea to
               production.
             </p>
+            <p className="mb-4">
+              I do love writing, and write blogs
+            </p>
+            <div className="mt-8">
+              <h3 className="font-medium mb-2"></h3>
+              <Accordion type="single" collapsible className="w-full">
+                {blogSeries.map((series, index) => (
+                  <AccordionItem key={series.title} value={`item-${index}`} className="border-b-0">
+                    <AccordionTrigger className="py-2 text-sm hover:no-underline hover:text-primary justify-start gap-2">
+                      <span>{series.title}</span>
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      <div className="flex flex-col gap-1 pl-4 border-l border-border/40 ml-1 my-1">
+                        {series.posts.map((post, postIndex) => (
+                          <a
+                            key={postIndex}
+                            href={post.link}
+                            className="block py-1 px-2 text-sm text-muted-foreground hover:text-primary transition-colors"
+                          >
+                            {post.title}
+                          </a>
+                        ))}
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            </div>
           </div>
         </div>
       </div>
