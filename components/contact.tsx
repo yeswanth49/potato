@@ -261,7 +261,7 @@ This inquiry was submitted through your portfolio contact form.
                     exit={{ opacity: 0, x: -20 }}
                     transition={{ duration: 0.3 }}
                   >
-                    <Card className="border-border/50 sticky top-6 h-full flex flex-col justify-between">
+                    <Card className="border-border/50 sticky top-6 h-full flex flex-col justify-between bg-card/0 backdrop-blur-sm">
                       <CardHeader>
                         <CardTitle className="text-2xl">Yeswanth</CardTitle>
                         <CardDescription className="text-base">Full Stack Developer</CardDescription>
@@ -329,7 +329,7 @@ This inquiry was submitted through your portfolio contact form.
                     exit={{ opacity: 0, x: -20 }}
                     transition={{ duration: 0.3 }}
                   >
-                    <Card className="border-border/50 sticky top-6">
+                    <Card className="border-border/50 sticky top-6 bg-card/0 backdrop-blur-sm">
                       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle>Project Details</CardTitle>
                         <Button

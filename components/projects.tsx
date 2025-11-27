@@ -212,7 +212,7 @@ export function Projects() {
                 className={`flex-none w-[85vw] md:w-80 ${visibleIndices.has(project.id) ? "motion-safe:animate-fade-in-up" : ""}`}
                 style={{ animationDelay: `${(index + 1) * 120}ms` }}
               >
-                <Card className="h-full transition-colors border-border/50 group">
+                <Card className="h-full transition-colors border-border/50 group bg-card/0 backdrop-blur-sm">
                   <CardHeader>
                     <CardTitle className="text-lg mb-1.5 group-hover:text-primary transition-colors">
                       {project.title}
