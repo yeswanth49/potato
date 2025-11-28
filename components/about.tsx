@@ -12,9 +12,9 @@ const blogSeries = [
   {
     title: "Git 101 Series",
     posts: [
-      { title: "Day 0/13 of Git 101 Series - Vocabulary and Mental Model", link: "https://yswnth.medium.com" },
-      { title: "Day 1/13 of Git 101 Series - Installation and Setup", link: "https://yswnth.medium.com" },
-      { title: "Day 2/13 of Git 101 Series - Basic Commands", link: "https://yswnth.medium.com" },
+      { title: "Day 0/13 of Git 101 Series - Vocabulary and Mental Model", link: "https://yswnthm.medium.com/day-0-git-101-series-e03f3d9fcdc9" },
+      { title: "Day 1/13 of Git 101 Series - What Git Actually is", link: "https://yswnthm.medium.com/day-1-13-of-git-101-series-d63b4a96fb5b" },
+      { title: "Day 2/13 of Git 101 Series - Git vs Github, Installation", link: "https://yswnthm.medium.com/day-02-13-of-git-101-series-242f0c129ee3" },
     ]
   },
   {
