@@ -18,7 +18,7 @@ const blogSeries = [
     ]
   },
   {
-    title: "draft of my writings",
+    title: "Personal Drafts ~",
     posts: [
       { title: "things i admire the most.", link: "https://yswnth.bearblog.dev/things-i-admire-the-most/" },
       { title: "things i learnt meanwhile.", link: "https://yswnth.bearblog.dev/things-i-learnt-in-meanwhile/" },
