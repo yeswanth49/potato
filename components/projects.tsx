@@ -7,6 +7,24 @@ import { ExternalLink, Github, ChevronLeft, ChevronRight } from "lucide-react"
 
 const projects = [
   {
+    id: "spotii",
+    active: true,
+    title: "Spotii",
+    description:
+      "AI-powered Spotify playlist generator with natural language prompts, multi-language support, and authentication for instant playlist creation.",
+    features: [
+      "Next.js App Router with TypeScript & React 19",
+      "AI integration with Groq/OpenRouter (Llama 3.3)",
+      "Natural language + 20+ advanced filters",
+      "Deferred Spotify authentication model",
+      "Multi-language support (14+ languages)",
+      "Glassmorphism UI with dark mode",
+    ],
+    technologies: ["Next.js", "React", "TypeScript", "Tailwind CSS", "NextAuth.js", "Spotify API", "AI SDK", "Vercel"],
+    liveUrl: "https://spotii.pecup.in",
+    githubUrl: "https://github.com/yswnthm/spotii",
+  },
+  {
     id: "openbook",
     active: true,
     title: "OpenBook",
