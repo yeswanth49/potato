@@ -8,23 +8,55 @@ import {
 
 const blogSeries = [
   {
-    title: "Git 101 Series",
+    title: "~ Git 101 Series",
     posts: [
       {
         title: "Day 0/13 of Git 101 Series - Vocabulary and Mental Model",
-        link: "https://yswnthm.medium.com/day-0-git-101-series-e03f3d9fcdc9",
+        link: "https://yswnth.bearblog.dev/day-0-git-101-series/",
       },
       {
         title: "Day 1/13 of Git 101 Series - What Git Actually is",
-        link: "https://yswnthm.medium.com/day-1-13-of-git-101-series-d63b4a96fb5b",
+        link: "https://yswnth.bearblog.dev/day-113-of-git-101-series/",
       },
       {
         title: "Day 2/13 of Git 101 Series - Git vs Github, Installation",
-        link: "https://yswnthm.medium.com/day-02-13-of-git-101-series-242f0c129ee3",
+        link: "https://yswnth.bearblog.dev/day-213-of-git-101-series/",
       },
       {
         title: "Day 3/13 of Git 101 Series - Working tree, Index, Commit",
-        link: "https://yswnthm.medium.com/day-03-13-of-git-101-series-a8fa84c5d2f7",
+        link: "https://yswnth.bearblog.dev/day-0313-of-git-101-series/",
+      },
+      {
+        title: "Day 4/13 of Git 101 Series - Creating a repo (init, clone)",
+        link: "https://yswnth.bearblog.dev/day-0413-of-git-101-series/",
+      },
+      {
+        title: "Day 5/13 of Git 101 Series - Add, Commit, Amend",
+        link: "https://yswnth.bearblog.dev/day-0513-of-git-101-series/",
+      },
+      {
+        title: "Day 6/13 of Git 101 Series - Status, Log, Diff",
+        link: "https://yswnth.bearblog.dev/day-0613-of-git-101-series/",
+      },
+      {
+        title: "Day 7/13 of Git 101 Series - Branches & HEAD",
+        link: "https://yswnth.bearblog.dev/day-0713-of-git-101-series/",
+      },
+      {
+        title: "Day 8/13 of Git 101 Series - Merge",
+        link: "https://yswnth.bearblog.dev/day-0813-of-git-101-series/",
+      },
+      {
+        title: "Day 9/13 of Git 101 Series - Rebase",
+        link: "https://yswnth.bearblog.dev/day-0913-of-git-101-series/",
+      },
+      {
+        title: "Day 10/13 of Git 101 Series - Stash, Restore, Clean",
+        link: "https://yswnth.bearblog.dev/day-1013-of-git-101-series/",
+      },
+      {
+        title: "Day 11/13 of Git 101 Series - Tags & Releases",
+        link: "https://yswnth.bearblog.dev/day-1113-of-git-101-series/",
       },
     ],
   },
@@ -96,6 +128,8 @@ export function About() {
                           <a
                             key={postIndex}
                             href={post.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
                             className="block py-1 px-2 text-sm text-muted-foreground hover:text-primary transition-colors"
                           >
                             {post.title}
