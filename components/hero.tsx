@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 
 import { Button } from "@/components/ui/button";
+import { TimeSpentBadge } from "@/components/TimeSpentBadge";
 
 const XIcon = ({ className }: { className?: string }) => (
   <svg
@@ -81,9 +82,12 @@ export function Hero() {
             </div>
 
             <div className="opacity-0 animate-fade-in-up animate-delay-300">
-              <p className="text-xs sm:text-sm text-muted-foreground mb-0 md:mb-6 leading-relaxed text-pretty">
+              <p className="text-xs sm:text-sm text-muted-foreground mb-1 leading-relaxed text-pretty">
                 been here for {currentAge} years
               </p>
+              <div className="mb-4 md:mb-6">
+                <TimeSpentBadge />
+              </div>
             </div>
           </div>
 
