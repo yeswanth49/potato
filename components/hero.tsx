@@ -56,10 +56,10 @@ export function Hero() {
             <div className="opacity-0 animate-fade-in-up">
               <div className="relative w-24 h-24 sm:w-32 sm:h-32 md:w-64 md:h-64 lg:w-80 lg:h-80 rounded-full overflow-hidden border-4 border-border/20 shadow-lg">
                 <Image
-                  src="/profile.JPG"
+                  src="/pfp.webp"
                   alt="Yeswanth's profile picture"
                   fill
-                  className="object-cover"
+                  className="object-cover object-[50%_60%]"
                   priority
                   sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                 />
